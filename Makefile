@@ -22,7 +22,9 @@ NORM  := norminette
 NAME := minirt
 
 # Includes files
-INCLUDES_FILES :=
+INCLUDES_FILES := main.c \
+				  checks.c
+
 INCLUDES       := $(addprefix $(INCLUDES_DIR)/, $(INCLUDES_FILES))
 
 # Srcs
