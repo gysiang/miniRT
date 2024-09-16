@@ -8,10 +8,10 @@ MLX_DIR	     := ./library/mlx
 MLX	     	:=  $(MLX_DIR)/libmlx.a
 
 # Compiler and flags
-CC       := gcc
+CC       := clang
 LEAKCHECK:= #-fsanitize=address
 CFLAGS   := -g -O3 -Wall -Wextra -Werror -Wno-unused-result $(LEAKCHECK)
-LFLAGS   := -L./libft -lft -lreadline
+LFLAGS   := -L./libft -lft
 IFLAGS   := -I$(LIBFT_DIR) -I$(INCLUDES_DIR)
 MLXFLAGS := -L./mlx -lmlx -lXext -lX11 -lbsd -lm
 
@@ -19,7 +19,7 @@ RM    := rm -f
 NORM  := norminette
 
 # Name of the executable
-NAME := minirt
+NAME := miniRT
 
 # Includes files
 INCLUDES_FILES :=
@@ -44,8 +44,15 @@ $(LIBFT):
 	@make -C $(LIBFT_DIR) --no-print-directory
 
 $(MLX):
-	@echo "Building mlx.."
-	@make -C $(MLX_DIR)
+	@if [ ! -d $(MLXDIR) ] || [ ! -f $(MLX) ]; then \
+		echo "MLX not found. Cloning and building ..."; \
+		$(RM) $(MLX_DIR); \
+		git submodule deinit -f $(MLX_DIR); \
+		git submodule update --init $(MLX_DIR); \
+		make -C $(MLX_DIR) all; \
+	else \
+		echo "MLX already exists. Skipping ..."; \
+	fi
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES)
 	@mkdir -p $(dir $@)
@@ -67,8 +74,6 @@ fclean: clean
 re: fclean all
 
 .PHONY: clean fclean re
-
-.PHONY: norm
 
 # Norminette
 norm:
