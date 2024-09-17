@@ -14,7 +14,6 @@
 # define MINI_RT_H
 
 # include "../libft/includes/libft.h"
-# include "../libft/includes/get_next_line.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
