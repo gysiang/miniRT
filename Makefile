@@ -65,12 +65,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES)
 clean:
 	$(RM) -r $(OBJ_DIR)
 	@make -C $(LIBFT_DIR) clean --no-print-directory
-	@make -C $(MLX_DIR) clean
 
 fclean: clean
 	$(RM) $(NAME)
 	@make -C $(LIBFT_DIR) fclean --no-print-directory
-	$(RM) $(MLX_DIR)
+	@make -C $(MLX_DIR) clean
 
 re: fclean all
 
