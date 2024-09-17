@@ -107,7 +107,8 @@ OTHERS_FILES =	others/add_char.c \
 				others/ft_isdigit.c \
 				others/ft_isnumeric.c \
 				others/ft_isprint.c \
-				others/ft_isspace.c
+				others/ft_isspace.c \
+				others/get_next_line.c \
 
 OTHERS_OBJS =		$(addprefix $(OBJS_DIR)/,$(notdir $(OTHERS_FILES:.c=.o)))
 

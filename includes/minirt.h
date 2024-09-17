@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/17 15:20:05 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/17 22:52:12 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINIRT_H
 
 # include "../libft/includes/libft.h"
-# include "../libft/includes/get_next_line.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
@@ -62,6 +61,50 @@ typedef struct s_elem
 	t_type			type_lex;
 }	t_elem;
 
+typedef enum type
+{
+	SP,
+	PL,
+	CY
+}	t_type;
+
+typedef struct s_sp
+{
+	float	xyz[3];
+	float	dia;
+	int		rgb[3];
+}	t_sp;
+
+typedef struct s_pl
+{
+	float	xyz[3];
+	float	vec[3];
+	int		rgb[3];
+}	t_pl;
+
+typedef struct s_cy
+{
+	float	xyz[3];
+	float	vec[3];
+	float	dia;
+	float	height;
+	int		rgb[3];
+}	t_cy;
+
+union	u_type
+{
+	t_sp	sp;
+	t_pl	pl;
+	t_cy	cy;
+};
+
+typedef struct s_elem
+{
+	union u_type	type_data;
+	t_type			type_lex;
+}	t_elem;
+
+/**
 typedef struct s_img
 {
 	// ambient
@@ -84,11 +127,95 @@ typedef struct s_img
 	int	plane_rgb[3];
 	// cylinder
 	int	cylinder_xyz[3];
+	int cylinder_vector[3];
 	float	cylinder_dia;
 	double	cylinder_height;
 	int	cylinder_rgb[3];
 }	t_img;
+**/
 
+// Struct for RGB values
+typedef struct s_rgb
+{
+	int r;
+	int g;
+	int b;
+}	t_rgb;
+
+// Struct for 3D coordinates (x, y, z)
+typedef struct s_coords
+{
+	int x;
+	int y;
+	int z;
+}	t_coords;
+
+// Struct for camera data
+typedef struct s_camera
+{
+	t_coords position;
+	t_coords vector;
+	int		fov;
+}	t_camera;
+
+// Struct for light data
+typedef struct s_light
+{
+	t_coords position;
+	float	brightness;
+	//t_rgb	rgb;
+}	t_light;
+
+// Struct for sphere data
+typedef struct s_sphere
+{
+	t_coords position;
+	float	diameter;
+	t_rgb	rgb;
+}	t_sphere;
+
+// Struct for plane data
+typedef struct s_plane
+{
+	t_coords position;
+	t_coords vector;
+	t_rgb	rgb;
+}	t_plane;
+
+// Struct for cylinder data
+typedef struct s_cylinder
+{
+	t_coords position;
+	t_coords vector;
+	float	diameter;
+	double	height;
+	t_rgb	rgb;
+}	t_cylinder;
+
+// Main image struct
+typedef struct s_img
+{
+	int			amb_light;	// Ambient light ratio
+	t_rgb		amb_rgb;	// Ambient light color
+	t_camera	camera;		// Camera data
+	t_light		light;		// Light data
+	t_sphere	sphere;		// Sphere data
+	t_plane		plane;		// Plane data
+	t_cylinder	cylinder;	// Cylinder data
+}	t_img;
+
+
+void	free_array(char **array);
+// init_struct
+void	init_img_data(t_img *data);
+
+// checks
 int	checkfiletype(const char *filename);
+int	check_Ambient(t_img *data, char *line);
+int	check_Cam(t_img *data, char *line);
+int	check_Light(t_img *data, char *line);
+int	check_Sp(t_img *data, char *line);
+int	check_Cylinder(t_img *data, char *line);
+char *normalize_whitespace(const char *str);
 
 #endif
