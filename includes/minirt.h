@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/17 15:53:32 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:00:35 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,17 @@ typedef struct s_img
 }	t_img;
 
 
-int		checkfiletype(const char *filename);
 void	free_array(char **array);
+// init_struct
+void	init_img_data(t_img *data);
+
+// checks
+int	checkfiletype(const char *filename);
+int	check_Ambient(t_img *data, char *line);
+int	check_Cam(t_img *data, char *line);
+int	check_Light(t_img *data, char *line);
+int	check_Sp(t_img *data, char *line);
+int	check_Cylinder(t_img *data, char *line);
+char *normalize_whitespace(const char *str);
 
 #endif

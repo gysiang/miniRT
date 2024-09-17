@@ -28,6 +28,7 @@ INCLUDES       := $(addprefix $(INCLUDES_DIR)/, $(INCLUDES_FILES))
 # Srcs
 SRC_FILES :=	main.c \
 				checks.c \
+				init_struct.c \
 				free.c	\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
