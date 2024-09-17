@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/17 10:41:38 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/17 14:38:28 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_img
 	int	plane_rgb[3];
 	// cylinder
 	int	cylinder_xyz[3];
+	int cylinder_vector[3];
 	float	cylinder_dia;
 	double	cylinder_height;
 	int	cylinder_rgb[3];
