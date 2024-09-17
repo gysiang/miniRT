@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/17 14:48:14 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:57:44 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,66 +16,80 @@ void	init_img_data(t_img *data)
 {
 	// ambient
 	data->amb_light = 0;
-	data->amb_rgb[0] = 0;
-	data->amb_rgb[1] = 0;
-	data->amb_rgb[2] = 0;
+	data->amb_rgb.r = 0;
+	data->amb_rgb.g = 0;
+	data->amb_rgb.b = 0;
 	// camera
-	data->cam_xyz[0] = 0;
-	data->cam_xyz[1] = 0;
-	data->cam_xyz[2] = 0;
-	data->cam_vector[0] = 0;
-	data->cam_vector[1] = 0;
-	data->cam_vector[2] = 0;
-	data->cam_fov = 0;
-	// light
-	data->light_xyz[0] = 0;
-	data->light_xyz[1] = 0;
-	data->light_xyz[2] = 0;
-	data->light_brightness = 0.00;
+	data->camera.position.x = 0;
+	data->camera.position.y = 0;
+	data->camera.position.z = 0;
+	data->camera.vector.x = 0;
+	data->camera.vector.y = 0;
+	data->camera.vector.z = 0;
+	data->camera.fov = 0;
+	// light (no rgb)
+	data->light.position.x = 0;
+	data->light.position.y = 0;
+	data->light.position.z = 0;
+	data->light.brightness = 0.0;
 	// sphere
-	data->sphere_xyz[0] = 0;
-	data->sphere_xyz[1] = 0;
-	data->sphere_xyz[2] = 0;
-	data->sphere_dia = 0;
-	data->sphere_rgb[0] = 0;
-	data->sphere_rgb[1] = 0;
-	data->sphere_rgb[2] = 0;
+	data->sphere.position.x = 0;
+	data->sphere.position.x = 0;
+	data->sphere.position.x = 0;
+	data->sphere.diameter = 0;
+	data->sphere.rgb.r = 0;
+	data->sphere.rgb.g = 0;
+	data->sphere.rgb.b = 0;
+	// plane
+	data->plane.position.x = 0;
+	data->plane.position.y = 0;
+	data->plane.position.z = 0;
+	data->plane.vector.x = 0;
+	data->plane.vector.y = 0;
+	data->plane.vector.z = 0;
+	data->plane.rgb.r = 0;
+	data->plane.rgb.g = 0;
+	data->plane.rgb.b = 0;
 	// cylinder
-	data->cylinder_xyz[0] = 0;
-	data->cylinder_xyz[1] = 0;
-	data->cylinder_xyz[2] = 0;
-	data->cylinder_dia = 0.0;
-	data->cylinder_height = 0.00;
-	data->cylinder_rgb[0] = 0;
-	data->cylinder_rgb[1] = 0;
-	data->cylinder_rgb[2] = 0;
+	data->cylinder.position.x = 0;
+	data->cylinder.position.y = 0;
+	data->cylinder.position.z = 0;
+	data->cylinder.vector.x = 0;
+	data->cylinder.vector.y = 0;
+	data->cylinder.vector.z = 0;
+	data->cylinder.diameter = 0.0;
+	data->cylinder.height = 0.00;
+	data->cylinder.rgb.r = 0;
+	data->cylinder.rgb.g = 0;
+	data->cylinder.rgb.b = 0;
 }
 
-void	free_array(char **array)
+int handle_error(const char *msg, char **array)
 {
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
+	if (array)
+		free_array(array);
+	ft_putstr_fd(msg, 2);
+	return (1);
 }
 
 // check ambient values and allocate to data struct
 int	check_Ambient(t_img *data, char **str)
 {
+	float	amb_light;
 	char**	rgb_values;
 
 	if (ft_strcmp(str, "A") == 0)
 	{
 		if (str[1] && str[2] && !str[3])
 		{
-			rgb_values = ft_split(str[1], " ");
+			amb_light = (float)ft_atoi(str[1]);
+			if (amb_light >= 0.0 && amb_light <= 1.0)
+				data->amb_light = amb_light;
+			else
+				return (handle_error("Error.\nAmbient light value is not in range.\n"));
+			rgb_values = ft_split(str[2], ' ');
 			if (!rgb_values)
-				return (handle_error("Error.\n Could not split ambient rgb values.\n", rgb_values));
+				return (handle_error("Error.\nCould not split ambient rgb values.\n", rgb_values));
 			// need another check to make sure that ther are 3 rgb values
 			// also need to make sure number is between 0 to 255
 			if (rgb_values[0] && rgb_values[1] && rgb_values[2] && !rgb_values[3])
@@ -87,11 +101,11 @@ int	check_Ambient(t_img *data, char **str)
 			else
 				handle_error("Error.\n There are incorrect number of rgb values.", rgb_values);
 			free_array(rgb_values);
-			ft_putstr_fd("Successfully allocated rgb values.\n", 1);
+			ft_putstr_fd("Successfully allocated ambient values.\n", 1);
 			return (0);
 		}
 	}
-	return (handle_error("Error.\n Ambient light identifier (A) is not found.\n", NULL));
+	return (1);
 }
 
 int	check_Cam(t_img *data, char **str)
@@ -104,7 +118,7 @@ int	check_Cam(t_img *data, char **str)
 	{
 		if (str[1] && str[2] && str[3] && !str[4])
 		{
-			xyz_values = ft_split(str[1], ",");
+			xyz_values = ft_split(str[1], ',');
 			if (!xyz_values)
 				return (handle_error("Error.\n Could not split cam xyz values.\n", xyz_values));
 			// check if there are 3 values
@@ -116,7 +130,7 @@ int	check_Cam(t_img *data, char **str)
 			}
 			else
 				return (handle_error("Error.\n There are incorrect number of cam xyz values.\n", xyz_values));
-			vector_values = ft_split(str[2], ",");
+			vector_values = ft_split(str[2], ',');
 			if (!vector_values)
 				return (handle_error("Error.\n Could not split cam vector values.\n", xyz_values));
 			if (vector_values[0] && vector_values[1] && vector_values[2] && !vector_values[3])
@@ -140,7 +154,7 @@ int	check_Cam(t_img *data, char **str)
 			return (0);
 		}
 	}
-	return (handle_error("Error.\n Camera identifier (C) is not found.\n", NULL));
+	return (1);
 }
 
 int	check_Light(t_img *data, char **str)
@@ -152,7 +166,7 @@ int	check_Light(t_img *data, char **str)
 	{
 		if (str[1] && str[2] && !str[3])
 		{
-			xyz_values = ft_split(str[1], ",");
+			xyz_values = ft_split(str[1], ',');
 			if (!xyz_values)
 				return (handle_error("Error.\n Could not split cam xyz values.\n", xyz_values));
 			// check if there are 3 values
@@ -174,7 +188,7 @@ int	check_Light(t_img *data, char **str)
 			return (0);
 		}
 	}
-	return (handle_error("Error.\n Light identifier (L) is not found.\n", NULL));
+	return (1);
 }
 
 int	check_Sp(t_img *data, char **str)
@@ -186,7 +200,7 @@ int	check_Sp(t_img *data, char **str)
 	{
 		if (str[1] && str[2] && str[3] && !str[4])
 		{
-			xyz_values = ft_split(str[1], ",");
+			xyz_values = ft_split(str[1], ',');
 			if (!xyz_values)
 				return (handle_error("Error.\n Could not split sphere xyz values.\n", xyz_values));
 			// check if there are 3 values
@@ -201,7 +215,7 @@ int	check_Sp(t_img *data, char **str)
 			// assign sphere diameter
 			data->sphere_dia = (float)ft_atoi(str[2]);
 			// split and assign rgb values
-			rgb_values = ft_split(str[3], ",");
+			rgb_values = ft_split(str[3], ',');
 			if (!rgb_values)
 				return (handle_error("Error.\n Could not split sphere rgb values.\n", xyz_values));
 			if (rgb_values[0] && rgb_values[1] && rgb_values[2] && !rgb_values[3])
@@ -218,7 +232,7 @@ int	check_Sp(t_img *data, char **str)
 			return (0);
 		}
 	}
-	return (handle_error("Error.\n Sphere (sp) identifier is not found\n", NULL));
+	return (1);
 }
 
 int	check_Cylinder(t_img *data, char **str)
@@ -231,7 +245,7 @@ int	check_Cylinder(t_img *data, char **str)
 	{
 		if (str[1] && str[2] && str[3] && str[4] && !str[5])
 		{
-			xyz_values = ft_split(str[1], ",");
+			xyz_values = ft_split(str[1], ',');
 			if (!xyz_values)
 				return (handle_error("Error.\n Could not split sphere xyz values.\n", xyz_values));
 			// check if there are 3 values
@@ -244,7 +258,7 @@ int	check_Cylinder(t_img *data, char **str)
 			else
 				return (handle_error("Error.\n There are incorrect number of cylinder xyz values.\n", xyz_values));
 			// assign vector values;
-			vector_values = ft_split(str[2], ",");
+			vector_values = ft_split(str[2], ',');
 			if (!vector_values)
 				return (handle_error("Error.\n Could not split cam vector values.\n", xyz_values));
 			if (vector_values[0] && vector_values[1] && vector_values[2] && !vector_values[3])
@@ -257,7 +271,7 @@ int	check_Cylinder(t_img *data, char **str)
 			data->cylinder_dia = (float)ft_atoi(str[2]);
 			data->cylinder_height = (double)ft_atoi(str[3]);
 			// assign the rgb values
-			rgb_values = ft_split(str[3], ",");
+			rgb_values = ft_split(str[3], ',');
 			if (!rgb_values)
 				return (handle_error("Error.\n Could not split sphere rgb values.\n", xyz_values));
 			if (rgb_values[0] && rgb_values[1] && rgb_values[2] && !rgb_values[3])
@@ -275,7 +289,7 @@ int	check_Cylinder(t_img *data, char **str)
 			return (0);
 		}
 	}
-	return (handle_error("Error.\n Cylinder (cy) identifier is not found\n", NULL));
+	return (1);
 }
 
 int	allocate_elements(t_img *data, int fd)
@@ -294,10 +308,8 @@ int	allocate_elements(t_img *data, int fd)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		// use ft_split on the line, first element will be the element name
-		split_line = ft_split(line, " ");
-		if (!split_line)
-			return (handle_error("Error.\n Could not split the elements in the .rt file.\n", NULL));
+		check_Ambient(data, line)
+
 	}
 	return (0);
 }
@@ -306,6 +318,7 @@ int	main(int ac, char **av)
 {
 	t_img *data;
 	int		i;
+	int		error_no;
 	int		fd;
 
 	if (ac == 2)
@@ -318,18 +331,18 @@ int	main(int ac, char **av)
 		// check the extension of the .rt file
 		i = checkfiletype(av[1]);
 		if (!i)
-			return (printf("Error.\n File provided is not .rt file."));
-		/**
+			return (printf("Error.\nFile provided is not .rt file.\n"));
+		else
+			printf("The file provided a .rt file.\n");
 		// open the .rt file
 		fd = open(av[1], O_RDONLY);
 		if (fd == -1)
 			return (printf("Error.\n The file cannot be opened."));
 		// save what is in the file into my data obj
-		allocate_elements(data, fd);
+		error_no = allocate_elements(data, fd);
 		// check if all the elements are present and valid, else return a error message
-		**/
 	}
 	else
-		return (printf("Error.\n Please input one .rt file as the argument."));
+		return (printf("Error.\nPlease input one .rt file as the argument."));
 	return (0);
 }

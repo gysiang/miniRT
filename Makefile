@@ -28,6 +28,7 @@ INCLUDES       := $(addprefix $(INCLUDES_DIR)/, $(INCLUDES_FILES))
 # Srcs
 SRC_FILES :=	main.c \
 				checks.c \
+				free.c	\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
@@ -87,6 +88,6 @@ leaks: $(NAME)
 	--show-leak-kinds=all --trace-children=yes --track-fds=yes \
 	--suppressions=./readline.supp \
 	--track-origins=yes \
-	./minishell
+	./miniRT
 
 .PHONY: leaks

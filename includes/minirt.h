@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/17 14:38:28 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:53:32 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 
+/**
 typedef struct s_img
 {
 	// ambient
@@ -46,7 +47,80 @@ typedef struct s_img
 	double	cylinder_height;
 	int	cylinder_rgb[3];
 }	t_img;
+**/
 
-int	checkfiletype(const char *filename);
+// Struct for RGB values
+typedef struct s_rgb
+{
+	int r;
+	int g;
+	int b;
+}	t_rgb;
+
+// Struct for 3D coordinates (x, y, z)
+typedef struct s_coords
+{
+	int x;
+	int y;
+	int z;
+}	t_coords;
+
+// Struct for camera data
+typedef struct s_camera
+{
+	t_coords position;
+	t_coords vector;
+	int		fov;
+}	t_camera;
+
+// Struct for light data
+typedef struct s_light
+{
+	t_coords position;
+	float	brightness;
+	//t_rgb	rgb;
+}	t_light;
+
+// Struct for sphere data
+typedef struct s_sphere
+{
+	t_coords position;
+	float	diameter;
+	t_rgb	rgb;
+}	t_sphere;
+
+// Struct for plane data
+typedef struct s_plane
+{
+	t_coords position;
+	t_coords vector;
+	t_rgb	rgb;
+}	t_plane;
+
+// Struct for cylinder data
+typedef struct s_cylinder
+{
+	t_coords position;
+	t_coords vector;
+	float	diameter;
+	double	height;
+	t_rgb	rgb;
+}	t_cylinder;
+
+// Main image struct
+typedef struct s_img
+{
+	int			amb_light;	// Ambient light ratio
+	t_rgb		amb_rgb;	// Ambient light color
+	t_camera	camera;		// Camera data
+	t_light		light;		// Light data
+	t_sphere	sphere;		// Sphere data
+	t_plane		plane;		// Plane data
+	t_cylinder	cylinder;	// Cylinder data
+}	t_img;
+
+
+int		checkfiletype(const char *filename);
+void	free_array(char **array);
 
 #endif
