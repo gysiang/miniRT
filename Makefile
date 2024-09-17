@@ -22,13 +22,12 @@ NORM  := norminette
 NAME := miniRT
 
 # Includes files
-INCLUDES_FILES := main.c \
-				  checks.c
-
+INCLUDES_FILES :=	minirt.h
 INCLUDES       := $(addprefix $(INCLUDES_DIR)/, $(INCLUDES_FILES))
 
 # Srcs
-SRC_FILES := main.c
+SRC_FILES :=	main.c \
+				checks.c \
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
@@ -64,14 +63,13 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES)
 
 # Cleanup rules
 clean:
+	$(RM) -r $(OBJ_DIR)
 	@make -C $(LIBFT_DIR) clean --no-print-directory
 	@make -C $(MLX_DIR) clean
-	$(RM) -r $(OBJ_DIR)
 
 fclean: clean
-	@make -C $(LIBFT_DIR) fclean --no-print-directory
-	@make -C $(MLX_DIR) clean
 	$(RM) $(NAME)
+	@make -C $(LIBFT_DIR) fclean --no-print-directory
 
 re: fclean all
 
