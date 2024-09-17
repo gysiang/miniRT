@@ -15,7 +15,7 @@ LFLAGS   := -L$(LIBFT_DIR) -lft
 IFLAGS   := -I$(LIBFT_DIR) -I$(INCLUDES_DIR)
 MLXFLAGS := -L./mlx -lmlx -lXext -lX11 -lbsd -lm
 
-RM    := rm -f
+RM    := rm -fr
 NORM  := norminette
 
 # Name of the executable
@@ -70,6 +70,7 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 	@make -C $(LIBFT_DIR) fclean --no-print-directory
+	$(RM) $(MLX_DIR)
 
 re: fclean all
 
