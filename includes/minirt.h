@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/17 22:52:12 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/17 23:00:31 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,92 +17,6 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
-
-typedef enum type
-{
-	SP,
-	PL,
-	CY
-}	t_type;
-
-typedef struct s_sp
-{
-	float	xyz[3];
-	float	dia;
-	int		rgb[3];
-}	t_sp;
-
-typedef struct s_pl
-{
-	float	xyz[3];
-	float	vec[3];
-	int		rgb[3];
-}	t_pl;
-
-typedef struct s_cy
-{
-	float	xyz[3];
-	float	vec[3];
-	float	dia;
-	float	height;
-	int		rgb[3];
-}	t_cy;
-
-union	u_type
-{
-	t_sp	sp;
-	t_pl	pl;
-	t_cy	cy;
-};
-
-typedef struct s_elem
-{
-	union u_type	type_data;
-	t_type			type_lex;
-}	t_elem;
-
-typedef enum type
-{
-	SP,
-	PL,
-	CY
-}	t_type;
-
-typedef struct s_sp
-{
-	float	xyz[3];
-	float	dia;
-	int		rgb[3];
-}	t_sp;
-
-typedef struct s_pl
-{
-	float	xyz[3];
-	float	vec[3];
-	int		rgb[3];
-}	t_pl;
-
-typedef struct s_cy
-{
-	float	xyz[3];
-	float	vec[3];
-	float	dia;
-	float	height;
-	int		rgb[3];
-}	t_cy;
-
-union	u_type
-{
-	t_sp	sp;
-	t_pl	pl;
-	t_cy	cy;
-};
-
-typedef struct s_elem
-{
-	union u_type	type_data;
-	t_type			type_lex;
-}	t_elem;
 
 /**
 typedef struct s_img
@@ -192,13 +106,36 @@ typedef struct s_cylinder
 	t_rgb	rgb;
 }	t_cylinder;
 
+typedef enum type
+{
+	SP,
+	PL,
+	CY
+}	t_type;
+
+union	u_type
+{
+	t_sphere	sp;
+	t_plane		pl;
+	t_cylinder	cy;
+};
+
+typedef struct s_prim
+{
+	union u_type	type_data;
+	t_type			type_lex;
+}	t_prim;
+
 // Main image struct
 typedef struct s_img
 {
+	//Compulsory elements, default value set when none given
 	int			amb_light;	// Ambient light ratio
 	t_rgb		amb_rgb;	// Ambient light color
 	t_camera	camera;		// Camera data
 	t_light		light;		// Light data
+	//Array of primitives
+	t_prim		*prims;
 	t_sphere	sphere;		// Sphere data
 	t_plane		plane;		// Plane data
 	t_cylinder	cylinder;	// Cylinder data
