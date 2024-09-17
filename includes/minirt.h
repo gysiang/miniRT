@@ -6,18 +6,61 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/17 10:41:38 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/17 15:20:05 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI_RT_H
-# define MINI_RT_H
+#ifndef MINIRT_H
+# define MINIRT_H
 
 # include "../libft/includes/libft.h"
 # include "../libft/includes/get_next_line.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
+
+typedef enum type
+{
+	SP,
+	PL,
+	CY
+}	t_type;
+
+typedef struct s_sp
+{
+	float	xyz[3];
+	float	dia;
+	int		rgb[3];
+}	t_sp;
+
+typedef struct s_pl
+{
+	float	xyz[3];
+	float	vec[3];
+	int		rgb[3];
+}	t_pl;
+
+typedef struct s_cy
+{
+	float	xyz[3];
+	float	vec[3];
+	float	dia;
+	float	height;
+	int		rgb[3];
+}	t_cy;
+
+union	u_type
+{
+	t_sp	sp;
+	t_pl	pl;
+	t_cy	cy;
+};
+
+typedef struct s_elem
+{
+	union u_type	type_data;
+	t_type			type_lex;
+}	t_elem;
 
 typedef struct s_img
 {
