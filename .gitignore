@@ -1,3 +1,4 @@
-/obj
+.vscode
 *.a
+*.o
 miniRT

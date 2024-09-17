@@ -11,7 +11,7 @@ MLX	     	:=  $(MLX_DIR)/libmlx.a
 CC       := clang
 LEAKCHECK:= #-fsanitize=address
 CFLAGS   := -g -O3 -Wall -Wextra -Werror -Wno-unused-result $(LEAKCHECK)
-LFLAGS   := -L./libft -lft
+LFLAGS   := -L$(LIBFT_DIR) -lft
 IFLAGS   := -I$(LIBFT_DIR) -I$(INCLUDES_DIR)
 MLXFLAGS := -L./mlx -lmlx -lXext -lX11 -lbsd -lm
 

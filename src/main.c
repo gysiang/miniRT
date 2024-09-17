@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/16 17:03:30 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/17 10:45:52 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,40 +15,40 @@
 void	init_img_data(t_img *data)
 {
 	// ambient
-	data->amb_light = NULL;
-	data->amb_rgb[0] = NULL;
-	data->amb_rgb[1] = NULL;
-	data->amb_rgb[2] = NULL;
+	data->amb_light = 0;
+	data->amb_rgb[0] = 0;
+	data->amb_rgb[1] = 0;
+	data->amb_rgb[2] = 0;
 	// camera
-	data->cam_xyz[0] = NULL;
-	data->cam_xyz[1] = NULL;
-	data->cam_xyz[2] = NULL;
-	data->cam_vector[0] = NULL;
-	data->cam_vector[1] = NULL;
-	data->cam_vector[2] = NULL;
-	data->cam_fov = NULL;
+	data->cam_xyz[0] = 0;
+	data->cam_xyz[1] = 0;
+	data->cam_xyz[2] = 0;
+	data->cam_vector[0] = 0;
+	data->cam_vector[1] = 0;
+	data->cam_vector[2] = 0;
+	data->cam_fov = 0;
 	// light
-	data->light_xyz[0] = NULL;
-	data->light_xyz[1] = NULL;
-	data->light_xyz[2] = NULL;
+	data->light_xyz[0] = 0;
+	data->light_xyz[1] = 0;
+	data->light_xyz[2] = 0;
 	data->light_brightness = 0.00;
 	// sphere
-	data->sphere_xyz[0] = NULL;
-	data->sphere_xyz[1] = NULL;
-	data->sphere_xyz[2] = NULL;
+	data->sphere_xyz[0] = 0;
+	data->sphere_xyz[1] = 0;
+	data->sphere_xyz[2] = 0;
 	data->sphere_dia = 0;
-	data->sphere_rgb[0] = NULL;
-	data->sphere_rgb[1] = NULL;
-	data->sphere_rgb[2] = NULL;
+	data->sphere_rgb[0] = 0;
+	data->sphere_rgb[1] = 0;
+	data->sphere_rgb[2] = 0;
 	// cylinder
-	data->cylinder_xyz[0] = NULL;
-	data->cylinder_xyz[1] = NULL;
-	data->cylinder_xyz[2] = NULL;
+	data->cylinder_xyz[0] = 0;
+	data->cylinder_xyz[1] = 0;
+	data->cylinder_xyz[2] = 0;
 	data->cylinder_dia = 0.0;
 	data->cylinder_height = 0.00;
-	data->cylinder_rgb[0] = NULL;
-	data->cylinder_rgb[1] = NULL;
-	data->cylinder_rgb[2] = NULL;
+	data->cylinder_rgb[0] = 0;
+	data->cylinder_rgb[1] = 0;
+	data->cylinder_rgb[2] = 0;
 }
 
 void	free_array(char **array)
@@ -64,7 +64,7 @@ void	free_array(char **array)
 	free(array);
 }
 
-void	allocate_elements(t_img *data, int fd)
+int	allocate_elements(t_img *data, int fd)
 {
 	char	*line;
 	char	**split_line;
@@ -94,7 +94,7 @@ void	allocate_elements(t_img *data, int fd)
 			{
 				data->amb_light = (int)ft_atoi(split_line[1]);
 				// amb rgb values
-				rgb_values = ft_split(split_line[2], ",");
+				rgb_values = ft_split(split_line[2], ',');
 				if (rgb_values && rgb_values[0] && rgb_values[1] && rgb_values[2])
 				{
 					data->amb_rgb[0] = ft_atoi(rgb_values[0]);
@@ -113,7 +113,7 @@ void	allocate_elements(t_img *data, int fd)
 			if (split_line[1] && split_line[2] && split_line[3] && !split_line[4])
 			{
 				// cam_xyz
-				xyz_values = ft_split(split_line[1], ",");
+				xyz_values = ft_split(split_line[1], ',');
 				if (xyz_values && xyz_values[0] && xyz_values[1] && xyz_values[2])
 				{
 					data->cam_xyz[0] = ft_atoi(xyz_values[0]);
@@ -121,7 +121,7 @@ void	allocate_elements(t_img *data, int fd)
 					data->cam_xyz[2] = ft_atoi(xyz_values[2]);
 				}
 				// cam vector
-				cam_vector = ft_split(split_line[2], ",");
+				cam_vector = ft_split(split_line[2], ',');
 				if (cam_vector && cam_vector[0] && cam_vector[1] && cam_vector[2])
 				{
 					data->cam_vector[0] = ft_atoi(cam_vector[0]);
@@ -129,7 +129,7 @@ void	allocate_elements(t_img *data, int fd)
 					data->cam_vector[2] = ft_atoi(cam_vector[2]);
 				}
 				// cam_fov
-				data->cam_fov = split_line[3];
+				data->cam_fov = ft_atoi(split_line[3]);
 			}
 			else
 				printf("Error.\n Incorrect number of elements provided for camera\n");
@@ -138,7 +138,7 @@ void	allocate_elements(t_img *data, int fd)
 		{
 			if (split_line[1] && split_line[2] && split_line[3] && !split_line[4])
 			{
-				xyz_values = ft_split(split_line[1], ",");
+				xyz_values = ft_split(split_line[1], ',');
 				if (xyz_values && xyz_values[0] && xyz_values[1] && xyz_values[2])
 				{
 					data->light_xyz[0] = (float)ft_atoi(xyz_values[0]);
@@ -154,7 +154,7 @@ void	allocate_elements(t_img *data, int fd)
 		{
 			if (split_line[1] && split_line[2] && split_line[3] && !split_line[4])
 			{
-				xyz_values = ft_split(split_line[1], ",");
+				xyz_values = ft_split(split_line[1], ',');
 				if (xyz_values && xyz_values[0] && xyz_values[1] && xyz_values[2])
 				{
 					data->sphere_xyz[0] = (float)ft_atoi(xyz_values[0]);
@@ -162,7 +162,7 @@ void	allocate_elements(t_img *data, int fd)
 					data->sphere_xyz[2] = (float)ft_atoi(xyz_values[2]);
 				}
 				data->sphere_dia = (float)ft_atoi(split_line[2]);
-				rgb_values = ft_split(split_line[2], ",");
+				rgb_values = ft_split(split_line[2], ',');
 				if (rgb_values && rgb_values[0] && rgb_values[1] && rgb_values[2])
 				{
 					data->sphere_rgb[0] = ft_atoi(rgb_values[0]);
@@ -177,21 +177,21 @@ void	allocate_elements(t_img *data, int fd)
 		{
 			if (split_line[1] && split_line[2] && split_line[3] && !split_line[4])
 			{
-				xyz_values = ft_split(split_line[1], ",");
+				xyz_values = ft_split(split_line[1], ',');
 				if (xyz_values && xyz_values[0] && xyz_values[1] && xyz_values[2])
 				{
 					data->plane_xyz[0] = (float)ft_atoi(xyz_values[0]);
 					data->plane_xyz[1] = (float)ft_atoi(xyz_values[1]);
 					data->plane_xyz[2] = (float)ft_atoi(xyz_values[2]);
 				}
-				vector_values = ft_split(split_line[2], ",");
+				vector_values = ft_split(split_line[2], ',');
 				if (vector_values && vector_values[0] && vector_values[1] && vector_values[2])
 				{
 					data->cam_vector[0] = ft_atoi(vector_values[0]);
 					data->cam_vector[1] = ft_atoi(vector_values[1]);
 					data->cam_vector[2] = ft_atoi(vector_values[2]);
 				}
-				rgb_values = ft_split(split_line[3], ",");
+				rgb_values = ft_split(split_line[3], ',');
 				if (rgb_values && rgb_values[0] && rgb_values[1] && rgb_values[2])
 				{
 					data->plane_rgb[0] = ft_atoi(rgb_values[0]);
@@ -202,18 +202,18 @@ void	allocate_elements(t_img *data, int fd)
 			else
 				printf("Error.\n Incorrect number of elements provided for sphere.\n");
 		}
-		else if (ft_strcmp(split_line[0], 'cy'))
+		else if (ft_strcmp(split_line[0], "cy"))
 		{
 			if (split_line[1] && split_line[2] && split_line[3] && split_line[4] && !split_line[5])
 			{
-				xyz_values = ft_split(split_line[1], ",");
+				xyz_values = ft_split(split_line[1], ',');
 				if (xyz_values && xyz_values[0] && xyz_values[1] && xyz_values[2])
 				{
 					data->cylinder_xyz[0] = (float)ft_atoi(xyz_values[0]);
 					data->cylinder_xyz[1] = (float)ft_atoi(xyz_values[1]);
 					data->cylinder_xyz[2] = (float)ft_atoi(xyz_values[2]);
 				}
-				cylinder_vector = ft_split(split_line[2], ",");
+				cylinder_vector = ft_split(split_line[2], ',');
 				if (cylinder_vector && cylinder_vector[0] && cylinder_vector[1] && cylinder_vector[2])
 				{
 					data->cylinder_xyz[0] = (float)ft_atoi(cylinder_vector[0]);
@@ -222,7 +222,7 @@ void	allocate_elements(t_img *data, int fd)
 				}
 				data->cylinder_dia = (float)ft_atoi(split_line[3]);
 				data->cylinder_height = (double)ft_atoi(split_line[4]);
-				rgb_values = ft_split(split_line[4], ",");
+				rgb_values = ft_split(split_line[4], ',');
 				if (rgb_values && rgb_values[0] && rgb_values[1] && rgb_values[2])
 				{
 					data->cylinder_rgb[0] = ft_atoi(rgb_values[0]);
@@ -232,7 +232,7 @@ void	allocate_elements(t_img *data, int fd)
 			}
 		}
 		else
-			return (printf("Error.\n"), printf(split_line[0]), printf(" is not recognised. Please check your .rt file.\n"));
+			return (printf("Error.\n"), printf("%s", split_line[0]), printf(" is not recognised. Please check your .rt file.\n"));
 	}
 	return (0);
 }
