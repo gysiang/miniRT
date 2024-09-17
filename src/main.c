@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/16 17:03:30 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:52:32 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,123 @@ void	free_array(char **array)
 	free(array);
 }
 
+int	handle_error(const char *msg, char **array)
+{
+	if (array)
+		free_array(array);
+	ft_putstr_fd(msg, 2);
+	return (1);
+}
+
+// check ambient values and allocate to data struct
+int	check_Ambient(t_img *data, char **str)
+{
+	char**	rgb_values;
+
+	if (ft_strcmp(str, "A") == 0)
+	{
+		if (str[1] && str[2] && !str[3])
+		{
+			rgb_values = ft_split(str[1], " ");
+			if (!rgb_values)
+				return (handle_error("Error.\n Could not split ambient rgb values.\n", rgb_values));
+			// need another check to make sure that ther are 3 rgb values
+			if (rgb_values[0] && rgb_values[1] && rgb_values[2] && !rgb_values[3])
+			{
+				data->amb_rgb[0] = (int)ft_atoi(rgb_values[0]);
+				data->amb_rgb[1] = (int)ft_atoi(rgb_values[1]);
+				data->amb_rgb[2] = (int)ft_atoi(rgb_values[2]);
+			}
+			else
+				handle_error("Error.\n There are incorrect number of rgb values.", rgb_values);
+			free_array(rgb_values);
+			ft_putstr_fd("Successfully allocated rgb values.\n", 1);
+			return (0);
+		}
+	}
+	return (handle_error("Error.\n Ambient light identifier (A) is not found.\n", NULL));
+}
+
+int	check_Cam(t_img *data, char **str)
+{
+	char	**xyz_values;
+	char	**vector_values;
+	int		fov_value;
+
+	if (ft_strcmp(str, "C") == 0)
+	{
+		if (str[1] && str[2] && str[3] && !str[4])
+		{
+			xyz_values = ft_split(str[1], ",");
+			if (!xyz_values)
+				return (handle_error("Error.\n Could not split cam xyz values.\n", xyz_values));
+			// check if there are 3 values
+			if (xyz_values[0] && xyz_values[1] && xyz_values[2] && !xyz_values[3])
+			{
+				data->cam_xyz[0] = (float)ft_atoi(xyz_values[0]);
+				data->cam_xyz[1] = (int)ft_atoi(xyz_values[1]);
+				data->cam_xyz[2] = (int)ft_atoi(xyz_values[2]);
+			}
+			else
+				return (handle_error("Error.\n There are incorrect number of cam xyz values.\n", xyz_values));
+			vector_values = ft_split(str[2], ",");
+			if (!vector_values)
+				return (handle_error("Error.\n Could not split cam vector values.\n", xyz_values));
+			if (vector_values[0] && vector_values[1] && vector_values[2] && !vector_values[3])
+			{
+				data->cam_vector[0] = (int)ft_atoi(vector_values[0]);
+				data->cam_vector[1] = (int)ft_atoi(vector_values[1]);
+				data->cam_vector[2] = (int)ft_atoi(vector_values[2]);
+			}
+			else
+				return (handle_error("Error.\n There are incorrect number of cam vector values.\n", xyz_values));
+			// need to make sure number if from 0 to 180
+			// also need to check if it is a number
+			fov_value = ft_atoi(str[2]);
+			if (ft_isnumeric(fov_value) && fov_value >= 0 && fov_value <= 180)
+				data->cam_fov = ft_atoi(str[2]);
+			else
+				return (handle_error("Error.\n The cam fov value provided is not in range.\n", NULL));
+			free_array(xyz_values);
+			free_array(vector_values);
+			ft_putstr_fd("Successfully allocated cam values.\n", 1);
+			return (0);
+		}
+	}
+	return (handle_error("Error.\n Camera identifier (C) is not found.\n", NULL));
+}
+
+int	check_Light(t_img *data, char **str)
+{
+	char	**xyz_values;
+	int		light_ratio;
+
+	if (ft_strcmp(str, "L") == 0)
+	{
+		if (str[1] && str[2] && !str[3])
+		{
+			xyz_values = ft_split(str[1], ",");
+			if (!xyz_values)
+				return (handle_error("Error.\n Could not split cam xyz values.\n", xyz_values));
+			// check if there are 3 values
+			if (xyz_values[0] && xyz_values[1] && xyz_values[2] && !xyz_values[3])
+			{
+				data->cam_xyz[0] = (float)ft_atoi(xyz_values[0]);
+				data->cam_xyz[1] = (float)ft_atoi(xyz_values[1]);
+				data->cam_xyz[2] = (float)ft_atoi(xyz_values[2]);
+			}
+			else
+				return (handle_error("Error.\n There are incorrect number of light xyz values.\n", xyz_values));
+			light_ratio = (float)ft_atoi(str[2]);
+			if (ft_isnumeric(light_ratio) && light_ratio >= 0.0 && light_ratio <= 1.0)
+				data->light_brightness = light_ratio;
+			else
+				return (handle_error("Error.\n The light brightness ration provided is not in range.\n", NULL));
+		}
+	}
+	return (handle_error("Error.\n Light identifier (L) is not found.\n", NULL));
+}
+
 void	allocate_elements(t_img *data, int fd)
 {
 	char	*line;
@@ -87,53 +204,6 @@ void	allocate_elements(t_img *data, int fd)
 			free(line);
 			break;
 		}
-		// use strcmp to check if the first element
-		if (!ft_strcmp(split_line[0], "A"))
-		{
-			if (split_line[1] && split_line[2] && !split_line[3])
-			{
-				data->amb_light = (int)ft_atoi(split_line[1]);
-				// amb rgb values
-				rgb_values = ft_split(split_line[2], ",");
-				if (rgb_values && rgb_values[0] && rgb_values[1] && rgb_values[2])
-				{
-					data->amb_rgb[0] = ft_atoi(rgb_values[0]);
-					data->amb_rgb[1] = ft_atoi(rgb_values[1]);
-					data->amb_rgb[2] = ft_atoi(rgb_values[2]);
-				}
-				else
-					printf("Error: RGB values were not properly allocated.\n");
-				free_array(rgb_values);
-			}
-			else
-				printf("Error.\n Incorrect number of elements provided for ambient light\n");
-		}
-		else if (!ft_strcmp(split_line[0], "C"))
-		{
-			if (split_line[1] && split_line[2] && split_line[3] && !split_line[4])
-			{
-				// cam_xyz
-				xyz_values = ft_split(split_line[1], ",");
-				if (xyz_values && xyz_values[0] && xyz_values[1] && xyz_values[2])
-				{
-					data->cam_xyz[0] = ft_atoi(xyz_values[0]);
-					data->cam_xyz[1] = ft_atoi(xyz_values[1]);
-					data->cam_xyz[2] = ft_atoi(xyz_values[2]);
-				}
-				// cam vector
-				cam_vector = ft_split(split_line[2], ",");
-				if (cam_vector && cam_vector[0] && cam_vector[1] && cam_vector[2])
-				{
-					data->cam_vector[0] = ft_atoi(cam_vector[0]);
-					data->cam_vector[1] = ft_atoi(cam_vector[1]);
-					data->cam_vector[2] = ft_atoi(cam_vector[2]);
-				}
-				// cam_fov
-				data->cam_fov = split_line[3];
-			}
-			else
-				printf("Error.\n Incorrect number of elements provided for camera\n");
-		}
 		else if (ft_strcmp(split_line[0], "L"))
 		{
 			if (split_line[1] && split_line[2] && split_line[3] && !split_line[4])
@@ -145,6 +215,7 @@ void	allocate_elements(t_img *data, int fd)
 					data->light_xyz[1] = (float)ft_atoi(xyz_values[1]);
 					data->light_xyz[2] = (float)ft_atoi(xyz_values[2]);
 				}
+				free_array(xyz_values);
 				light_brightness = (float)ft_atoi(split_line[2]);
 			}
 			else
@@ -161,6 +232,7 @@ void	allocate_elements(t_img *data, int fd)
 					data->sphere_xyz[1] = (float)ft_atoi(xyz_values[1]);
 					data->sphere_xyz[2] = (float)ft_atoi(xyz_values[2]);
 				}
+				free_array(xyz_values);
 				data->sphere_dia = (float)ft_atoi(split_line[2]);
 				rgb_values = ft_split(split_line[2], ",");
 				if (rgb_values && rgb_values[0] && rgb_values[1] && rgb_values[2])
@@ -169,6 +241,7 @@ void	allocate_elements(t_img *data, int fd)
 					data->sphere_rgb[1] = ft_atoi(rgb_values[1]);
 					data->sphere_rgb[2] = ft_atoi(rgb_values[2]);
 				}
+				free_array(rgb_values);
 			}
 			else
 				printf("Error.\n Incorrect number of elements provided for sphere.\n");
@@ -184,6 +257,7 @@ void	allocate_elements(t_img *data, int fd)
 					data->plane_xyz[1] = (float)ft_atoi(xyz_values[1]);
 					data->plane_xyz[2] = (float)ft_atoi(xyz_values[2]);
 				}
+				free_array(xyz_values);
 				vector_values = ft_split(split_line[2], ",");
 				if (vector_values && vector_values[0] && vector_values[1] && vector_values[2])
 				{
@@ -191,6 +265,7 @@ void	allocate_elements(t_img *data, int fd)
 					data->cam_vector[1] = ft_atoi(vector_values[1]);
 					data->cam_vector[2] = ft_atoi(vector_values[2]);
 				}
+				free_array(vector_values);
 				rgb_values = ft_split(split_line[3], ",");
 				if (rgb_values && rgb_values[0] && rgb_values[1] && rgb_values[2])
 				{
@@ -198,6 +273,7 @@ void	allocate_elements(t_img *data, int fd)
 					data->plane_rgb[1] = ft_atoi(rgb_values[1]);
 					data->plane_rgb[2] = ft_atoi(rgb_values[2]);
 				}
+				free_array(rgb_values);
 			}
 			else
 				printf("Error.\n Incorrect number of elements provided for sphere.\n");
@@ -213,6 +289,7 @@ void	allocate_elements(t_img *data, int fd)
 					data->cylinder_xyz[1] = (float)ft_atoi(xyz_values[1]);
 					data->cylinder_xyz[2] = (float)ft_atoi(xyz_values[2]);
 				}
+				free_array(xyz_values);
 				cylinder_vector = ft_split(split_line[2], ",");
 				if (cylinder_vector && cylinder_vector[0] && cylinder_vector[1] && cylinder_vector[2])
 				{
@@ -220,6 +297,7 @@ void	allocate_elements(t_img *data, int fd)
 					data->cylinder_xyz[1] = (float)ft_atoi(cylinder_vector[1]);
 					data->cylinder_xyz[2] = (float)ft_atoi(cylinder_vector[2]);
 				}
+				free_array(cylinder_vector);
 				data->cylinder_dia = (float)ft_atoi(split_line[3]);
 				data->cylinder_height = (double)ft_atoi(split_line[4]);
 				rgb_values = ft_split(split_line[4], ",");
@@ -229,6 +307,7 @@ void	allocate_elements(t_img *data, int fd)
 					data->cylinder_rgb[1] = ft_atoi(rgb_values[1]);
 					data->cylinder_rgb[2] = ft_atoi(rgb_values[2]);
 				}
+				free_array(rgb_values);
 			}
 		}
 		else
