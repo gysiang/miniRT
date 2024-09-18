@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/17 21:00:35 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:37:24 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
+
+# define WIN_WIDTH	1280
+# define WIN_HEIGHT	720
 
 /**
 typedef struct s_img
@@ -118,6 +121,21 @@ typedef struct s_img
 	t_cylinder	cylinder;	// Cylinder data
 }	t_img;
 
+typedef struct s_image
+{
+	void	*img;
+	char	*ptr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_image;
+
+typedef struct s_mlx
+{
+	void	*mlx;
+	void	*window;
+	t_image	*img;
+}	t_mlx;
 
 void	free_array(char **array);
 // init_struct
