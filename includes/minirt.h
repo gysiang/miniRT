@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 11:45:55 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:59:23 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_cylinder
 // Main image struct
 typedef struct s_img
 {
+	char		*error_msg;
 	int			amb_light;	// Ambient light ratio
 	t_rgb		amb_rgb;	// Ambient light color
 	t_camera	camera;		// Camera data
@@ -102,25 +103,42 @@ typedef struct s_prog
 }	t_prog;
 
 
-
+// free
 void	free_array(char **array);
+
 // init_struct
 void	init_img_data(t_img *data);
 void	init_program(t_prog *prog);
 
 // checks
-int	checkfiletype(const char *filename);
-int	check_Ambient(t_img *data, char *line);
-int	check_Cam(t_img *data, char *line);
-int	check_Light(t_img *data, char *line);
-int	check_Sp(t_img *data, char *line);
-int	check_Cylinder(t_img *data, char *line);
-char *normalize_whitespace(const char *str);
+int	check_Ambients(t_img *data, char **s);
+int	check_Cams(t_img *data, char **s);
+int	check_Lights(t_img *data, char **s);
+int	check_Spheres(t_img *data, char **s);
+
+// checks1
+int	check_Planes(t_img *data, char **s);
+int	check_Cylinders(t_img *data, char **s);
+
+// check_util1
+int	check_FileType(const char *filename);
+int set_error_msg(t_img *data, char *msg);
+int	check_NumOfInputs(char **s, int n);
+int	check_RGB(char *s);
+int	check_XYZ(char *s);
+
+// check_util2
+int	check_Vector(char *s);
+int	check_FOV(char *s);
+int	check_Ratio(char *s);
 
 // handlers
 void	exit_program(t_prog *prog);
 int		handle_exit(t_prog *prog);
-int		handle_keypress(int keycode, t_prog *data);
+int		handle_keypress(int keycode, t_prog *program);
 int		handle_mouse_click(int button, int x, int y);
+
+// utils
+char *normalize_whitespace(const char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 11:16:43 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 11:45:48 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:58:10 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void	exit_program(t_prog *prog)
 	exit(0);
 }
 
-int handle_keypress(int keycode, t_prog *data)
+int handle_keypress(int keycode, t_prog *program)
 {
 	printf("Key pressed: %d\n", keycode);
 
 	if (keycode == 53 || keycode == 65307) // ESC key
-		exit_program(data);
+		exit_program(program);
 	if (keycode == 65362) // Up arrow (MacOS: 126, Linux: 65362)
 		printf("Up arrow key pressed\n");
 	if (keycode == 65364) // Down arrow (MacOS: 125, Linux: 65364)
