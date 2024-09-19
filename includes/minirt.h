@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 11:45:55 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:19:37 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,20 @@ typedef struct s_coords
 	int y;
 	int z;
 }	t_coords;
+
+// Struct for general float vectors (can use for coords?)
+typedef struct s_vec
+{
+	float	x;
+	float	y;
+	float	z;
+}	t_vec;
+
+typedef struct s_ray
+{
+	t_vec	origin;
+	t_vec	direction;
+}	t_ray
 
 // Struct for camera data
 typedef struct s_camera
