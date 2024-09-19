@@ -6,28 +6,26 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 11:16:43 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 13:44:07 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:58:10 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	exit_program(t_prog *prog, t_img *data)
+void	exit_program(t_prog *prog)
 {
 	if (prog->win_ptr)
 		mlx_destroy_window(prog->mlx_ptr, prog->win_ptr);
-	free(data);
-	free(prog);
 	printf("Successfully exited miniRT.\n");
 	exit(0);
 }
 
-int handle_keypress(int keycode, t_prog *program, t_img *data)
+int handle_keypress(int keycode, t_prog *program)
 {
 	printf("Key pressed: %d\n", keycode);
 
 	if (keycode == 53 || keycode == 65307) // ESC key
-		exit_program(program, data);
+		exit_program(program);
 	if (keycode == 65362) // Up arrow (MacOS: 126, Linux: 65362)
 		printf("Up arrow key pressed\n");
 	if (keycode == 65364) // Down arrow (MacOS: 125, Linux: 65364)
@@ -52,8 +50,8 @@ int handle_mouse_click(int button, int x, int y)
 	return (0);
 }
 
-int	handle_exit(t_prog *prog, t_img *data)
+int	handle_exit(t_prog *prog)
 {
-	exit_program(prog, data);
+	exit_program(prog);
 	return (0);
 }

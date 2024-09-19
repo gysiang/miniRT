@@ -6,55 +6,99 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:07:02 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/17 21:22:53 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:57:26 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	checkfiletype(const char *filename)
+int	check_Ambients(t_img *data, char **s)
 {
-	size_t	len;
-
-	len = ft_strlen(filename);
-	if (ft_strcmp(filename + len - 3, ".rt") == 0)
-		return (1);
+	if (ft_strncmp(s[0], "A", 1) == 0)
+	{
+		if (!check_NumOfInputs(s, 3))
+			return (set_error_msg(data, "Error.\nThe number of inputs in Camera is not correct.\n"));
+		if (check_Ratio(s[1]))
+			return (set_error_msg(data, "Error.\nThe lighting ratio in ambient is not valid.\n"));
+		if (check_RGB(s[2]))
+			return (set_error_msg(data, "Error.\nThe RGB values in ambient is not valid.\n"));
+	}
 	return (0);
 }
 
-char *normalize_whitespace(const char *str)
+int	check_Cams(t_img *data, char **s)
 {
-	char *cleaned_str;
-	int i = 0;
-	int	j = 0;
-	int	space_found = 0;
-
-	cleaned_str = malloc(sizeof(char) * (ft_strlen(str) + 1));
-	if (!cleaned_str)
-		return (NULL);
-	while (str[i])
+	if (ft_strncmp(s[0], "C", 1) == 0)
 	{
-		if (str[i] == '\t')
-			cleaned_str[j++] = ' ';
-		else if (ft_isspace(str[i]))
-		{
-			if (!space_found)
-			{
-				cleaned_str[j++] = ' ';
-				space_found = 1;
-			}
-		}
-		else
-		{
-			cleaned_str[j++] = str[i];
-			space_found = 0;
-		}
-		i++;
+		if (!check_NumOfInputs(s, 4))
+			return (set_error_msg(data, "Error.\nThe number of inputs in Camera is not correct.\n"));
+		if (check_XYZ(s[1]))
+			return (set_error_msg(data, "Error.\nThe XYZ coordinates in Camera is not valid.\n"));
+		if (check_Vector(s[2]))
+			return (set_error_msg(data, "Error.\nThe Vector values in Camera is not valid.\n"));
+		if (check_FOV(s[3]))
+			return (set_error_msg(data, "Error.\nThe FOV values in Camera is not valid.\n"));
 	}
-	cleaned_str[j] = '\0';
-	return (cleaned_str);
+	return (0);
 }
 
+int	check_Lights(t_img *data, char **s)
+{
+	if (ft_strncmp(s[0], "L", 1) == 0)
+	{
+		if (!check_NumOfInputs(s, 3))
+			return (set_error_msg(data, "Error.\nThe number of inputs in Lights is not correct.\n"));
+		if (check_XYZ(s[1]))
+			return (set_error_msg(data, "Error.\nThe XYZ coordinates in Lights is not valid.\n"));
+		if (check_Ratio(s[2]))
+			return (set_error_msg(data, "Error.\nThe Brightness ratio in Lights is not valid.\n"));
+	}
+	return (0);
+}
+
+int	check_Spheres(t_img *data, char **s)
+{
+	float	diameter;
+
+	if (ft_strncmp(s[0], "sp", 2) == 0)
+	{
+		if (!check_NumOfInputs(s, 4))
+			return (set_error_msg(data, "Error.\nThe number of inputs in Sphere is not correct.\n"));
+		if (check_XYZ(s[1]))
+			return (set_error_msg(data, "Error.\nThe XYZ coordinates in Sphere is not valid.\n"));
+		diameter = ft_atof(s[2]);
+		if (diameter < 0)
+			return (set_error_msg(data, "Error.\nThe diameter of the Sphere is not valid.\n"));
+		if (check_RGB(s[3]))
+			return (set_error_msg(data, "Error.\nThe RGB values in Sphere is not valid.\n"));
+	}
+	return (0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
 // check ambient values and allocate to data struct
 int	check_Ambient(t_img *data, char *line)
 {
@@ -65,9 +109,6 @@ int	check_Ambient(t_img *data, char *line)
 
 	norm_line = normalize_whitespace(line);
 	str = ft_split(norm_line, ' ');
-	//printf("str[0]: %s\n", str[0]);
-	//printf("str[1]: %s\n", str[1]);
-	//printf("str[2]: %s\n", str[2]);
 	if (ft_strncmp(str[0], "A", 1) == 0)
 	{
 		if (str[1] && str[2] && !str[3])
@@ -305,14 +346,12 @@ int	check_Cylinder(t_img *data, char *line)
 
 	norm_line = normalize_whitespace(line);
 	str = ft_split(norm_line, ' ');
-	/**
 	printf("str[0]: %s\n", str[0]);
 	printf("str[1]: %s\n", str[1]);
 	printf("str[2]: %s\n", str[2]);
 	printf("str[3]: %s\n", str[3]);
 	printf("str[4]: %s\n", str[4]);
 	printf("str[5]: %s\n", str[5]);
-	*/
 	if (ft_strncmp(str[0], "cy", 2) == 0)
 	{
 		if (str[1] && str[2] && str[3] && str[4] && str[5] && !str[6])
@@ -376,3 +415,4 @@ int	check_Cylinder(t_img *data, char *line)
 	}
 	return (0);
 }
+**/
