@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 11:34:52 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:45:55 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,6 @@ char *normalize_whitespace(const char *str);
 void	exit_program(t_prog *prog);
 int		handle_exit(t_prog *prog);
 int		handle_keypress(int keycode, t_prog *data);
+int		handle_mouse_click(int button, int x, int y);
 
 #endif
