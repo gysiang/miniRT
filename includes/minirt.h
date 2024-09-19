@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 09:47:23 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:34:52 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,39 +19,10 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
+# include <X11/keysym.h>
 
-# define WINDOW_WIDTH 640
-# define WINDOW_HEIGHT 360
-
-/**
-typedef struct s_img
-{
-	// ambient
-	int	amb_light;
-	int	amb_rgb[3];
-	// camera
-	int cam_xyz[3];
-	int	cam_vector[3];
-	int	cam_fov;
-	// light
-	int	light_xyz[3];
-	float	light_brightness;
-	// sphere
-	int	sphere_xyz[3];
-	float	sphere_dia;
-	int	sphere_rgb[3];
-	// plane
-	int	plane_xyz[3];
-	int	plane_vector[3];
-	int	plane_rgb[3];
-	// cylinder
-	int	cylinder_xyz[3];
-	int cylinder_vector[3];
-	float	cylinder_dia;
-	double	cylinder_height;
-	int	cylinder_rgb[3];
-}	t_img;
-**/
+# define WINDOW_WIDTH 800
+# define WINDOW_HEIGHT 600
 
 // Struct for RGB values
 typedef struct s_rgb
@@ -114,8 +85,6 @@ typedef struct s_cylinder
 // Main image struct
 typedef struct s_img
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
 	int			amb_light;	// Ambient light ratio
 	t_rgb		amb_rgb;	// Ambient light color
 	t_camera	camera;		// Camera data
@@ -125,10 +94,19 @@ typedef struct s_img
 	t_cylinder	cylinder;	// Cylinder data
 }	t_img;
 
+// to save program data like mlx
+typedef struct s_prog
+{
+	void		*mlx_ptr;
+	void		*win_ptr;
+}	t_prog;
+
+
 
 void	free_array(char **array);
 // init_struct
 void	init_img_data(t_img *data);
+void	init_program(t_prog *prog);
 
 // checks
 int	checkfiletype(const char *filename);
@@ -138,5 +116,10 @@ int	check_Light(t_img *data, char *line);
 int	check_Sp(t_img *data, char *line);
 int	check_Cylinder(t_img *data, char *line);
 char *normalize_whitespace(const char *str);
+
+// handlers
+void	exit_program(t_prog *prog);
+int		handle_exit(t_prog *prog);
+int		handle_keypress(int keycode, t_prog *data);
 
 #endif
