@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/17 20:35:47 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:29:58 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	check_FileContents(t_img *data, int fd)
 	error_flag = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		// Process each line with the corresponding check function
 		if (check_Ambient(data, line) ||
 			check_Cam(data, line) || check_Light(data, line) ||
 			check_Sp(data, line) || check_Cylinder(data , line))
@@ -40,27 +39,28 @@ int	check_FileContents(t_img *data, int fd)
 
 int	main(int ac, char **av)
 {
-	t_img *data;
+	t_prog	*program;
+	t_img	*data;
 	int		i;
 	int		fd;
 
 	if (ac == 2)
 	{
+		program = malloc(sizeof(*program));
+		if (!program)
+			return (printf("Error.\n Image data failed to initalise."));
 		data = malloc(sizeof(*data));
 		if (!data)
-			return (printf("Error.\n Image failed to initalise."));
-		// init the struct
+			return (printf("Error.\n Image data failed to initalise."));
 		init_img_data(data);
-		// check the extension of the .rt file
 		i = checkfiletype(av[1]);
 		if (!i)
 			return (printf("Error.\nFile provided is not .rt file.\n"));
 		fd = open(av[1], O_RDONLY);
 		if (fd == -1)
-			return (printf("Error.\n The file cannot be opened."));
-		// check if all the elements are present and valid, else return a error message
+			return (printf("Error.\nThe file cannot be opened."));
 		check_FileContents(data, fd);
-		free(data);
+		init_program(program);
 	}
 	else
 		return (printf("Error.\nPlease input one .rt file as the argument.\n"));
