@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:17:51 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/18 15:21:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:16:50 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,10 @@ int	check_Ambients(t_img *data, char *s)
 	if (ft_strncmp(s[0], "A", 1) == 0)
 	{
 		if (!check_NumOfInputs(data, s, 3))
+		{
+			data->error_msg = "The number of inputs in ambient is not correct.\n";
 			return (1);
+		}
 		if (check_Ratio(data, s[1]))
 			return (1);
 		if (check_RGB(data, s[2]))

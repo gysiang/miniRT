@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 11:45:55 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:44:27 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_cylinder
 // Main image struct
 typedef struct s_img
 {
+	char		*error_msg;
 	int			amb_light;	// Ambient light ratio
 	t_rgb		amb_rgb;	// Ambient light color
 	t_camera	camera;		// Camera data
@@ -118,9 +119,9 @@ int	check_Cylinder(t_img *data, char *line);
 char *normalize_whitespace(const char *str);
 
 // handlers
-void	exit_program(t_prog *prog);
-int		handle_exit(t_prog *prog);
-int		handle_keypress(int keycode, t_prog *data);
+void	exit_program(t_prog *prog, t_img *data);
+int		handle_exit(t_prog *prog,  t_img *data);
+int		handle_keypress(int keycode, t_prog *program, t_img *data);
 int		handle_mouse_click(int button, int x, int y);
 
 #endif

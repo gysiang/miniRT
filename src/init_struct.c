@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 11:42:10 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:45:54 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	init_program(t_prog *prog)
 
 void	init_img_data(t_img *data)
 {
+	data->error_msg = NULL;
 	// ambient
 	data->amb_light = 0;
 	data->amb_rgb.r = 0;
