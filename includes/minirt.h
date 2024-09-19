@@ -6,17 +6,22 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/17 21:00:35 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 09:47:23 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_RT_H
 # define MINI_RT_H
 
-# include "../libft/includes/libft.h"
+# include "../library/libft/includes/libft.h"
+# include "../library/mlx/mlx.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <math.h>
+
+# define WINDOW_WIDTH 640
+# define WINDOW_HEIGHT 360
 
 /**
 typedef struct s_img
@@ -109,6 +114,8 @@ typedef struct s_cylinder
 // Main image struct
 typedef struct s_img
 {
+	void		*mlx_ptr;
+	void		*win_ptr;
 	int			amb_light;	// Ambient light ratio
 	t_rgb		amb_rgb;	// Ambient light color
 	t_camera	camera;		// Camera data
