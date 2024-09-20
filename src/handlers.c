@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 11:16:43 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 15:58:10 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/20 13:39:30 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void	exit_program(t_prog *prog)
 {
 	if (prog->win_ptr)
+	{
 		mlx_destroy_window(prog->mlx_ptr, prog->win_ptr);
+		cleanup(prog);
+	}
 	printf("Successfully exited miniRT.\n");
 	exit(0);
 }

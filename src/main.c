@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 19:18:03 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/20 13:10:41 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	main(int ac, char **av)
 			return (1);
 		init_img_data(data);
 		// Save the img data into struct
-		init_program(program);
+		init_program(program, data);
 	}
 	else
 		return (printf("Error.\nPlease input one .rt file as the argument.\n"));
