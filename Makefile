@@ -35,6 +35,8 @@ SRC_FILES :=	main.c \
 				init_struct.c \
 				handlers.c \
 				free.c	\
+				render.c \
+				mlx_image.c \
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 

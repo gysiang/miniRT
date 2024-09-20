@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/20 12:35:28 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/20 13:13:24 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_cylinder
 typedef struct s_img
 {
 	char		*error_msg;
-	int			amb_light;	// Ambient light ratio
+	float		amb_light;	// Ambient light ratio
 	t_rgb		amb_rgb;	// Ambient light color
 	t_camera	camera;		// Camera data
 	t_light		light;		// Light data
@@ -95,14 +95,7 @@ typedef struct s_img
 	t_cylinder	cylinder;	// Cylinder data
 }	t_img;
 
-// to save program data like mlx
-typedef struct s_prog
-{
-	void		*mlx_ptr;
-	void		*win_ptr;
-}	t_prog;
-
-// freetypedef struct s_image
+// mlx image struct
 typedef struct s_image
 {
 	void	*img;
@@ -112,18 +105,19 @@ typedef struct s_image
 	int		endian;
 }	t_image;
 
-typedef struct s_mlx
+// to save program data like mlx
+typedef struct s_prog
 {
-	void	*mlx;
-	void	*window;
+	void	*mlx_ptr;
+	void	*win_ptr;
 	t_image	*image;
-}	t_mlx;
+}	t_prog;
 
 void	free_array(char **array);
 
 // init_struct
 void	init_img_data(t_img *data);
-void	init_program(t_prog *prog);
+void	init_program(t_prog *prog, t_img *data);
 
 // checks
 int	check_Ambients(t_img *data, char **s);
@@ -155,5 +149,13 @@ int		handle_mouse_click(int button, int x, int y);
 
 // utils
 char *normalize_whitespace(const char *str);
+
+// image
+void	set_img_pixel(t_image *img, int x, int y, int color);
+t_image	*del_img(t_prog *mlx, t_image *img);
+t_image	*new_img(t_prog *mlx);
+
+// render
+void	render_ambient(t_prog *mlx, float s, t_rgb *amb);
 
 #endif
