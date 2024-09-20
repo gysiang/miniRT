@@ -6,11 +6,44 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:07:02 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 18:57:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/20 13:20:06 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+int	check_FileContents(t_img *data, int fd)
+{
+	char	*line;
+	char	*norm_line;
+	char	**split_line;
+	int		error_flag;
+
+	error_flag = 0;
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		norm_line = normalize_whitespace(line);
+		split_line = ft_split(norm_line, ' ');
+		if (check_Ambients(data, split_line) || check_Cams(data, split_line) ||
+			check_Lights(data, split_line) || check_Planes(data, split_line)  ||
+			check_Spheres(data, split_line) || check_Cylinders(data , split_line))
+		{
+			error_flag = 1;
+			break;
+		}
+		free(line);
+	}
+	if (line != NULL)
+	{
+		free(line);
+		free_array(split_line);
+	}
+	if (error_flag)
+		printf("%s",data->error_msg);
+	else
+		printf("Success: All elements have been checked successfully.\n");
+	return (error_flag);
+}
 
 int	check_Ambients(t_img *data, char **s)
 {

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/20 11:05:51 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/20 14:55:28 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	init_img_data(t_img *data);
 void	init_program(t_prog *prog);
 
 // checks
+int	check_FileContents(t_img *data, int fd);
 int	check_Ambients(t_img *data, char **s);
 int	check_Cams(t_img *data, char **s);
 int	check_Lights(t_img *data, char **s);
@@ -142,11 +143,9 @@ int	save_Sphere(t_img *data, char **s);
 // save1
 int	save_Plane(t_img *data, char **s);
 int	save_Cylinder(t_img *data, char **s);
-int	save_RGB(t_rgb array, char *s);
-int	save_XYZ(t_coords array, char *s);
-int	save_Vector(t_coords array, char *s);
-
-
+int	save_RGB(t_rgb *array, char *s);
+int	save_XYZ(t_coords *array, char *s);
+int	save_Vector(t_coords *array, char *s);
 
 
 // handlers
