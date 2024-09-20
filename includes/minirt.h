@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/20 13:13:24 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/20 13:36:09 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ typedef struct s_prog
 }	t_prog;
 
 void	free_array(char **array);
+void	cleanup(t_prog *prog);
 
 // init_struct
 void	init_img_data(t_img *data);
