@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 12:19:37 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/20 11:42:05 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,21 @@ typedef struct s_vec
 	float	z;
 }	t_vec;
 
+// Ray origin coords, directional vector and intersection value
 typedef struct s_ray
 {
 	t_vec	origin;
-	t_vec	direction;
-}	t_ray
+	t_vec	dir;
+	float	t;
+}	t_ray;
+
+typedef struct s_qdtrc
+{
+	float	a;
+	float	b;
+	float	c;
+	t_vec	dist;
+}	t_qdtrc;
 
 // Struct for camera data
 typedef struct s_camera
@@ -73,7 +83,7 @@ typedef struct s_light
 // Struct for sphere data
 typedef struct s_sphere
 {
-	t_coords position;
+	t_vec position;
 	float	diameter;
 	t_rgb	rgb;
 }	t_sphere;
@@ -136,5 +146,11 @@ void	exit_program(t_prog *prog);
 int		handle_exit(t_prog *prog);
 int		handle_keypress(int keycode, t_prog *data);
 int		handle_mouse_click(int button, int x, int y);
+
+// vectors
+t_vec	vec_add(t_vec v1, t_vec v2);
+t_vec	vec_sub(t_vec v1, t_vec v2);
+t_vec	vec_scale(t_vec v, float s);
+float	vec_dot(t_vec v1, t_vec v2);
 
 #endif
