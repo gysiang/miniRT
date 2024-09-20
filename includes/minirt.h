@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/20 13:36:09 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/20 14:55:28 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ typedef struct s_rgb
 // Struct for 3D coordinates (x, y, z)
 typedef struct s_coords
 {
-	int x;
-	int y;
-	int z;
+	float x;
+	float y;
+	float z;
 }	t_coords;
 
 // Struct for camera data
@@ -121,6 +121,7 @@ void	init_img_data(t_img *data);
 void	init_program(t_prog *prog, t_img *data);
 
 // checks
+int	check_FileContents(t_img *data, int fd);
 int	check_Ambients(t_img *data, char **s);
 int	check_Cams(t_img *data, char **s);
 int	check_Lights(t_img *data, char **s);
@@ -141,6 +142,21 @@ int	check_XYZ(char *s);
 int	check_Vector(char *s);
 int	check_FOV(char *s);
 int	check_Ratio(char *s);
+
+// save
+int save_FileContents(t_img *data, int fd);
+int	save_AmbientLight(t_img *data, char **s);
+int	save_Camera(t_img *data, char **s);
+int	save_Light(t_img *data, char **s);
+int	save_Sphere(t_img *data, char **s);
+
+// save1
+int	save_Plane(t_img *data, char **s);
+int	save_Cylinder(t_img *data, char **s);
+int	save_RGB(t_rgb *array, char *s);
+int	save_XYZ(t_coords *array, char *s);
+int	save_Vector(t_coords *array, char *s);
+
 
 // handlers
 void	exit_program(t_prog *prog);
