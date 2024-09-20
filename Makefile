@@ -28,9 +28,17 @@ INCLUDES       := $(addprefix $(INCLUDES_DIR)/, $(INCLUDES_FILES))
 # Srcs
 SRC_FILES :=	main.c \
 				checks.c \
+				checks1.c \
+				check_util1.c \
+				check_util2.c \
+				save.c \
+				save1.c \
+				utils.c \
 				init_struct.c \
 				handlers.c \
 				free.c	\
+				render.c \
+				mlx_image.c \
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 

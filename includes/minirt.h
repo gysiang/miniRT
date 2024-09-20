@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/20 11:42:05 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/20 15:44:50 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ typedef struct s_rgb
 // Struct for 3D coordinates (x, y, z)
 typedef struct s_coords
 {
-	int x;
-	int y;
-	int z;
+	float x;
+	float y;
+	float z;
 }	t_coords;
 
 // Struct for general float vectors (can use for coords?)
@@ -109,7 +109,8 @@ typedef struct s_cylinder
 // Main image struct
 typedef struct s_img
 {
-	int			amb_light;	// Ambient light ratio
+	char		*error_msg;
+	float		amb_light;	// Ambient light ratio
 	t_rgb		amb_rgb;	// Ambient light color
 	t_camera	camera;		// Camera data
 	t_light		light;		// Light data
@@ -118,34 +119,85 @@ typedef struct s_img
 	t_cylinder	cylinder;	// Cylinder data
 }	t_img;
 
+// mlx image struct
+typedef struct s_image
+{
+	void	*img;
+	char	*ptr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_image;
+
 // to save program data like mlx
 typedef struct s_prog
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
+	void	*mlx_ptr;
+	void	*win_ptr;
+	t_image	*image;
 }	t_prog;
 
-
-
 void	free_array(char **array);
+void	cleanup(t_prog *prog);
+
 // init_struct
 void	init_img_data(t_img *data);
-void	init_program(t_prog *prog);
+void	init_program(t_prog *prog, t_img *data);
 
 // checks
-int	checkfiletype(const char *filename);
-int	check_Ambient(t_img *data, char *line);
-int	check_Cam(t_img *data, char *line);
-int	check_Light(t_img *data, char *line);
-int	check_Sp(t_img *data, char *line);
-int	check_Cylinder(t_img *data, char *line);
-char *normalize_whitespace(const char *str);
+int	check_FileContents(t_img *data, int fd);
+int	check_Ambients(t_img *data, char **s);
+int	check_Cams(t_img *data, char **s);
+int	check_Lights(t_img *data, char **s);
+int	check_Spheres(t_img *data, char **s);
+
+// checks1
+int	check_Planes(t_img *data, char **s);
+int	check_Cylinders(t_img *data, char **s);
+
+// check_util1
+int	check_FileType(const char *filename);
+int set_error_msg(t_img *data, char *msg);
+int	check_NumOfInputs(char **s, int n);
+int	check_RGB(char *s);
+int	check_XYZ(char *s);
+
+// check_util2
+int	check_Vector(char *s);
+int	check_FOV(char *s);
+int	check_Ratio(char *s);
+
+// save
+int save_FileContents(t_img *data, int fd);
+int	save_AmbientLight(t_img *data, char **s);
+int	save_Camera(t_img *data, char **s);
+int	save_Light(t_img *data, char **s);
+int	save_Sphere(t_img *data, char **s);
+
+// save1
+int	save_Plane(t_img *data, char **s);
+int	save_Cylinder(t_img *data, char **s);
+int	save_RGB(t_rgb *array, char *s);
+int	save_XYZ(t_coords *array, char *s);
+int	save_Vector(t_coords *array, char *s);
+
 
 // handlers
 void	exit_program(t_prog *prog);
 int		handle_exit(t_prog *prog);
-int		handle_keypress(int keycode, t_prog *data);
+int		handle_keypress(int keycode, t_prog *program);
 int		handle_mouse_click(int button, int x, int y);
+
+// utils
+char *normalize_whitespace(const char *str);
+
+// image
+void	set_img_pixel(t_image *img, int x, int y, int color);
+t_image	*del_img(t_prog *mlx, t_image *img);
+t_image	*new_img(t_prog *mlx);
+
+// render
+void	render_ambient(t_prog *mlx, float s, t_rgb *amb);
 
 // vectors
 t_vec	vec_add(t_vec v1, t_vec v2);
