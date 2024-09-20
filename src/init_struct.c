@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/20 13:27:45 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/20 16:06:29 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	init_program(t_prog *prog, t_img *data)
 {
 	prog->mlx_ptr = mlx_init();
 	prog->win_ptr = mlx_new_window(prog->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "MiniRT");
-	prog->image = new_img(prog);
 	mlx_hook(prog->win_ptr, 17,  0, handle_exit, prog);
 	mlx_hook(prog->win_ptr, 2, 1L<<0, handle_keypress, prog);
 	mlx_mouse_hook(prog->win_ptr, handle_mouse_click, prog);
@@ -47,10 +46,10 @@ void	init_img_data(t_img *data)
 	data->light.brightness = 0.0;
 	// sphere
 	data->sphere.position.x = 0;
-	data->sphere.position.x = 0;
-	data->sphere.position.x = 0;
-	data->sphere.diameter = 0;
-	data->sphere.rgb.r = 0;
+	data->sphere.position.y = 0;
+	data->sphere.position.z = 10;
+	data->sphere.diameter = 2;
+	data->sphere.rgb.r = 255;
 	data->sphere.rgb.g = 0;
 	data->sphere.rgb.b = 0;
 	// plane

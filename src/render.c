@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:39:14 by bhowe             #+#    #+#             */
-/*   Updated: 2024/09/20 13:26:51 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/20 16:04:51 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	render_ambient(t_prog *prog, float s, t_rgb *amb)
 	int	y;
 	int	color;
 
+	prog->image = new_img(prog);
 	color = get_rgb((int)(amb->r * s), (int)(amb->g * s), (int)(amb->b * s));
 	y = -1;
 	while (++y < WINDOW_HEIGHT)

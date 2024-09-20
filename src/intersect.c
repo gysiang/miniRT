@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 12:33:16 by bhowe             #+#    #+#             */
-/*   Updated: 2024/09/20 11:43:05 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/20 16:38:32 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,40 @@ int	intersect(t_ray *ray, t_sphere *sp)
 			return (ray->t = t0, 1);
 	}
 	return (0);
+}
+
+/*	(x, y) is the ray pos in screen space
+	(as opposed to window coord) */
+t_ray	gen_ray(int i, int j)
+{
+	float	x;
+	float	y;
+	float	aspect_ratio;
+
+	aspect_ratio = WINDOW_WIDTH / WINDOW_HEIGHT;
+	x = (2 * (i + 0.5) / WINDOW_WIDTH - 1);
+	y = (1 - 2 * (j + 0.5) / WINDOW_HEIGHT) / aspect_ratio;
+
+}
+
+
+// Every pixel will shoot a ray
+void	trace_rays(t_prog *prog, t_img *data)
+{
+	int		x;
+	int		y;
+	t_ray	ray;
+
+	prog->image = new_img(prog);
+	y = -1;
+	while (++y < WINDOW_HEIGHT)
+	{
+		x = -1;
+		while (++x < WINDOW_WIDTH)
+		{
+			ray = gen_ray(x, y);
+			if (intersect(&ray, &data->sphere))
+				set_img_pixel(prog->image, x, y, get_rgb(data->sphere.rgb));
+		}
+	}
 }

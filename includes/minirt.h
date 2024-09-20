@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/20 15:44:50 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/20 16:38:53 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,7 @@ t_image	*new_img(t_prog *mlx);
 
 // render
 void	render_ambient(t_prog *mlx, float s, t_rgb *amb);
+int		get_rgb(int r, int g, int b);
 
 // vectors
 t_vec	vec_add(t_vec v1, t_vec v2);
