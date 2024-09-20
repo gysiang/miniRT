@@ -13,7 +13,7 @@ LEAKCHECK:= #-fsanitize=address
 CFLAGS   := -g -O3 -Wall -Wextra -Werror -Wno-unused-result $(LEAKCHECK)
 LFLAGS   := -L$(LIBFT_DIR) -lft
 IFLAGS   := -I$(LIBFT_DIR) -I$(INCLUDES_DIR)
-MLXFLAGS := -L./mlx -lmlx -lXext -lX11 -lbsd -lm
+MLXFLAGS := -L$(MLX_DIR) -lmlx -lXext -lX11 -lbsd -lm
 
 RM    := rm -fr
 NORM  := norminette
@@ -28,7 +28,12 @@ INCLUDES       := $(addprefix $(INCLUDES_DIR)/, $(INCLUDES_FILES))
 # Srcs
 SRC_FILES :=	main.c \
 				checks.c \
+				checks1.c \
+				check_util1.c \
+				check_util2.c \
+				utils.c \
 				init_struct.c \
+				handlers.c \
 				free.c	\
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
@@ -38,7 +43,7 @@ OBJ       := $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
 
 # Compilation rules
 $(NAME): $(LIBFT) $(MLX) $(OBJ) $(INCLUDES)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LFLAGS) $(IFLAGS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LFLAGS) $(IFLAGS) $(MLXFLAGS)
 
 all: $(NAME)
 

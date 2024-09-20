@@ -6,50 +6,23 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/18 14:37:24 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/20 12:35:28 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_RT_H
 # define MINI_RT_H
 
-# include "../libft/includes/libft.h"
+# include "../library/libft/includes/libft.h"
+# include "../library/mlx/mlx.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <math.h>
+# include <X11/keysym.h>
 
-# define WIN_WIDTH	1280
-# define WIN_HEIGHT	720
-
-/**
-typedef struct s_img
-{
-	// ambient
-	int	amb_light;
-	int	amb_rgb[3];
-	// camera
-	int cam_xyz[3];
-	int	cam_vector[3];
-	int	cam_fov;
-	// light
-	int	light_xyz[3];
-	float	light_brightness;
-	// sphere
-	int	sphere_xyz[3];
-	float	sphere_dia;
-	int	sphere_rgb[3];
-	// plane
-	int	plane_xyz[3];
-	int	plane_vector[3];
-	int	plane_rgb[3];
-	// cylinder
-	int	cylinder_xyz[3];
-	int cylinder_vector[3];
-	float	cylinder_dia;
-	double	cylinder_height;
-	int	cylinder_rgb[3];
-}	t_img;
-**/
+# define WINDOW_WIDTH 800
+# define WINDOW_HEIGHT 600
 
 // Struct for RGB values
 typedef struct s_rgb
@@ -112,6 +85,7 @@ typedef struct s_cylinder
 // Main image struct
 typedef struct s_img
 {
+	char		*error_msg;
 	int			amb_light;	// Ambient light ratio
 	t_rgb		amb_rgb;	// Ambient light color
 	t_camera	camera;		// Camera data
@@ -121,6 +95,14 @@ typedef struct s_img
 	t_cylinder	cylinder;	// Cylinder data
 }	t_img;
 
+// to save program data like mlx
+typedef struct s_prog
+{
+	void		*mlx_ptr;
+	void		*win_ptr;
+}	t_prog;
+
+// freetypedef struct s_image
 typedef struct s_image
 {
 	void	*img;
@@ -134,20 +116,44 @@ typedef struct s_mlx
 {
 	void	*mlx;
 	void	*window;
-	t_image	*img;
+	t_image	*image;
 }	t_mlx;
 
 void	free_array(char **array);
+
 // init_struct
 void	init_img_data(t_img *data);
+void	init_program(t_prog *prog);
 
 // checks
-int	checkfiletype(const char *filename);
-int	check_Ambient(t_img *data, char *line);
-int	check_Cam(t_img *data, char *line);
-int	check_Light(t_img *data, char *line);
-int	check_Sp(t_img *data, char *line);
-int	check_Cylinder(t_img *data, char *line);
+int	check_Ambients(t_img *data, char **s);
+int	check_Cams(t_img *data, char **s);
+int	check_Lights(t_img *data, char **s);
+int	check_Spheres(t_img *data, char **s);
+
+// checks1
+int	check_Planes(t_img *data, char **s);
+int	check_Cylinders(t_img *data, char **s);
+
+// check_util1
+int	check_FileType(const char *filename);
+int set_error_msg(t_img *data, char *msg);
+int	check_NumOfInputs(char **s, int n);
+int	check_RGB(char *s);
+int	check_XYZ(char *s);
+
+// check_util2
+int	check_Vector(char *s);
+int	check_FOV(char *s);
+int	check_Ratio(char *s);
+
+// handlers
+void	exit_program(t_prog *prog);
+int		handle_exit(t_prog *prog);
+int		handle_keypress(int keycode, t_prog *program);
+int		handle_mouse_click(int button, int x, int y);
+
+// utils
 char *normalize_whitespace(const char *str);
 
 #endif

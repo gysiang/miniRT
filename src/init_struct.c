@@ -6,14 +6,25 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/17 17:20:14 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:45:54 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+void	init_program(t_prog *prog)
+{
+	prog->mlx_ptr = mlx_init();
+	prog->win_ptr = mlx_new_window(prog->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "MiniRT");
+	mlx_hook(prog->win_ptr, 17,  0, handle_exit, prog);
+	mlx_hook(prog->win_ptr, 2, 1L<<0, handle_keypress, prog);
+	mlx_mouse_hook(prog->win_ptr, handle_mouse_click, prog);
+	mlx_loop(prog->mlx_ptr);
+}
+
 void	init_img_data(t_img *data)
 {
+	data->error_msg = NULL;
 	// ambient
 	data->amb_light = 0;
 	data->amb_rgb.r = 0;
