@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/20 14:55:28 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/24 10:16:40 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
-# include <X11/keysym.h>
+# include "vector.h"
 
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 600
@@ -31,14 +31,6 @@ typedef struct s_rgb
 	int g;
 	int b;
 }	t_rgb;
-
-// Struct for 3D coordinates (x, y, z)
-typedef struct s_coords
-{
-	float x;
-	float y;
-	float z;
-}	t_coords;
 
 // Struct for camera data
 typedef struct s_camera
