@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 10:25:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/26 15:14:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/26 21:47:45 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_coords vector_Subtract(const t_coords *a, const t_coords *b)
 	return (result);
 }
 
-// measuresx of parrallel the two vectors are
+// measures of parrallel the two vectors are
 float vector_DotProduct(const t_coords *a, const t_coords *b)
 {
 	return (a->x * b->x + a->y * b->y + a->z * b->z);
