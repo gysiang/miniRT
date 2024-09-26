@@ -3,19 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/20 13:27:45 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/26 15:57:26 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+// function to generate ray
+// x and y are the coordinates on the image plane
+t_ray	calculate_Ray(t_img *data, int x, int y)
+{
+	t_ray	ray;
+	float	u;
+	float	v;
+
+	ray.origin = data->camera.position;
+	// normalize the x and y coord to range of -1,1
+	u = (2.0 * ((float)x + 0.5) / (float)IMG_WIDTH - 1.0) * data->camera.half_width;
+	v = (1.0 - 2.0 * ((float)y + 0.5) / (float)IMG_HEIGHT) * data->camera.half_height;
+
+	// calculate direction of ray
+	//Ray direction = camera orientation + (u * right_vector) + (v * up_vector)
+	ray.vector.x = data->camera.vector.x + (u * data->camera.right_vector.x + v) * data->camera.up_vector.x;
+	ray.vector.y = data->camera.vector.y + (u * data->camera.right_vector.y + v) * data->camera.up_vector.y;
+	ray.vector.z = data->camera.vector.z + (u * data->camera.right_vector.z + v) * data->camera.up_vector.z;
+
+	// normalize the ray direction
+	ray.vector = vector_Normalize(&ray.vector);
+	return (ray);
+}
+
+// need a function to check whether the ray has intersect with the sphere
+bool	hit_sphere(t_ray *ray, t_sphere *sphere, t_camera *camera)
+{
+	t_coords	oc;
+	float		a;
+	float		b;
+	float		c;
+	float		discriminant;
+
+	// vector from ray origin to sphere center
+	oc = vector_Subtract(&ray->origin, &sphere->position);
+	a = vector_DotProduct(&ray->vector, &ray->vector);
+	b = 2.0 * vector_DotProduct(&oc, &ray->vector);
+	c = vector_DotProduct(&oc, &oc) - sphere->radius * sphere->radius;
+	// b^2 - 4ac > 1 for it to hit
+	discriminant = b * b - 4 * a * c;
+	return (discriminant > 0);
+}
+
+void	render_image(t_prog *prog, t_img *data)
+{
+	int		x;
+	int		y;
+	t_ray	ray;
+
+	x = 0;
+	y = 0;
+	while (y < IMG_HEIGHT)
+	{
+		x = 0;
+		while (x < IMG_HEIGHT)
+		{
+			// get the ray direction
+			ray = calculate_Ray(data, x, y);
+
+		}
+	}
+
+}
+
 void	init_program(t_prog *prog, t_img *data)
 {
 	prog->mlx_ptr = mlx_init();
-	prog->win_ptr = mlx_new_window(prog->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "MiniRT");
+	prog->win_ptr = mlx_new_window(prog->mlx_ptr, IMG_WIDTH, IMG_HEIGHT, "MiniRT");
 	prog->image = new_img(prog);
 	mlx_hook(prog->win_ptr, 17,  0, handle_exit, prog);
 	mlx_hook(prog->win_ptr, 2, 1L<<0, handle_keypress, prog);
@@ -45,34 +109,8 @@ void	init_img_data(t_img *data)
 	data->light.position.y = 0;
 	data->light.position.z = 0;
 	data->light.brightness = 0.0;
-	// sphere
-	data->sphere.position.x = 0;
-	data->sphere.position.x = 0;
-	data->sphere.position.x = 0;
-	data->sphere.diameter = 0;
-	data->sphere.rgb.r = 0;
-	data->sphere.rgb.g = 0;
-	data->sphere.rgb.b = 0;
-	// plane
-	data->plane.position.x = 0;
-	data->plane.position.y = 0;
-	data->plane.position.z = 0;
-	data->plane.vector.x = 0;
-	data->plane.vector.y = 0;
-	data->plane.vector.z = 0;
-	data->plane.rgb.r = 0;
-	data->plane.rgb.g = 0;
-	data->plane.rgb.b = 0;
-	// cylinder
-	data->cylinder.position.x = 0;
-	data->cylinder.position.y = 0;
-	data->cylinder.position.z = 0;
-	data->cylinder.vector.x = 0;
-	data->cylinder.vector.y = 0;
-	data->cylinder.vector.z = 0;
-	data->cylinder.diameter = 0.0;
-	data->cylinder.height = 0.00;
-	data->cylinder.rgb.r = 0;
-	data->cylinder.rgb.g = 0;
-	data->cylinder.rgb.b = 0;
+	// scene
+	data->sphere_count = 0;
+	data->plane_count = 0;
+	data->cylinder_count = 0;
 }

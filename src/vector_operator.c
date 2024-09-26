@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 10:25:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/24 11:10:30 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/26 15:14:27 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,14 @@ t_coords vector_Subtract(const t_coords *a, const t_coords *b)
 
 	result.x = a->x - b->x;
 	result.y = a->y - b->y;
-	result.z = a->z - b->z;	return (result);
+	result.z = a->z - b->z;
+	return (result);
+}
+
+// measuresx of parrallel the two vectors are
+float vector_DotProduct(const t_coords *a, const t_coords *b)
+{
+	return (a->x * b->x + a->y * b->y + a->z * b->z);
 }
 
 // scale the vector to have a length of 1 while maintaining its direction
@@ -43,6 +50,8 @@ t_coords vector_Normalize(const t_coords *v)
 	result.x = v->x / len;
 	result.y = v->y / len;
 	result.z = v->z / len;
+
+	return (result);
 }
 
 // cross product, results in a vector that is perperndicular to both vector a and

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/20 15:01:37 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/26 15:07:53 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,11 @@ int	save_Camera(t_img *data, char **s)
 		save_XYZ(&(data->camera.position), s[1]);
 		save_Vector(&(data->camera.vector), s[2]);
 		data->camera.fov = ft_atoi(s[3]);
+		data->camera.aspect_ratio = (float) IMG_WIDTH / (float) IMG_HEIGHT;
+		data->camera.up_vector = UP_VECTOR;
+		data->camera.right_vector = vector_CrossProduct(&data->camera.vector, &data->camera.up_vector);
+		data->camera.half_width = tan(data->camera.fov * 0.5 * (M_PI / 180.0));
+		data->camera.half_height = data->camera.half_width / data->camera.aspect_ratio;
 	}
 	return (0);
 }
@@ -76,11 +81,24 @@ int	save_Light(t_img *data, char **s)
 
 int	save_Sphere(t_img *data, char **s)
 {
+	t_sphere new_sphere;
+
 	if (ft_strncmp(s[0], "sp", 2) == 0)
 	{
+		/**
 		save_XYZ(&(data->sphere.position), s[1]);
 		data->sphere.diameter = ft_atof(s[2]);
 		save_RGB(&(data->sphere.rgb), s[3]);
+		**/
+		// save the sphere info in the array;
+		if (data->sphere_count < MAX_OBJ)
+		{
+			save_XYZ(&(data->spheres[data->sphere_count].position),s[1]);
+			data->spheres[data->sphere_count].diameter = ft_atof(s[2]);
+			data->spheres[data->sphere_count].radius = ft_atof(s[2]) / 2;
+			save_RGB(&(data->spheres[data->sphere_count].rgb), s[3]);
+			data->sphere_count++;
+		}
 	}
 	return (0);
 }
