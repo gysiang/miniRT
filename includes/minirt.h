@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/26 21:50:22 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/28 01:01:40 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,17 +127,6 @@ typedef struct s_prog
 	t_image	*image;
 }	t_prog;
 
-/**
-typedef struct s_scene
-{
-	t_sphere	spheres[MAX_OBJ];
-	int			sphere_count;
-	t_plane		planes[MAX_OBJ];
-	int			plane_count;
-	t_cylinder	s_cylinders[MAX_OBJ];
-	int			cylinder_count;
-}	t_scene;
-**/
 
 void	free_array(char **array);
 void	cleanup(t_prog *prog);
@@ -197,7 +186,15 @@ void	set_img_pixel(t_image *img, int x, int y, int color);
 t_image	*del_img(t_prog *mlx, t_image *img);
 t_image	*new_img(t_prog *mlx);
 
+// ray logic
+t_ray	make_ray(t_img *data, int x, int y);
+bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t);
+int		trace_ray(t_ray *ray, t_img *data);
+
 // render
+int		get_rgb(int r, int g, int b);
 void	render_ambient(t_prog *mlx, float s, t_rgb *amb);
+void	render_image(t_prog *prog, t_img *data);
+void draw_sphere_projection(t_prog *prog, t_sphere *sphere);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/26 13:31:42 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/27 22:00:37 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 // Prints out all the saved data
 void	print_data(t_img *data)
 {
+	/** *
 	printf("Ambient light\n");
 	printf("Amient lightning ratio %.1f\n", data->amb_light);
 	printf("Amient rgb: %d,%d,%d\n", data->amb_rgb.r, data->amb_rgb.g, data->amb_rgb.b);
@@ -25,10 +26,17 @@ void	print_data(t_img *data)
 	printf("Light\n");
 	printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->light.position.x, data->light.position.y, data->light.position.z);
 	printf("Light Brightness %.1f\n", data->light.brightness);
+	**/
+	printf("Camera\n");
+	printf("Vector : %.1f,%.1f,%.1f\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
+	printf("Right Vector : %.1f,%.1f,%.1f\n", data->camera.right_vector.x, data->camera.right_vector.y, data->camera.right_vector.z);
+	printf("Up Vector : %.1f,%.1f,%.1f\n", data->camera.up_vector.x, data->camera.up_vector.y, data->camera.up_vector.z);
+
 	printf("Sphere\n");
 	printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->spheres[0].position.x, data->spheres[0].position.y, data->spheres[0].position.z);
 	printf("Diameter %.1f\n", data->spheres[0].diameter);
 	printf("Sphere rgb: %d,%d,%d\n", data->spheres[0].rgb.r, data->spheres[0].rgb.g, data->spheres[0].rgb.b);
+	/** *
 	printf("Plane\n");
 	printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->planes[0].position.x, data->planes[0].position.y, data->planes[0].position.z);
 	printf("Vector Coordinates: %.1f,%.1f,%.1f\n", data->planes[0].vector.x, data->planes[0].vector.y, data->planes[0].vector.z);
@@ -39,36 +47,7 @@ void	print_data(t_img *data)
 	printf("Diameter %.1f\n", data->cylinders[0].diameter);
 	printf("Height %.2f\n", data->cylinders[0].height);
 	printf("Cylinder rgb: %d,%d,%d\n", data->cylinders[0].rgb.r, data->cylinders[0].rgb.g, data->cylinders[0].rgb.b);
-	printf("All data is printed successfully\n");
-}
-
-// function to generate ray
-// x and y are the coordinates on the image plane
-t_ray	make_Ray(t_img *data, int x, int y)
-{
-	t_ray	ray;
-	float	u;
-	float	v;
-
-	ray.origin = data->camera.position;
-	// normalize the x and y coord to range of -1,1
-	u = (2.0 * ((float)x + 0.5) / (float)IMG_WIDTH - 1.0) * data->camera.half_width;
-	v = (1.0 - 2.0 * ((float)y + 0.5) / (float)IMG_HEIGHT) * data->camera.half_height;
-
-	// calculate direction of ray
-	//Ray direction = camera orientation + (u * right_vector) + (v * up_vector)
-	ray.vector.x = data->camera.vector.x + (u * data->camera.right_vector.x + v) * data->camera.up_vector.x;
-	ray.vector.y = data->camera.vector.y + (u * data->camera.right_vector.y + v) * data->camera.up_vector.y;
-	ray.vector.z = data->camera.vector.z + (u * data->camera.right_vector.z + v) * data->camera.up_vector.z;
-
-	// normalize the ray direction
-	ray.vector = vector_Normalize(&ray.vector);
-	return (ray);
-}
-
-void	render_image(t_img *data)
-{
-
+	printf("All data is printed successfully\n");	**/
 }
 
 int	main(int ac, char **av)
@@ -95,6 +74,7 @@ int	main(int ac, char **av)
 		init_img_data(data);
 		lseek(fd, 0, SEEK_SET);
 		save_FileContents(data, fd);
+		//print_data(data);
 		//if (!save_FileContents(data, fd))
 		//	print_data(data);
 		//

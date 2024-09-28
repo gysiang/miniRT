@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/26 15:07:53 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/28 20:00:01 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int	save_AmbientLight(t_img *data, char **s)
 
 int	save_Camera(t_img *data, char **s)
 {
+	//t_coords right_vec;
+
 	if (ft_strncmp(s[0], "C", 1) == 0)
 	{
 		save_XYZ(&(data->camera.position), s[1]);
@@ -63,6 +65,7 @@ int	save_Camera(t_img *data, char **s)
 		data->camera.aspect_ratio = (float) IMG_WIDTH / (float) IMG_HEIGHT;
 		data->camera.up_vector = UP_VECTOR;
 		data->camera.right_vector = vector_CrossProduct(&data->camera.vector, &data->camera.up_vector);
+		//data->camera.right_vector = RIGHT_VECTOR;
 		data->camera.half_width = tan(data->camera.fov * 0.5 * (M_PI / 180.0));
 		data->camera.half_height = data->camera.half_width / data->camera.aspect_ratio;
 	}
@@ -81,8 +84,6 @@ int	save_Light(t_img *data, char **s)
 
 int	save_Sphere(t_img *data, char **s)
 {
-	t_sphere new_sphere;
-
 	if (ft_strncmp(s[0], "sp", 2) == 0)
 	{
 		/**
