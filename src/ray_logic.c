@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/30 16:42:29 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/30 16:44:46 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,17 @@ bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t)
 	discriminant = b * b - 4 * a * c;
 	if (discriminant < 0)
 		return false;
-	printf("Discriminant: %f\n", discriminant);
+	//printf("Discriminant: %f\n", discriminant);
 	t1 = (-b - sqrt(discriminant)) / (2.0 * a);
 	t2 = (-b + sqrt(discriminant)) / (2.0 * a);
-	printf("t1: %f, t2: %f\n", t1, t2);
+	//printf("t1: %f, t2: %f\n", t1, t2);
 	if (t1 > epsilon)
 		*t = t1;
 	else if (t2 > epsilon)
 		*t = t2;
 	else
 		return false;
-	printf("Valid intersection: %f\n", *t);
+	//printf("Valid intersection: %f\n", *t);
 	return (true);
 }
 
