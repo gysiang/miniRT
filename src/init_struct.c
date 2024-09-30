@@ -3,24 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/20 13:27:45 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/28 19:59:16 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+void	ray_test(t_img *data)
+{
+    t_ray ray;
+    float t;  // Use a float for t, not double
+    t_coords direction_to_sphere;
+
+    // Initialize t to 0
+    t = 0;
+
+    // Calculate ray origin and direction
+    ray.origin = data->camera.position;
+	direction_to_sphere = vector_Subtract(&data->spheres[0].position, &ray.origin);
+    //ray.vector = vector_Normalize(&direction_to_sphere);  // Calculate ray direction towards the sphere
+	ray.vector = direction_to_sphere;
+    // Check for hit
+    if (hit_sphere(&ray, &data->spheres[0], &t))
+    {
+        printf("Ray hits sphere at t = %f\n", t);  // Dereference t directly, no need for a pointer here
+    }
+    else
+    {
+        printf("Ray misses the sphere.\n");
+    }
+}
+
+
 void	init_program(t_prog *prog, t_img *data)
 {
 	prog->mlx_ptr = mlx_init();
-	prog->win_ptr = mlx_new_window(prog->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "MiniRT");
+	prog->win_ptr = mlx_new_window(prog->mlx_ptr, IMG_WIDTH, IMG_HEIGHT, "MiniRT");
 	prog->image = new_img(prog);
 	mlx_hook(prog->win_ptr, 17,  0, handle_exit, prog);
 	mlx_hook(prog->win_ptr, 2, 1L<<0, handle_keypress, prog);
 	mlx_mouse_hook(prog->win_ptr, handle_mouse_click, prog);
-	render_ambient(prog, data->amb_light, &data->amb_rgb);
+	//ray_test(data);
+	render_image(prog, data);
+	//render_ambient(prog, data->amb_light, &data->amb_rgb);
 	mlx_loop(prog->mlx_ptr);
 }
 
@@ -45,34 +73,8 @@ void	init_img_data(t_img *data)
 	data->light.position.y = 0;
 	data->light.position.z = 0;
 	data->light.brightness = 0.0;
-	// sphere
-	data->sphere.position.x = 0;
-	data->sphere.position.x = 0;
-	data->sphere.position.x = 0;
-	data->sphere.diameter = 0;
-	data->sphere.rgb.r = 0;
-	data->sphere.rgb.g = 0;
-	data->sphere.rgb.b = 0;
-	// plane
-	data->plane.position.x = 0;
-	data->plane.position.y = 0;
-	data->plane.position.z = 0;
-	data->plane.vector.x = 0;
-	data->plane.vector.y = 0;
-	data->plane.vector.z = 0;
-	data->plane.rgb.r = 0;
-	data->plane.rgb.g = 0;
-	data->plane.rgb.b = 0;
-	// cylinder
-	data->cylinder.position.x = 0;
-	data->cylinder.position.y = 0;
-	data->cylinder.position.z = 0;
-	data->cylinder.vector.x = 0;
-	data->cylinder.vector.y = 0;
-	data->cylinder.vector.z = 0;
-	data->cylinder.diameter = 0.0;
-	data->cylinder.height = 0.00;
-	data->cylinder.rgb.r = 0;
-	data->cylinder.rgb.g = 0;
-	data->cylinder.rgb.b = 0;
+	// scene
+	data->sphere_count = 0;
+	data->plane_count = 0;
+	data->cylinder_count = 0;
 }

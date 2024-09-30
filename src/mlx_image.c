@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_image.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:26:42 by bhowe             #+#    #+#             */
-/*   Updated: 2024/09/20 13:18:56 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/09/26 10:49:44 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_image	*new_img(t_prog *mlx)
 	img = malloc(sizeof(t_img));
 	if (!img)
 		return (0);
-	img->img = mlx_new_image(mlx->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
+	img->img = mlx_new_image(mlx->mlx_ptr, IMG_WIDTH, IMG_HEIGHT);
 	if (!img->img)
 		return (del_img(mlx, img));
 	img->ptr = mlx_get_data_addr(img->img, &img->bits_per_pixel, \
