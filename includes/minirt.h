@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/28 01:01:40 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/09/30 12:44:59 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 # define IMG_WIDTH 800
 # define IMG_HEIGHT 600
-# define M_PI 3.14159265358979323846
+# define PI 3.14159265358979323846
 # define MAX_OBJ 10
 
 // Struct for RGB values
@@ -44,6 +44,7 @@ typedef struct s_camera
 	int			fov;
 	float		aspect_ratio;
 	int			vertical_fov;
+	float		scale;
 	t_coords	up_vector;
 	t_coords	right_vector;
 	float		half_width;
