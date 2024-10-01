@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   save.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/30 12:47:04 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/01 00:23:39 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ int	save_AmbientLight(t_img *data, char **s)
 
 int	save_Camera(t_img *data, char **s)
 {
-	//t_coords right_vec;
-
 	if (ft_strncmp(s[0], "C", 1) == 0)
 	{
 		save_XYZ(&(data->camera.position), s[1]);
@@ -66,7 +64,6 @@ int	save_Camera(t_img *data, char **s)
 		data->camera.scale = tan(data->camera.fov * 0.5 * (PI / 180.0));
 		data->camera.up_vector = UP_VECTOR;
 		data->camera.right_vector = vector_CrossProduct(&data->camera.vector, &data->camera.up_vector);
-		//data->camera.right_vector = RIGHT_VECTOR;
 		data->camera.half_width = tan(data->camera.fov * 0.5 * (PI / 180.0));
 		data->camera.half_height = data->camera.half_width / data->camera.aspect_ratio;
 	}

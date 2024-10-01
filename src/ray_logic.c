@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_logic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/01 12:06:21 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/01 15:18:34 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,6 @@ t_ray	make_ray(t_img *data, int x, int y)
 	ray.vector.x = (2 * (x + 0.5) / (float)IMG_WIDTH - 1) * data->camera.scale * data->camera.aspect_ratio;
 	ray.vector.y = (1 - 2 * (y + 0.5) / (float)IMG_HEIGHT) * data->camera.scale;
 	ray.vector.z = 1;
-	//printf("u: %f\n", u);
-	//printf("v: %f\n", v);
-
-	//Ray direction = camera orientation + (u * right_vector) + (v * up_vector)
-	//ray.vector.x = data->camera.vector.x + u * data->camera.right_vector.x + v * data->camera.up_vector.x;
-	//ray.vector.y = data->camera.vector.y + u * data->camera.right_vector.y + v * data->camera.up_vector.y;
-	//ray.vector.z = data->camera.vector.z + u * data->camera.right_vector.z + v * data->camera.up_vector.z;
-	//printf("Ray direction before normalization: (%f, %f, %f)\n", ray.vector.x, ray.vector.y, ray.vector.z);
-
-	// normalize the ray direction
 	ray.vector = vector_Normalize(&ray.vector);
 	//printf("Ray direction: (%f, %f, %f)\n", ray.vector.x, ray.vector.y, ray.vector.z);
 	return (ray);
@@ -73,38 +63,81 @@ bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t)
 	return (true);
 }
 
+t_coords	intersection_point(t_ray *ray, float t)
+{
+	t_coords s;
+
+	// point where the ray hits the sphere
+	s.x = ray->origin.x + ray->vector.x * t;
+	s.y = ray->origin.y + ray->vector.y * t;
+	s.z = ray->origin.z + ray->vector.z * t;
+	return (s);
+}
+
+t_coords	surface_normal(t_coords *hitpoint, t_sphere *s)
+{
+	t_coords n;
+
+	n = vector_Subtract(hitpoint, &s->position);
+	n = vector_Normalize(&n);
+	return (n);
+}
+
+float	calculate_lighting(t_coords *hitpoint, t_coords *normal, t_light *light)
+{
+	t_coords	light_dir;
+	float		intensity;
+	// vector from intersection to light source
+	light_dir = vector_Subtract(&light->position, hitpoint);
+	light_dir = vector_Normalize(&light_dir);
+	// angle between light direction and surface vector
+	intensity = vector_DotProduct(&light_dir, normal);
+	if (intensity < 0)
+		intensity = 0;
+	// scale it by the light brightness
+	return (intensity * light->brightness);
+}
+
 /**
  * if it hits the sphere, return rgb of sphere, else return rgb of ambient.
  */
 int trace_ray(t_ray *ray, t_img *data)
 {
-	t_rgb	amb;
-	int		color;
-	float	closet_t;
-	float	t;
-	int		i;
+	t_rgb		amb;
+	t_rgb		effective_color;
+	int			color;
+	float		minDistance;
+	float		t;
+	int			i;
+	t_coords	normal;
+	t_coords	hitpoint;
+	float		light_intensity;
 
 	amb = rgb_mul(data->amb_rgb, data->amb_light);
 	color = rgb_get(amb);
-	closet_t = INFINITY;
+	minDistance = INFINITY;
 	t = 0;
 	i = 0;
-	// printf("Ray origin: (%f, %f, %f), Ray direction: (%f, %f, %f)\n",
-    //    ray->origin.x,
-    //    ray->origin.y,
-    //    ray->origin.z,
-    //    ray->vector.x,
-    //    ray->vector.y,
-    //    ray->vector.z);
 	while (i < data->sphere_count)
 	{
-		//printf("entered here\n");
 		if (hit_sphere(ray, &data->spheres[i], &t))
 		{
-			if (t < closet_t && t > 0)
+			if (t < minDistance && t > 0)
 			{
-				closet_t = t;
-				color = rgb_get(rgb_mix(amb, data->spheres[i].rgb));
+				minDistance = t;
+
+				hitpoint = intersection_point(ray, t);
+				normal = surface_normal(&hitpoint, &data->spheres[i]);
+				light_intensity = calculate_lighting(&hitpoint, &normal, &data->light);
+				// color of the sphere affected by the light
+				effective_color = rgb_mul(data->spheres[i].rgb, light_intensity);
+				// take in account of the ambient color
+				color = rgb_get(rgb_mix(amb, effective_color));
+
+				/**
+				 * before taking in light intensity
+				 * color = rgb_get(rgb_mix(amb, data->spheres[i].rgb));
+				 */
 			}
 		}
 		i++;
