@@ -6,16 +6,11 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:39:14 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/01 14:21:44 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/01 14:32:09 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-int	get_rgb(int r, int g, int b)
-{
-	return (r << 16 | g << 8 | b);
-}
 
 void	render_ambient(t_prog *prog, float s, t_rgb *amb)
 {
@@ -23,7 +18,7 @@ void	render_ambient(t_prog *prog, float s, t_rgb *amb)
 	int	y;
 	int	color;
 
-	color = get_rgb((int)(amb->r * s), (int)(amb->g * s), (int)(amb->b * s));
+	color = rgb_get(rgb_mul(*amb, s));
 	y = -1;
 	while (++y < IMG_HEIGHT)
 	{
@@ -50,7 +45,7 @@ void draw_sphere_projection(t_prog *prog, t_sphere *sphere)
     for (int y = -projected_radius; y <= projected_radius; y++) {
         for (int x = -projected_radius; x <= projected_radius; x++) {
             if (x*x + y*y <= projected_radius * projected_radius) {
-                set_img_pixel(prog->image, screen_x + x, screen_y + y, get_rgb(sphere->rgb.r, sphere->rgb.g, sphere->rgb.b));
+                set_img_pixel(prog->image, screen_x + x, screen_y + y, rgb_get(sphere->rgb));
             }
         }
     }
@@ -63,13 +58,12 @@ void	render_image(t_prog *prog, t_img *data)
 	t_ray	ray;
 	int		color;
 
+	printf("Camera position: (%f, %f, %f)\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
+	printf("Camera vector: (%f, %f, %f)\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
+	printf("Sphere position: (%f, %f, %f)\n", data->spheres[0].position.x, data->spheres[0].position.y, data->spheres[0].position.z);
+	printf("Sphere size: %f\n", data->spheres[0].diameter);
+
 	y = -1;
-	//printf("Camera position: (%f, %f, %f)\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
-	//printf("Camera vector: (%f, %f, %f)\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
-	//printf("Sphere position: (%f, %f, %f)\n", data->spheres[0].position.x, data->spheres[0].position.y, data->spheres[0].position.z);
-	//printf("Sphere size: %f\n", data->spheres[0].diameter);
-	printf("Light position: (%f, %f, %f)\n", data->light.position.x, data->light.position.y, data->light.position.z);
-	printf("Light brightness: %f\n", data->light.brightness);
 	while (y++ < IMG_HEIGHT)
 	{
 		x = -1;
