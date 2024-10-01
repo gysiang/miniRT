@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/01 14:32:04 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:18:34 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,17 +103,18 @@ float	calculate_lighting(t_coords *hitpoint, t_coords *normal, t_light *light)
  */
 int trace_ray(t_ray *ray, t_img *data)
 {
+	t_rgb		amb;
+	t_rgb		effective_color;
 	int			color;
 	float		minDistance;
 	float		t;
 	int			i;
-	float		s;
 	t_coords	normal;
 	t_coords	hitpoint;
 	float		light_intensity;
 
-	s = data->amb_light;
-	color = get_rgb((int)(data->amb_rgb.r * s), (int)(data->amb_rgb.g * s), (int)(data->amb_rgb.b * s));
+	amb = rgb_mul(data->amb_rgb, data->amb_light);
+	color = rgb_get(amb);
 	minDistance = INFINITY;
 	t = 0;
 	i = 0;
@@ -128,9 +129,15 @@ int trace_ray(t_ray *ray, t_img *data)
 				hitpoint = intersection_point(ray, t);
 				normal = surface_normal(&hitpoint, &data->spheres[i]);
 				light_intensity = calculate_lighting(&hitpoint, &normal, &data->light);
-				color = get_rgb((int)(data->spheres[i].rgb.r * light_intensity),
-								(int)(data->spheres[i].rgb.g * light_intensity),
-								(int)(data->spheres[i].rgb.b * light_intensity));
+				// color of the sphere affected by the light
+				effective_color = rgb_mul(data->spheres[i].rgb, light_intensity);
+				// take in account of the ambient color
+				color = rgb_get(rgb_mix(amb, effective_color));
+
+				/**
+				 * before taking in light intensity
+				 * color = rgb_get(rgb_mix(amb, data->spheres[i].rgb));
+				 */
 			}
 		}
 		i++;
