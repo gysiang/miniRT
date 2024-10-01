@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:39:14 by bhowe             #+#    #+#             */
-/*   Updated: 2024/09/30 16:47:13 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/01 14:17:14 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,12 @@ void	render_image(t_prog *prog, t_img *data)
 	int		color;
 
 	y = -1;
-	printf("Camera position: (%f, %f, %f)\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
-	printf("Camera vector: (%f, %f, %f)\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
-	printf("Sphere position: (%f, %f, %f)\n", data->spheres[0].position.x, data->spheres[0].position.y, data->spheres[0].position.z);
-	printf("Sphere size: %f\n", data->spheres[0].diameter);
-
+	//printf("Camera position: (%f, %f, %f)\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
+	//printf("Camera vector: (%f, %f, %f)\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
+	//printf("Sphere position: (%f, %f, %f)\n", data->spheres[0].position.x, data->spheres[0].position.y, data->spheres[0].position.z);
+	//printf("Sphere size: %f\n", data->spheres[0].diameter);
+	printf("Light position: (%f, %f, %f)\n", data->light.position.x, data->light.position.y, data->light.position.z);
+	printf("Sphere size: %f\n", data->light.brightness);
 	while (y++ < IMG_HEIGHT)
 	{
 		x = -1;
