@@ -38,6 +38,7 @@ SRC_FILES :=	main.c \
 				handlers.c \
 				free.c	\
 				render.c \
+				rgb.c \
 				mlx_image.c \
 				ray_logic.c \
 				vector_op.c

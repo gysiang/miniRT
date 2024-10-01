@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/30 12:44:59 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/01 12:06:02 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,9 +193,14 @@ bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t);
 int		trace_ray(t_ray *ray, t_img *data);
 
 // render
-int		get_rgb(int r, int g, int b);
 void	render_ambient(t_prog *mlx, float s, t_rgb *amb);
 void	render_image(t_prog *prog, t_img *data);
 void draw_sphere_projection(t_prog *prog, t_sphere *sphere);
+
+// render - rgb
+int		rgb_get(t_rgb rgb);
+t_rgb	rgb_mul(t_rgb rgb, float ratio);
+t_rgb	rgb_mix(t_rgb x, t_rgb y);
+t_rgb	rgb_lerp(t_rgb x, t_rgb y, float frac);
 
 #endif
