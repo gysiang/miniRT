@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/27 22:00:37 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/01 11:56:02 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // Prints out all the saved data
 void	print_data(t_img *data)
 {
-	/** *
+
 	printf("Ambient light\n");
 	printf("Amient lightning ratio %.1f\n", data->amb_light);
 	printf("Amient rgb: %d,%d,%d\n", data->amb_rgb.r, data->amb_rgb.g, data->amb_rgb.b);
@@ -26,7 +26,6 @@ void	print_data(t_img *data)
 	printf("Light\n");
 	printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->light.position.x, data->light.position.y, data->light.position.z);
 	printf("Light Brightness %.1f\n", data->light.brightness);
-	**/
 	printf("Camera\n");
 	printf("Vector : %.1f,%.1f,%.1f\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
 	printf("Right Vector : %.1f,%.1f,%.1f\n", data->camera.right_vector.x, data->camera.right_vector.y, data->camera.right_vector.z);

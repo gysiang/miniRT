@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/30 16:44:46 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/01 12:06:21 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,14 @@ bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t)
  */
 int trace_ray(t_ray *ray, t_img *data)
 {
-	int	color;
+	t_rgb	amb;
+	int		color;
 	float	closet_t;
 	float	t;
 	int		i;
-	float	s;
 
-	s = data->amb_light;
-	color = get_rgb((int)(data->amb_rgb.r * s), (int)(data->amb_rgb.g * s), (int)(data->amb_rgb.b * s));
+	amb = rgb_mul(data->amb_rgb, data->amb_light);
+	color = rgb_get(amb);
 	closet_t = INFINITY;
 	t = 0;
 	i = 0;
@@ -104,7 +104,7 @@ int trace_ray(t_ray *ray, t_img *data)
 			if (t < closet_t && t > 0)
 			{
 				closet_t = t;
-				color = get_rgb((int)(data->spheres[i].rgb.r), (int)(data->spheres[i].rgb.g), (int)(data->spheres[i].rgb.b));
+				color = rgb_get(rgb_mix(amb, data->spheres[i].rgb));
 			}
 		}
 		i++;
