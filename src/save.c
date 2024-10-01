@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   save.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/01 00:23:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/01 23:25:24 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	save_Light(t_img *data, char **s)
 	{
 		save_XYZ(&(data->light.position), s[1]);
 		data->light.brightness = ft_atof(s[2]);
+		save_RGB(&(data->light.rgb), "255,255,255");
 	}
 	return (0);
 }

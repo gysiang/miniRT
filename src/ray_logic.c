@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_logic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/01 15:18:34 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/01 23:40:49 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ float	calculate_lighting(t_coords *hitpoint, t_coords *normal, t_light *light)
 int trace_ray(t_ray *ray, t_img *data)
 {
 	t_rgb		amb;
-	t_rgb		effective_color;
+	t_rgb		diffuse;
 	int			color;
 	float		minDistance;
 	float		t;
@@ -129,10 +129,11 @@ int trace_ray(t_ray *ray, t_img *data)
 				hitpoint = intersection_point(ray, t);
 				normal = surface_normal(&hitpoint, &data->spheres[i]);
 				light_intensity = calculate_lighting(&hitpoint, &normal, &data->light);
-				// color of the sphere affected by the light
-				effective_color = rgb_mul(data->spheres[i].rgb, light_intensity);
-				// take in account of the ambient color
-				color = rgb_get(rgb_mix(amb, effective_color));
+				// color of the sphere affected by each light
+				diffuse = rgb_mix(data->spheres[i].rgb, rgb_mul(data->light.rgb, light_intensity));
+				amb = rgb_mix(data->spheres[i].rgb, amb);
+				// final color should be all lights added
+				color = rgb_get(rgb_add(amb, diffuse));
 
 				/**
 				 * before taking in light intensity
