@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 16:26:09 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 16:57:33 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,9 @@ t_image	*new_img(t_prog *mlx);
 t_ray	make_ray(t_img *data, int x, int y);
 bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t);
 int		trace_ray(t_ray *ray, t_img *data);
+
+// ray - hit
+bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
 
 // render
 void	render_ambient(t_prog *mlx, float s, t_rgb *amb);

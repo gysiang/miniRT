@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:05:57 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 11:14:58 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 16:56:59 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,23 @@
 
 int	save_Plane(t_img *data, char **s)
 {
+	t_plane	pl;
+
 	if (ft_strncmp(s[0], "pl", 2) == 0)
 	{
 		if (data->plane_count < MAX_OBJ)
 		{
-			save_XYZ(&(data->planes[data->plane_count].position), s[1]);
-			save_Vector(&(data->planes[data->plane_count].vector), s[2]);
-			save_RGB(&(data->planes[data->plane_count].rgb), s[3]);
+			// save_XYZ(&(data->planes[data->plane_count].position), s[1]);
+			// save_Vector(&(data->planes[data->plane_count].vector), s[2]);
+			// save_RGB(&(data->planes[data->plane_count].rgb), s[3]);
+			save_XYZ(&pl.position, s[1]);
+			save_Vector(&pl.vector, s[2]);
+			save_RGB(&pl.rgb, s[3]);
+			data->planes[data->plane_count] = pl;
 			data->plane_count++;
-
+			// * Single array version
+			data->prims[data->prim_count].p_data.pl = pl;
+			data->prims[data->prim_count].p_type = PL;
 			data->prim_count++;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 16:35:03 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 16:41:50 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,53 +26,6 @@ t_ray	make_ray(t_img *data, int x, int y)
 	ray.vector = vector_Normalize(&ray.vector);
 	//printf("Ray direction: (%f, %f, %f)\n", ray.vector.x, ray.vector.y, ray.vector.z);
 	return (ray);
-}
-
-// need a function to check whether the ray has intersect with the sphere
-bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t)
-{
-	t_vec	oc;
-	float		a;
-	float		b;
-	float		c;
-	float		discriminant;
-	float		t1;
-	float		t2;
-	float epsilon = 1e-4;
-
-	// vector from ray origin to sphere center
-	oc = vector_Subtract(&ray->origin, &sphere->position);
-	a = vector_DotProduct(&ray->vector, &ray->vector);
-	b = 2.0 * vector_DotProduct(&oc, &ray->vector);
-	c = vector_DotProduct(&oc, &oc) - sphere->radius * sphere->radius;
-	// b^2 - 4ac > 1 for it to hit
-	discriminant = b * b - 4 * a * c;
-	if (discriminant < 0)
-		return false;
-	//printf("Discriminant: %f\n", discriminant);
-	t1 = (-b - sqrt(discriminant)) / (2.0 * a);
-	t2 = (-b + sqrt(discriminant)) / (2.0 * a);
-	//printf("t1: %f, t2: %f\n", t1, t2);
-	if (t1 > epsilon)
-		*t = t1;
-	else if (t2 > epsilon)
-		*t = t2;
-	else
-		return false;
-	//printf("Valid intersection: %f\n", *t);
-	return (true);
-}
-
-bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
-{
-
-	if (prim.p_type == SP)
-	{
-		rp->prim_col = prim.p_data.sp.rgb;
-		rp->prim_pos = prim.p_data.sp.position;
-		return (hit_sphere(ray, &prim.p_data.sp, &rp->t));
-	}
-	return (0);
 }
 
 t_vec	intersection_point(t_ray *ray, float t)
