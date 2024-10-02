@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/01 11:59:10 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 11:15:30 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ray_test(t_img *data)
 {
     t_ray ray;
     float t;  // Use a float for t, not double
-    t_coords direction_to_sphere;
+    t_vec direction_to_sphere;
 
     // Initialize t to 0
     t = 0;
@@ -74,6 +74,7 @@ void	init_img_data(t_img *data)
 	data->light.position.z = 0;
 	data->light.brightness = 0.0;
 	// scene
+	data->prim_count = 0;
 	data->sphere_count = 0;
 	data->plane_count = 0;
 	data->cylinder_count = 0;

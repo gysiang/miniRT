@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:17:51 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 18:56:38 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 11:43:28 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	check_Planes(t_img *data, char **s)
 		if (check_RGB(s[3]))
 			return (set_error_msg(data, "Error.\nThe RGB values in Plane is not valid.\n"));
 	}
+	data->prim_count++;
 	return (0);
 }
 
@@ -50,5 +51,6 @@ int	check_Cylinders(t_img *data, char **s)
 		if (check_RGB(s[5]))
 			return (set_error_msg(data, "Error.\nThe RGB values in Cylinder is not valid.\n"));
 	}
+	data->prim_count++;
 	return (0);
 }
