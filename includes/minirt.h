@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 20:59:53 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 22:38:42 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@
 
 # define IMG_WIDTH 800
 # define IMG_HEIGHT 600
-# define PI 3.14159265358979323846
 # define MAX_OBJ 10
+# define PI 3.14159265358979323846
+# define EPSILON 1e-6
 
 // Struct for RGB values
 typedef struct s_rgb

@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/02 17:06:37 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 22:49:59 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t)
 	float		discriminant;
 	float		t1;
 	float		t2;
-	float epsilon = 1e-4;
 
 	// vector from ray origin to sphere center
 	oc = vector_Subtract(&ray->origin, &sphere->position);
@@ -36,9 +35,9 @@ bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t)
 	t1 = (-b - sqrt(discriminant)) / (2.0 * a);
 	t2 = (-b + sqrt(discriminant)) / (2.0 * a);
 	//printf("t1: %f, t2: %f\n", t1, t2);
-	if (t1 > epsilon)
+	if (t1 > EPSILON)
 		*t = t1;
-	else if (t2 > epsilon)
+	else if (t2 > EPSILON)
 		*t = t2;
 	else
 		return false;
@@ -48,10 +47,17 @@ bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t)
 
 bool	hit_plane(t_ray *ray, t_plane *plane, float *t)
 {
-	float	epsilon;
+	float	a;
+	float	b;
+	t_vec	po;
 
-	epsilon = 1e-4;
-
+	po = vector_Subtract(&plane->position, &ray->origin);
+	a = vector_DotProduct(&plane->vector, &po);
+	b = vector_DotProduct(&plane->vector, &ray->vector);
+	*t = a / b;
+	if (*t > EPSILON)
+		return (true);
+	return (false);
 }
 
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
@@ -66,7 +72,7 @@ bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
 	if (prim.p_type == PL)
 	{
 		rp->prim_col = prim.p_data.pl.rgb;
-		rp->prim_pos = prim.p_data.pl.position;
+		rp->prim_pos = prim.p_data.pl.vector;
 		return (hit_plane(ray, &prim.p_data.pl, &rp->t));
 	}
 	return (0);
