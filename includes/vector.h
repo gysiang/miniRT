@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 10:12:09 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/28 19:05:47 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 11:15:11 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,21 @@
 #include <stdio.h>
 
 // Struct for 3D coordinates (x, y, z)
-typedef struct s_coords
+typedef struct s_vec
 {
 	float x;
 	float y;
 	float z;
-}	t_coords;
+}	t_vec;
 
-static const t_coords UP_VECTOR = {0.0, 1.0, 0.0};
-static const t_coords RIGHT_VECTOR = {1.0, 0.0, 0.0};
+static const t_vec UP_VECTOR = {0.0, 1.0, 0.0};
+static const t_vec RIGHT_VECTOR = {1.0, 0.0, 0.0};
 
-t_coords vector_Add(const t_coords *a, const t_coords *b);
-t_coords vector_Subtract(const t_coords *a, const t_coords *b);
-t_coords vector_Normalize(const t_coords *v);
-t_coords vector_CrossProduct(const t_coords *a, const t_coords *b);
-float	vector_DotProduct(const t_coords *a, const t_coords *b);
+t_vec vector_Add(const t_vec *a, const t_vec *b);
+t_vec vector_Subtract(const t_vec *a, const t_vec *b);
+t_vec vector_Normalize(const t_vec *v);
+t_vec vector_CrossProduct(const t_vec *a, const t_vec *b);
+float	vector_DotProduct(const t_vec *a, const t_vec *b);
 
 
 #endif

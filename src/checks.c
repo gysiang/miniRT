@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:07:02 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/20 13:20:06 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 11:49:26 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@ int	check_FileContents(t_img *data, int fd)
 		printf("%s",data->error_msg);
 	else
 		printf("Success: All elements have been checked successfully.\n");
+	data->prims = malloc(data->prim_count * sizeof(t_prim));
+	if (!data->prims)
+		return (printf("Error.\n Primitives data failed to initalise."));
+	data->prim_count = 0;
 	return (error_flag);
 }
 
@@ -105,6 +109,7 @@ int	check_Spheres(t_img *data, char **s)
 		if (check_RGB(s[3]))
 			return (set_error_msg(data, "Error.\nThe RGB values in Sphere is not valid.\n"));
 	}
+	data->prim_count++;
 	return (0);
 }
 
