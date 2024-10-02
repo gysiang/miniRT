@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 16:07:09 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 17:16:56 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ int	save_Vector(t_coords *array, char *s);
 // handlers
 void	exit_program(t_prog *prog);
 int		handle_exit(t_prog *prog);
-int		handle_keypress(KeySym keysym, t_prog *program);
+int		handle_keypress(KeySym keysym, t_data *data);
 int		handle_mouse_click(int button, int x, int y);
 
 // utils
@@ -206,5 +206,8 @@ t_rgb	rgb_add(t_rgb x, t_rgb y);
 t_rgb	rgb_mul(t_rgb rgb, float ratio);
 t_rgb	rgb_mix(t_rgb x, t_rgb y);
 t_rgb	rgb_lerp(t_rgb x, t_rgb y, float frac);
+
+// camera movement;
+void move_camera(t_coords *pos, t_coords *direction, float speed);
 
 #endif

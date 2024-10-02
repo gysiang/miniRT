@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 11:16:43 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 14:41:59 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 17:15:57 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,39 @@ void	exit_program(t_prog *prog)
 	exit(0);
 }
 
-int handle_keypress(KeySym keysym, t_prog *program)
+int handle_keypress(KeySym keysym, t_data *data)
 {
 	char	*keyname;
+	float	speed;
 
+	speed = 0.1;
 	keyname = XKeysymToString(keysym);
-	if (keysym == XK_Escape) // ESC key
-		exit_program(program);
-	else if (keysym == XK_W || keysym == XK_w) // Up arrow (MacOS: 126, Linux: 65362)
-		printf("W key pressed\n");
-	else if (keysym == XK_S || keysym == XK_s) // Down arrow (MacOS: 125, Linux: 65364)
-		printf("S key pressed\n");
-	else if (keysym == XK_A || keysym == XK_a) // Left arrow (MacOS: 123, Linux: 65361)
-		printf("A key pressed\n");
-	else if (keysym == XK_D || keysym == XK_d) // Right arrow (MacOS: 124, Linux: 65363)
-		printf("D key pressed\n");
+	if (keysym == XK_Escape)
+		exit_program(&data->program);
+	else if (keysym == XK_W || keysym == XK_w)
+	{
+		printf("W key pressed, camera moved forward\n");
+		move_camera(&data->camera.position, &data->camera.vector, speed);
+		printf("Camera position: (%f, %f, %f)\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
+	}
+	else if (keysym == XK_S || keysym == XK_s)
+	{
+		printf("S key pressed, camera moved backward\n");
+		move_camera(&data->camera.position, &data->camera.vector, -speed);
+		printf("Camera position: (%f, %f, %f)\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
+	}
+	else if (keysym == XK_A || keysym == XK_a)
+	{
+		printf("A key pressed, camera moved left\n");
+		move_camera(&data->camera.position, &data->camera.right_vector, -speed);
+		printf("Camera position: (%f, %f, %f)\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
+	}
+	else if (keysym == XK_D || keysym == XK_d)
+	{
+		printf("D key pressed, camera moved right\n");
+		move_camera(&data->camera.position, &data->camera.right_vector, speed);
+		printf("Camera position: (%f, %f, %f)\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
+	}
 	else
 		printf("Key pressed: %s\n", keyname);
 	return (0);
