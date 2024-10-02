@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:17:51 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 15:55:06 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 17:30:40 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	check_Planes(t_data *data, char **s)
 		if (check_RGB(s[3]))
 			return (set_error_msg(data, "Error.\nThe RGB values in Plane is not valid.\n"));
 	}
+	data->prim_count++;
 	return (0);
 }
 
@@ -50,5 +51,6 @@ int	check_Cylinders(t_data *data, char **s)
 		if (check_RGB(s[5]))
 			return (set_error_msg(data, "Error.\nThe RGB values in Cylinder is not valid.\n"));
 	}
+	data->prim_count++;
 	return (0);
 }

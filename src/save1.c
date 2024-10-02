@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:05:57 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 16:00:00 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 17:36:54 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	save_Plane(t_data *data, char **s)
 			save_Vector(&(data->planes[data->plane_count].vector), s[2]);
 			save_RGB(&(data->planes[data->plane_count].rgb), s[3]);
 			data->plane_count++;
+
+			data->prim_count++;
 		}
 	}
 	return (0);
@@ -39,6 +41,8 @@ int	save_Cylinder(t_data *data, char **s)
 			data->cylinders[data->cylinder_count].height = ft_atof(s[4]);
 			save_RGB(&(data->cylinders[data->cylinder_count].rgb), s[5]);
 			data->cylinder_count++;
+
+			data->prim_count++;
 		}
 	}
 	return (0);
@@ -58,7 +62,7 @@ int	save_RGB(t_rgb *array, char *s)
 	return (0);
 }
 
-int	save_XYZ(t_coords *array, char *s)
+int	save_XYZ(t_vec *array, char *s)
 {
 	char **xyz_values;
 
@@ -72,7 +76,7 @@ int	save_XYZ(t_coords *array, char *s)
 	return (0);
 }
 
-int	save_Vector(t_coords *array, char *s)
+int	save_Vector(t_vec *array, char *s)
 {
 	char **vector_values;
 

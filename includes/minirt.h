@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 17:16:56 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 17:36:15 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ typedef struct s_rgb
 // vector is the orientation vector (given)
 typedef struct s_camera
 {
-	t_coords 	position;
-	t_coords 	vector;
+	t_vec 	position;
+	t_vec 	vector;
 	int			fov;
 	float		aspect_ratio;
 	int			vertical_fov;
 	float		scale;
-	t_coords	up_vector;
-	t_coords	right_vector;
+	t_vec	up_vector;
+	t_vec	right_vector;
 	float		half_width;
 	float		half_height;
 }	t_camera;
@@ -56,42 +56,56 @@ typedef struct s_camera
 // Struct for light data
 typedef struct s_light
 {
-	t_coords position;
+	t_vec position;
 	float	brightness;
 	t_rgb	rgb;
 }	t_light;
 
+// Ray data related
 typedef struct s_ray
 {
-	t_coords origin;
-	t_coords vector;
+	t_vec origin;
+	t_vec vector;
 } t_ray;
+
+typedef struct s_rayparams
+{
+	float	t;
+	float	min_dist;
+	t_rgb	amb;
+	t_rgb	diffuse;
+	t_rgb	prim_col;
+	t_vec	prim_pos;
+	t_vec	normal;
+	t_vec	hitpoint;
+	float	light_intensity;
+} t_rayparams;
 
 // Struct for sphere data
 typedef struct s_sphere
 {
-	t_coords position;
-	float	diameter;
-	float	radius;
-	t_rgb	rgb;
+	t_vec	position;
+	float		diameter;
+	float		radius;
+	t_rgb		rgb;
 }	t_sphere;
 
 // Struct for plane data
 typedef struct s_plane
 {
-	t_coords position;
-	t_coords vector;
-	t_rgb	rgb;
+	t_vec	position;
+	t_vec	vector;
+	t_rgb		rgb;
 }	t_plane;
 
 // Struct for cylinder data
 typedef struct s_cylinder
 {
-	t_coords position;
-	t_coords vector;
-	float	diameter;
-	double	height;
-	t_rgb	rgb;
+	t_vec	position;
+	t_vec	vector;
+	float		diameter;
+	double		height;
+	t_rgb		rgb;
 }	t_cylinder;
 
 // mlx image struct
@@ -112,6 +126,25 @@ typedef struct s_prog
 	t_image	*image;
 }	t_prog;
 
+typedef enum type
+{
+	SP,
+	PL,
+	CY
+}	t_type;
+
+union	u_type
+{
+	t_sphere	sp;
+	t_plane		pl;
+	t_cylinder	cy;
+};
+
+typedef struct	s_prim
+{
+	union u_type	p_data;
+	t_type			p_type;
+}	t_prim;
 
 // Main image struct
 typedef struct s_data
@@ -122,6 +155,9 @@ typedef struct s_data
 	t_rgb		amb_rgb;	// Ambient light color
 	t_camera	camera;		// Camera data
 	t_light		light;		// Light data
+	//An array that contains all ray hittable primitives
+	t_prim		*prims;
+	int			prim_count;
 	// There can be multiple planes, cylinder, spheres so there needs to have an array to store it
 	t_sphere	spheres[MAX_OBJ];
 	int			sphere_count;
@@ -173,8 +209,8 @@ int	save_Sphere(t_data *data, char **s);
 int	save_Plane(t_data *data, char **s);
 int	save_Cylinder(t_data *data, char **s);
 int	save_RGB(t_rgb *array, char *s);
-int	save_XYZ(t_coords *array, char *s);
-int	save_Vector(t_coords *array, char *s);
+int	save_XYZ(t_vec *array, char *s);
+int	save_Vector(t_vec *array, char *s);
 
 // handlers
 void	exit_program(t_prog *prog);
@@ -208,6 +244,6 @@ t_rgb	rgb_mix(t_rgb x, t_rgb y);
 t_rgb	rgb_lerp(t_rgb x, t_rgb y, float frac);
 
 // camera movement;
-void move_camera(t_coords *pos, t_coords *direction, float speed);
+void move_camera(t_vec *pos, t_vec *direction, float speed);
 
 #endif

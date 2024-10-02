@@ -6,18 +6,42 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 15:55:33 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 17:37:16 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+void	ray_test(t_data *data)
+{
+    t_ray ray;
+    float t;  // Use a float for t, not double
+    t_vec direction_to_sphere;
+
+    // Initialize t to 0
+    t = 0;
+
+    // Calculate ray origin and direction
+    ray.origin = data->camera.position;
+	direction_to_sphere = vector_Subtract(&data->spheres[0].position, &ray.origin);
+    //ray.vector = vector_Normalize(&direction_to_sphere);  // Calculate ray direction towards the sphere
+	ray.vector = direction_to_sphere;
+    // Check for hit
+    if (hit_sphere(&ray, &data->spheres[0], &t))
+    {
+        printf("Ray hits sphere at t = %f\n", t);  // Dereference t directly, no need for a pointer here
+    }
+    else
+    {
+        printf("Ray misses the sphere.\n");
+    }
+}
 
 void	init_program(t_data *data)
 {
 	t_prog *prog;
 
 	prog = &data->program;
-
 	prog->mlx_ptr = mlx_init();
 	prog->win_ptr = mlx_new_window(prog->mlx_ptr, IMG_WIDTH, IMG_HEIGHT, "MiniRT");
 	prog->image = new_img(prog);
@@ -50,6 +74,7 @@ void	init_img_data(t_data *data)
 	data->light.position.z = 0;
 	data->light.brightness = 0.0;
 	// scene
+	data->prim_count = 0;
 	data->sphere_count = 0;
 	data->plane_count = 0;
 	data->cylinder_count = 0;
