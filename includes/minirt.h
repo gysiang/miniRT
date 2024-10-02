@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 14:45:44 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 16:26:09 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,11 @@ typedef struct s_rayparams
 	t_rgb	amb;
 	t_rgb	diffuse;
 	t_rgb	prim_col;
+	t_vec	prim_pos;
 	t_vec	normal;
 	t_vec	hitpoint;
 	float	light_intensity;
-} t_rayparams
+} t_rayparams;
 
 // Struct for sphere data
 typedef struct s_sphere

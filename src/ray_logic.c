@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 14:50:21 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 16:35:03 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,14 @@ bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t)
 	return (true);
 }
 
-bool	hit_prim(t_ray *ray, t_prim prim, float *t, t_rgb *col)
+bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
 {
+
 	if (prim.p_type == SP)
 	{
-		*col = prim.p_data.sp.rgb;
-		return (hit_sphere(ray, &prim.p_data.sp, t));
+		rp->prim_col = prim.p_data.sp.rgb;
+		rp->prim_pos = prim.p_data.sp.position;
+		return (hit_sphere(ray, &prim.p_data.sp, &rp->t));
 	}
 	return (0);
 }
@@ -108,8 +110,10 @@ float	calculate_lighting(t_vec *hitpoint, t_vec *normal, t_light *light)
 	return (intensity * light->brightness);
 }
 
-t_rayparams	init_rayparams(t_rayparams rp, t_img *data)
+t_rayparams	init_rayparams(t_img *data)
 {
+	t_rayparams	rp;
+
 	rp.t = 0;
 	rp.min_dist = INFINITY;
 	rp.amb = rgb_mul(data->amb_rgb, data->amb_light);
@@ -125,29 +129,24 @@ int trace_ray(t_ray *ray, t_img *data)
 	int			color;
 	int			i;
 
-	rp = init_rayparams(rp, data);
+	rp = init_rayparams(data);
 	color = rgb_get(rp.amb);
 	i = 0;
 	while (i < data->prim_count)
 	{
-		if (hit_prim(ray, data->prims[i], &t, &prim_col))
+		if (hit_prim(ray, data->prims[i], &rp))
 		{
-			if (t < minDistance && t > 0)
+			if (rp.t < rp.min_dist && rp.t > 0)
 			{
-				minDistance = t;
-				hitpoint = intersection_point(ray, t);
-				normal = surface_normal(&hitpoint, &data->spheres[i]);
-				light_intensity = calculate_lighting(&hitpoint, &normal, &data->light);
+				rp.min_dist = rp.t;
+				rp.hitpoint = intersection_point(ray, rp.t);
+				rp.normal = surface_normal(&rp.hitpoint, rp.prim_pos);
+				rp.light_intensity = calculate_lighting(&rp.hitpoint, &rp.normal, &data->light);
 				// color of the sphere affected by each light
-				diffuse = rgb_mix(data->spheres[i].rgb, rgb_mul(data->light.rgb, light_intensity));
-				amb = rgb_mix(data->spheres[i].rgb, amb);
+				rp.diffuse = rgb_mix(rp.prim_col, rgb_mul(data->light.rgb, rp.light_intensity));
+				rp.amb = rgb_mix(rp.prim_col, rp.amb);
 				// final color should be all lights added
-				color = rgb_get(rgb_add(amb, diffuse));
-
-				/**
-				 * before taking in light intensity
-				 * color = rgb_get(rgb_mix(amb, data->spheres[i].rgb));
-				 */
+				color = rgb_get(rgb_add(rp.amb, rp.diffuse));
 			}
 		}
 		i++;
