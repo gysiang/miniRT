@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 22:38:42 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 22:57:04 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,6 @@ int	save_Sphere(t_data *data, char **s);
 int	save_Plane(t_data *data, char **s);
 int	save_Cylinder(t_data *data, char **s);
 int	save_RGB(t_rgb *array, char *s);
-int	save_XYZ(t_vec *array, char *s);
 int	save_Vector(t_vec *array, char *s);
 
 // handlers
