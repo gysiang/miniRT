@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/01 11:56:02 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 16:06:44 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 // Prints out all the saved data
-void	print_data(t_img *data)
+void	print_data(t_data *data)
 {
 
 	printf("Ambient light\n");
@@ -51,15 +51,17 @@ void	print_data(t_img *data)
 
 int	main(int ac, char **av)
 {
-	t_prog	*program;
-	t_img	*data;
+	//t_prog	*program;
+	t_data	*data;
 	int		fd;
 
 	if (ac == 2)
 	{
+		/** *
 		program = malloc(sizeof(*program));
 		if (!program)
 			return (printf("Error.\n Program data failed to initalise."));
+		**/
 		data = malloc(sizeof(*data));
 		if (!data)
 			return (printf("Error.\n Image data failed to initalise."));
@@ -77,7 +79,7 @@ int	main(int ac, char **av)
 		//if (!save_FileContents(data, fd))
 		//	print_data(data);
 		//
-		init_program(program, data);
+		init_program(data);
 	}
 	else
 		return (printf("Error.\nPlease input one .rt file as the argument.\n"));

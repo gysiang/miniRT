@@ -6,13 +6,13 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:05:57 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 16:56:59 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 21:07:09 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	save_Plane(t_img *data, char **s)
+int	save_Plane(t_data *data, char **s)
 {
 	t_plane	pl;
 
@@ -37,7 +37,7 @@ int	save_Plane(t_img *data, char **s)
 	return (0);
 }
 
-int	save_Cylinder(t_img *data, char **s)
+int	save_Cylinder(t_data *data, char **s)
 {
 	if (ft_strncmp(s[0], "cy", 2) == 0)
 	{

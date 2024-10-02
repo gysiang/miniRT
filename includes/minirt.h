@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 16:57:33 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 20:59:53 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <X11/Xlib.h>
+# include <X11/keysym.h>
 # include <math.h>
 # include <stdbool.h>
 # include "vector.h"
@@ -106,6 +108,24 @@ typedef struct s_cylinder
 	t_rgb		rgb;
 }	t_cylinder;
 
+// mlx image struct
+typedef struct s_image
+{
+	void	*img;
+	char	*ptr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_image;
+
+// to save program data like mlx
+typedef struct s_prog
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+	t_image	*image;
+}	t_prog;
+
 typedef enum type
 {
 	SP,
@@ -127,8 +147,9 @@ typedef struct	s_prim
 }	t_prim;
 
 // Main image struct
-typedef struct s_img
+typedef struct s_data
 {
+	t_prog		program;
 	char		*error_msg;
 	float		amb_light;	// Ambient light ratio
 	t_rgb		amb_rgb;	// Ambient light color
@@ -144,48 +165,30 @@ typedef struct s_img
 	int			plane_count;
 	t_cylinder	cylinders[MAX_OBJ];
 	int			cylinder_count;
-}	t_img;
-
-// mlx image struct
-typedef struct s_image
-{
-	void	*img;
-	char	*ptr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}	t_image;
-
-// to save program data like mlx
-typedef struct s_prog
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-	t_image	*image;
-}	t_prog;
+}	t_data;
 
 
 void	free_array(char **array);
 void	cleanup(t_prog *prog);
 
 // init_struct
-void	init_img_data(t_img *data);
-void	init_program(t_prog *prog, t_img *data);
+void	init_img_data(t_data *data);
+void	init_program(t_data *data);
 
 // checks
-int	check_FileContents(t_img *data, int fd);
-int	check_Ambients(t_img *data, char **s);
-int	check_Cams(t_img *data, char **s);
-int	check_Lights(t_img *data, char **s);
-int	check_Spheres(t_img *data, char **s);
+int	check_FileContents(t_data *data, int fd);
+int	check_Ambients(t_data *data, char **s);
+int	check_Cams(t_data *data, char **s);
+int	check_Lights(t_data *data, char **s);
+int	check_Spheres(t_data *data, char **s);
 
 // checks1
-int	check_Planes(t_img *data, char **s);
-int	check_Cylinders(t_img *data, char **s);
+int	check_Planes(t_data *data, char **s);
+int	check_Cylinders(t_data *data, char **s);
 
 // check_util1
 int	check_FileType(const char *filename);
-int set_error_msg(t_img *data, char *msg);
+int set_error_msg(t_data *data, char *msg);
 int	check_NumOfInputs(char **s, int n);
 int	check_RGB(char *s);
 int	check_XYZ(char *s);
@@ -196,15 +199,15 @@ int	check_FOV(char *s);
 int	check_Ratio(char *s);
 
 // save
-int save_FileContents(t_img *data, int fd);
-int	save_AmbientLight(t_img *data, char **s);
-int	save_Camera(t_img *data, char **s);
-int	save_Light(t_img *data, char **s);
-int	save_Sphere(t_img *data, char **s);
+int save_FileContents(t_data *data, int fd);
+int	save_AmbientLight(t_data *data, char **s);
+int	save_Camera(t_data *data, char **s);
+int	save_Light(t_data *data, char **s);
+int	save_Sphere(t_data *data, char **s);
 
 // save1
-int	save_Plane(t_img *data, char **s);
-int	save_Cylinder(t_img *data, char **s);
+int	save_Plane(t_data *data, char **s);
+int	save_Cylinder(t_data *data, char **s);
 int	save_RGB(t_rgb *array, char *s);
 int	save_XYZ(t_vec *array, char *s);
 int	save_Vector(t_vec *array, char *s);
@@ -212,7 +215,7 @@ int	save_Vector(t_vec *array, char *s);
 // handlers
 void	exit_program(t_prog *prog);
 int		handle_exit(t_prog *prog);
-int		handle_keypress(int keycode, t_prog *program);
+int		handle_keypress(KeySym keysym, t_data *data);
 int		handle_mouse_click(int button, int x, int y);
 
 // utils
@@ -224,16 +227,16 @@ t_image	*del_img(t_prog *mlx, t_image *img);
 t_image	*new_img(t_prog *mlx);
 
 // ray logic
-t_ray	make_ray(t_img *data, int x, int y);
+t_ray	make_ray(t_data *data, int x, int y);
 bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t);
-int		trace_ray(t_ray *ray, t_img *data);
+int		trace_ray(t_ray *ray, t_data *data);
 
 // ray - hit
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
 
 // render
 void	render_ambient(t_prog *mlx, float s, t_rgb *amb);
-void	render_image(t_prog *prog, t_img *data);
+void	render_image(t_prog *prog, t_data *data);
 void draw_sphere_projection(t_prog *prog, t_sphere *sphere);
 
 // render - rgb
@@ -242,5 +245,8 @@ t_rgb	rgb_add(t_rgb x, t_rgb y);
 t_rgb	rgb_mul(t_rgb rgb, float ratio);
 t_rgb	rgb_mix(t_rgb x, t_rgb y);
 t_rgb	rgb_lerp(t_rgb x, t_rgb y, float frac);
+
+// camera movement;
+void move_camera(t_vec *pos, t_vec *direction, float speed);
 
 #endif

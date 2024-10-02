@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:39:14 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/01 14:32:09 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 15:58:53 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void draw_sphere_projection(t_prog *prog, t_sphere *sphere)
     }
 }
 
-void	render_image(t_prog *prog, t_img *data)
+void	render_image(t_prog *prog, t_data *data)
 {
 	int		x;
 	int		y;

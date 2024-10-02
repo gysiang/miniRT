@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 11:15:30 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 17:37:16 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	ray_test(t_img *data)
+void	ray_test(t_data *data)
 {
     t_ray ray;
     float t;  // Use a float for t, not double
@@ -37,22 +37,22 @@ void	ray_test(t_img *data)
     }
 }
 
-
-void	init_program(t_prog *prog, t_img *data)
+void	init_program(t_data *data)
 {
+	t_prog *prog;
+
+	prog = &data->program;
 	prog->mlx_ptr = mlx_init();
 	prog->win_ptr = mlx_new_window(prog->mlx_ptr, IMG_WIDTH, IMG_HEIGHT, "MiniRT");
 	prog->image = new_img(prog);
 	mlx_hook(prog->win_ptr, 17,  0, handle_exit, prog);
 	mlx_hook(prog->win_ptr, 2, 1L<<0, handle_keypress, prog);
-	mlx_mouse_hook(prog->win_ptr, handle_mouse_click, prog);
-	//ray_test(data);
+	mlx_mouse_hook(data->program.win_ptr, handle_mouse_click, prog);
 	render_image(prog, data);
-	//render_ambient(prog, data->amb_light, &data->amb_rgb);
 	mlx_loop(prog->mlx_ptr);
 }
 
-void	init_img_data(t_img *data)
+void	init_img_data(t_data *data)
 {
 	data->error_msg = NULL;
 	// ambient
