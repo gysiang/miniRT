@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/01 12:06:02 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/01 23:21:22 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_light
 {
 	t_coords position;
 	float	brightness;
-	//t_rgb	rgb;
+	t_rgb	rgb;
 }	t_light;
 
 typedef struct s_ray
@@ -199,6 +199,7 @@ void draw_sphere_projection(t_prog *prog, t_sphere *sphere);
 
 // render - rgb
 int		rgb_get(t_rgb rgb);
+t_rgb	rgb_add(t_rgb x, t_rgb y);
 t_rgb	rgb_mul(t_rgb rgb, float ratio);
 t_rgb	rgb_mix(t_rgb x, t_rgb y);
 t_rgb	rgb_lerp(t_rgb x, t_rgb y, float frac);

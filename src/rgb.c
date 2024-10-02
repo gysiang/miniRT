@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 11:05:20 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/01 12:07:40 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/01 23:14:23 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,20 @@
 int	rgb_get(t_rgb rgb)
 {
 	return (rgb.r << 16 | rgb.g << 8 | rgb.b);
+}
+
+t_rgb	rgb_add(t_rgb x, t_rgb y)
+{
+	x.r += y.r;
+	x.g += y.g;
+	x.b += y.b;
+	if (x.r > 255)
+		x.r = 255;
+	if (x.g > 255)
+		x.g = 255;
+	if (x.b > 255)
+		x.b = 255;
+	return (x);
 }
 
 t_rgb	rgb_mul(t_rgb rgb, float ratio)
