@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:26:42 by bhowe             #+#    #+#             */
-/*   Updated: 2024/09/26 10:49:44 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 15:58:08 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_image	*new_img(t_prog *mlx)
 {
 	t_image	*img;
 
-	img = malloc(sizeof(t_img));
+	img = malloc(sizeof(t_image));
 	if (!img)
 		return (0);
 	img->img = mlx_new_image(mlx->mlx_ptr, IMG_WIDTH, IMG_HEIGHT);

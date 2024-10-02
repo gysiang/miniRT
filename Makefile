@@ -35,6 +35,7 @@ SRC_FILES :=	main.c \
 				save1.c \
 				utils.c \
 				init_struct.c \
+				movement.c \
 				handlers.c \
 				free.c	\
 				render.c \

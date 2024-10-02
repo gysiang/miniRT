@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   checks1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:17:51 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 11:43:28 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 17:30:40 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	check_Planes(t_img *data, char **s)
+int	check_Planes(t_data *data, char **s)
 {
 	if (ft_strncmp(s[0], "pl", 2) == 0)
 	{
@@ -29,7 +29,7 @@ int	check_Planes(t_img *data, char **s)
 	return (0);
 }
 
-int	check_Cylinders(t_img *data, char **s)
+int	check_Cylinders(t_data *data, char **s)
 {
 	float	diameter;
 	float	height;

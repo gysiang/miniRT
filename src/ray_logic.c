@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_logic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 16:35:03 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 17:32:27 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // function to generate ray
 // x and y are the coordinates on the image plane
-t_ray	make_ray(t_img *data, int x, int y)
+t_ray	make_ray(t_data *data, int x, int y)
 {
 	t_ray	ray;
 
@@ -110,7 +110,7 @@ float	calculate_lighting(t_vec *hitpoint, t_vec *normal, t_light *light)
 	return (intensity * light->brightness);
 }
 
-t_rayparams	init_rayparams(t_img *data)
+t_rayparams	init_rayparams(t_data *data)
 {
 	t_rayparams	rp;
 
@@ -123,7 +123,7 @@ t_rayparams	init_rayparams(t_img *data)
 /**
  * if it hits the sphere, return rgb of sphere, else return rgb of ambient.
  */
-int trace_ray(t_ray *ray, t_img *data)
+int trace_ray(t_ray *ray, t_data *data)
 {
 	t_rayparams	rp;
 	int			color;
