@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:31:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 19:15:54 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 15:54:12 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	check_FileType(const char *filename)
 	return (0);
 }
 
-int set_error_msg(t_img *data, char *msg)
+int set_error_msg(t_data *data, char *msg)
 {
 	data->error_msg = msg;
 	return (1);

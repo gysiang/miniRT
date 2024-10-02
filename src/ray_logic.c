@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_logic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/01 23:40:49 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 15:58:40 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // function to generate ray
 // x and y are the coordinates on the image plane
-t_ray	make_ray(t_img *data, int x, int y)
+t_ray	make_ray(t_data *data, int x, int y)
 {
 	t_ray	ray;
 
@@ -101,7 +101,7 @@ float	calculate_lighting(t_coords *hitpoint, t_coords *normal, t_light *light)
 /**
  * if it hits the sphere, return rgb of sphere, else return rgb of ambient.
  */
-int trace_ray(t_ray *ray, t_img *data)
+int trace_ray(t_ray *ray, t_data *data)
 {
 	t_rgb		amb;
 	t_rgb		diffuse;
@@ -134,11 +134,6 @@ int trace_ray(t_ray *ray, t_img *data)
 				amb = rgb_mix(data->spheres[i].rgb, amb);
 				// final color should be all lights added
 				color = rgb_get(rgb_add(amb, diffuse));
-
-				/**
-				 * before taking in light intensity
-				 * color = rgb_get(rgb_mix(amb, data->spheres[i].rgb));
-				 */
 			}
 		}
 		i++;

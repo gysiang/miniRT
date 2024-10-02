@@ -3,56 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/01 11:59:10 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 15:55:33 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	ray_test(t_img *data)
+void	init_program(t_data *data)
 {
-    t_ray ray;
-    float t;  // Use a float for t, not double
-    t_coords direction_to_sphere;
+	t_prog *prog;
 
-    // Initialize t to 0
-    t = 0;
+	prog = &data->program;
 
-    // Calculate ray origin and direction
-    ray.origin = data->camera.position;
-	direction_to_sphere = vector_Subtract(&data->spheres[0].position, &ray.origin);
-    //ray.vector = vector_Normalize(&direction_to_sphere);  // Calculate ray direction towards the sphere
-	ray.vector = direction_to_sphere;
-    // Check for hit
-    if (hit_sphere(&ray, &data->spheres[0], &t))
-    {
-        printf("Ray hits sphere at t = %f\n", t);  // Dereference t directly, no need for a pointer here
-    }
-    else
-    {
-        printf("Ray misses the sphere.\n");
-    }
-}
-
-
-void	init_program(t_prog *prog, t_img *data)
-{
 	prog->mlx_ptr = mlx_init();
 	prog->win_ptr = mlx_new_window(prog->mlx_ptr, IMG_WIDTH, IMG_HEIGHT, "MiniRT");
 	prog->image = new_img(prog);
 	mlx_hook(prog->win_ptr, 17,  0, handle_exit, prog);
 	mlx_hook(prog->win_ptr, 2, 1L<<0, handle_keypress, prog);
-	mlx_mouse_hook(prog->win_ptr, handle_mouse_click, prog);
-	//ray_test(data);
+	mlx_mouse_hook(data->program.win_ptr, handle_mouse_click, prog);
 	render_image(prog, data);
-	//render_ambient(prog, data->amb_light, &data->amb_rgb);
 	mlx_loop(prog->mlx_ptr);
 }
 
-void	init_img_data(t_img *data)
+void	init_img_data(t_data *data)
 {
 	data->error_msg = NULL;
 	// ambient

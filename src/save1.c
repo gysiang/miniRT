@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   save1.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:05:57 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/01 11:52:27 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 16:00:00 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	save_Plane(t_img *data, char **s)
+int	save_Plane(t_data *data, char **s)
 {
 	if (ft_strncmp(s[0], "pl", 2) == 0)
 	{
@@ -27,7 +27,7 @@ int	save_Plane(t_img *data, char **s)
 	return (0);
 }
 
-int	save_Cylinder(t_img *data, char **s)
+int	save_Cylinder(t_data *data, char **s)
 {
 	if (ft_strncmp(s[0], "cy", 2) == 0)
 	{

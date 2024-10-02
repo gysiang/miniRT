@@ -6,13 +6,13 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:17:51 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 18:56:38 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 15:55:06 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	check_Planes(t_img *data, char **s)
+int	check_Planes(t_data *data, char **s)
 {
 	if (ft_strncmp(s[0], "pl", 2) == 0)
 	{
@@ -28,7 +28,7 @@ int	check_Planes(t_img *data, char **s)
 	return (0);
 }
 
-int	check_Cylinders(t_img *data, char **s)
+int	check_Cylinders(t_data *data, char **s)
 {
 	float	diameter;
 	float	height;

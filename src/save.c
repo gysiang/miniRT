@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   save.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/01 23:25:24 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/02 15:59:44 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int save_FileContents(t_img *data, int fd)
+int save_FileContents(t_data *data, int fd)
 {
 	char	*line;
 	char	*norm_line;
@@ -43,7 +43,7 @@ int save_FileContents(t_img *data, int fd)
 	return (error_flag);
 }
 
-int	save_AmbientLight(t_img *data, char **s)
+int	save_AmbientLight(t_data *data, char **s)
 {
 	if (ft_strncmp(s[0], "A", 1) == 0)
 	{
@@ -53,7 +53,7 @@ int	save_AmbientLight(t_img *data, char **s)
 	return (0);
 }
 
-int	save_Camera(t_img *data, char **s)
+int	save_Camera(t_data *data, char **s)
 {
 	if (ft_strncmp(s[0], "C", 1) == 0)
 	{
@@ -70,7 +70,7 @@ int	save_Camera(t_img *data, char **s)
 	return (0);
 }
 
-int	save_Light(t_img *data, char **s)
+int	save_Light(t_data *data, char **s)
 {
 	if (ft_strncmp(s[0], "L", 1) == 0)
 	{
@@ -81,7 +81,7 @@ int	save_Light(t_img *data, char **s)
 	return (0);
 }
 
-int	save_Sphere(t_img *data, char **s)
+int	save_Sphere(t_data *data, char **s)
 {
 	if (ft_strncmp(s[0], "sp", 2) == 0)
 	{
