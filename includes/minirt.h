@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/03 15:44:43 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/03 22:11:38 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ typedef struct s_rayparams
 } t_rayparams;
 
 // Helper struct for solving quadratic equations
-typedef struct s_quadratic
+typedef struct s_qdtc
 {
 	float	discrim;
 	float	discrim_sqrt;
@@ -96,7 +96,18 @@ typedef struct s_quadratic
 	float	c;
 	float	t1;
 	float	t2;
-}	t_quadratic;
+}	t_qdtc;
+
+// Helper struct for cylinder calculations
+typedef struct s_cy_helper
+{
+	float	radius;
+	int		cy_x;
+	int		cy_z;
+	float	y_min;
+	float	y_max;
+	float	y_hit;
+}	t_cy_helper;
 
 // Struct for sphere data
 typedef struct s_sphere
