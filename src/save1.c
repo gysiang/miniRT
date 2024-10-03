@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:05:57 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 23:00:47 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/03 14:55:14 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	save_Cylinder(t_data *data, char **s)
 			save_Vector(&cy.position, s[1]);
 			save_Vector(&cy.vector, s[2]);
 			cy.diameter = ft_atof(s[3]);
+			cy.radius = cy.diameter / 2;
 			cy.height = ft_atof(s[4]);
 			save_RGB(&cy.rgb, s[5]);
 			data->cylinders[data->cylinder_count] = cy;

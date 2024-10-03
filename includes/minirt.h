@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/03 11:30:44 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/03 14:54:44 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,18 @@ typedef struct s_rayparams
 	float	light_intensity;
 } t_rayparams;
 
+// Helper struct for solving quadratic equations
+typedef struct s_quadratic
+{
+	float	discrim;
+	float	discrim_sqrt;
+	float	a;
+	float	b;
+	float	c;
+	float	t1;
+	float	t2;
+}	t_quadratic;
+
 // Struct for sphere data
 typedef struct s_sphere
 {
@@ -108,9 +120,10 @@ typedef struct s_cylinder
 {
 	t_vec	position;
 	t_vec	vector;
-	float		diameter;
-	double		height;
-	t_rgb		rgb;
+	float	diameter;
+	float	radius;
+	float	height;
+	t_rgb	rgb;
 }	t_cylinder;
 
 // mlx image struct
