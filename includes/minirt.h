@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 22:57:04 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/03 11:30:44 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,12 @@ typedef struct s_rayparams
 {
 	float	t;
 	float	min_dist;
-	t_rgb	amb;
-	t_rgb	diffuse;
+	int		color_fin;
+	// Components to calculate final color
+	t_rgb	amb_fin;
+	t_rgb	diffuse_fin;
+	// Derivatives to find above components
+	t_rgb	amb_def;
 	t_rgb	prim_col;
 	t_vec	prim_pos;
 	t_vec	normal;

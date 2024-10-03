@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/02 22:49:59 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/03 11:09:08 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,11 @@ bool	hit_plane(t_ray *ray, t_plane *plane, float *t)
 		return (true);
 	return (false);
 }
+
+// bool	hit_cylinder(t_ray *ray, t_cylinder *cylinder, float *t)
+// {
+// 	return (false);
+// }
 
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
 {

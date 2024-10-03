@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 22:50:50 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/03 11:31:04 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ t_rayparams	init_rayparams(t_data *data)
 
 	rp.t = 0;
 	rp.min_dist = INFINITY;
-	rp.amb = rgb_mul(data->amb_rgb, data->amb_light);
+	rp.amb_def = rgb_mul(data->amb_rgb, data->amb_light);
+	rp.color_fin = rgb_get(rp.amb_def);
 	return (rp);
 }
 
@@ -84,11 +85,9 @@ t_rayparams	init_rayparams(t_data *data)
 int trace_ray(t_ray *ray, t_data *data)
 {
 	t_rayparams	rp;
-	int			color;
 	int			i;
 
 	rp = init_rayparams(data);
-	color = rgb_get(rp.amb);
 	i = 0;
 	while (i < data->prim_count)
 	{
@@ -101,13 +100,13 @@ int trace_ray(t_ray *ray, t_data *data)
 				rp.normal = surface_normal(&rp.hitpoint, rp.prim_pos, data->prims[i].p_type);
 				rp.light_intensity = calculate_lighting(&rp.hitpoint, &rp.normal, &data->light);
 				// color of the sphere affected by each light
-				rp.diffuse = rgb_mix(rp.prim_col, rgb_mul(data->light.rgb, rp.light_intensity));
-				rp.amb = rgb_mix(rp.prim_col, rp.amb);
+				rp.diffuse_fin = rgb_mix(rp.prim_col, rgb_mul(data->light.rgb, rp.light_intensity));
+				rp.amb_fin = rgb_mix(rp.prim_col, rp.amb_def);
 				// final color should be all lights added
-				color = rgb_get(rgb_add(rp.amb, rp.diffuse));
+				rp.color_fin = rgb_get(rgb_add(rp.amb_fin, rp.diffuse_fin));
 			}
 		}
 		i++;
 	}
-	return (color);
+	return (rp.color_fin);
 }
