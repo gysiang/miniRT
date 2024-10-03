@@ -6,22 +6,22 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/03 15:07:50 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/03 16:59:01 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool	do_quadratic(t_quadratic qd, float *t)
+bool	do_quadratic(t_quadratic *qd, float *t)
 {
-	qd.discrim = qd.b * qd.b - 4 * qd.a * qd.c;
-	qd.discrim_sqrt = sqrt(qd.discrim);
-	qd.t1 = (-qd.b - qd.discrim_sqrt) / (2.0 * qd.a);
-	qd.t2 = (-qd.b + qd.discrim_sqrt) / (2.0 * qd.a);
-	if (qd.t1 > EPSILON)
-		*t = qd.t1;
-	else if (qd.t2 > EPSILON)
-		*t = qd.t2;
+	qd->discrim = qd->b * qd->b - 4 * qd->a * qd->c;
+	qd->discrim_sqrt = sqrt(qd->discrim);
+	qd->t1 = (-qd->b - qd->discrim_sqrt) / (2.0 * qd->a);
+	qd->t2 = (-qd->b + qd->discrim_sqrt) / (2.0 * qd->a);
+	if (qd->t1 > EPSILON)
+		*t = qd->t1;
+	else if (qd->t2 > EPSILON)
+		*t = qd->t2;
 	else
 		return (false);
 	return (true);
@@ -37,7 +37,7 @@ bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t)
 	qd.a = vector_DotProduct(&ray->vector, &ray->vector);
 	qd.b = 2.0 * vector_DotProduct(&oc, &ray->vector);
 	qd.c = vector_DotProduct(&oc, &oc) - sphere->radius * sphere->radius;
-	return (do_quadratic(qd, t));
+	return (do_quadratic(&qd, t));
 }
 
 bool	hit_plane(t_ray *ray, t_plane *plane, float *t)
@@ -55,6 +55,20 @@ bool	hit_plane(t_ray *ray, t_plane *plane, float *t)
 	return (false);
 }
 
+bool	check_cylinder_height(t_ray *ray, t_cylinder *cylinder, float *t)
+{
+	float	y_min;
+	float	y_max;
+	float	y_hit;
+
+	y_min = cylinder->position.y - cylinder->height / 2;
+	y_max = cylinder->position.y + cylinder->height / 2;
+	y_hit = ray->origin.y + *t * ray->vector.y;
+	if (y_hit >= y_min && y_hit <= y_max)
+		return (true);
+	return (false);
+}
+
 bool	hit_cylinder(t_ray *ray, t_cylinder *cylinder, float *t)
 {
 	t_quadratic	qd;
@@ -66,7 +80,9 @@ bool	hit_cylinder(t_ray *ray, t_cylinder *cylinder, float *t)
 	qd.a = ray->vector.x * ray->vector.x + ray->vector.z * ray->vector.z;
 	qd.b = 2 * (c_x * ray->vector.x + c_z * ray->vector.z);
 	qd.c = c_x * c_x + c_z * c_z - cylinder->radius * cylinder->radius;
-	return (do_quadratic(qd, t));
+	if (!do_quadratic(&qd, t))
+		return (false);
+	return (check_cylinder_height(ray, cylinder, t));
 }
 
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)

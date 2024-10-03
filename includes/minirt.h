@@ -6,12 +6,12 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/03 14:54:44 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/03 15:44:43 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI_RT_H
-# define MINI_RT_H
+#ifndef MINIRT_H
+# define MINIRT_H
 
 # include "../library/libft/includes/libft.h"
 # include "../library/mlx/mlx.h"
@@ -33,31 +33,31 @@
 // Struct for RGB values
 typedef struct s_rgb
 {
-	int r;
-	int g;
-	int b;
+	int	r;
+	int	g;
+	int	b;
 }	t_rgb;
 
 // Struct for camera data
 // vector is the orientation vector (given)
 typedef struct s_camera
 {
-	t_vec 	position;
-	t_vec 	vector;
-	int			fov;
-	float		aspect_ratio;
-	int			vertical_fov;
-	float		scale;
+	t_vec	position;
+	t_vec	vector;
+	int		fov;
+	float	aspect_ratio;
+	int		vertical_fov;
+	float	scale;
 	t_vec	up_vector;
 	t_vec	right_vector;
-	float		half_width;
-	float		half_height;
+	float	half_width;
+	float	half_height;
 }	t_camera;
 
 // Struct for light data
 typedef struct s_light
 {
-	t_vec position;
+	t_vec	position;
 	float	brightness;
 	t_rgb	rgb;
 }	t_light;
@@ -65,8 +65,8 @@ typedef struct s_light
 // Ray data related
 typedef struct s_ray
 {
-	t_vec origin;
-	t_vec vector;
+	t_vec	origin;
+	t_vec	vector;
 } t_ray;
 
 typedef struct s_rayparams
