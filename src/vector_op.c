@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:37:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 11:14:58 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/04 10:52:43 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,14 @@ t_vec vector_CrossProduct(const t_vec *a, const t_vec *b)
 	result.y = a->z * b->x - a->x * b->z;
 	result.z = a->x * b->y - a->y * b->x;
 	return (result);
+}
+
+t_vec vector_create(float x, float y, float z)
+{
+	t_vec res;
+
+	res.x = x;
+	res.y = y;
+	res.z = z;
+	return (res);
 }

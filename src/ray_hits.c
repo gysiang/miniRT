@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/03 22:11:04 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/04 11:55:10 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,57 @@ bool	hit_plane(t_ray *ray, t_plane *plane, float *t)
 	return (false);
 }
 
+t_matrix transpose_matrix(const t_matrix *matrix)
+{
+	t_matrix transposed;
+
+	transposed.m[0] = vector_create(matrix->m[0].x, matrix->m[1].x, matrix->m[2].x);
+	transposed.m[1] = vector_create(matrix->m[0].y, matrix->m[1].y, matrix->m[2].y);
+	transposed.m[2] = vector_create(matrix->m[0].z, matrix->m[1].z, matrix->m[2].z);
+	return (transposed);
+}
+
+t_matrix	rot_matrix_create(t_vec rot_vector, float rot_angle)
+{
+	t_matrix	rot_matrix;
+	float		cos_theta;
+	float		sin_theta;
+
+	rot_vector = vector_Normalize(&rot_vector);
+	cos_theta = cos(rot_angle);
+	sin_theta = sin(rot_angle);
+	rot_matrix.m[0] = vector_create(cos_theta + rot_vector.x * rot_vector.x * (1 - cos_theta),
+		rot_vector.x * rot_vector.y * (1 - cos_theta) - rot_vector.z * sin_theta,
+		rot_vector.x * rot_vector.z * (1 - cos_theta) + rot_vector.y * sin_theta);
+	rot_matrix.m[1] = vector_create(rot_vector.x * rot_vector.y * (1 - cos_theta) + rot_vector.z * sin_theta,
+		cos_theta + rot_vector.y * rot_vector.y * (1 - cos_theta),
+		rot_vector.y * rot_vector.z * (1 - cos_theta) - rot_vector.x * sin_theta);
+	rot_matrix.m[2] = vector_create(rot_vector.x * rot_vector.z * (1 - cos_theta) - rot_vector.y * sin_theta,
+		rot_vector.y * rot_vector.z * (1 - cos_theta) + rot_vector.x * sin_theta,
+		cos_theta + rot_vector.z * rot_vector.z * (1 - cos_theta));
+	rot_matrix = transpose_matrix(&rot_matrix);
+	return (rot_matrix);
+}
+
+void	ray_rotate(t_ray *ray, t_vec *cy_vector)
+{
+	t_vec		y_axis;
+	t_vec		rot_vector;
+	float		rot_angle;
+	t_matrix	rot_matrix;
+
+	y_axis = vector_create(0.0, 1.0, 0.0);
+	rot_vector = vector_CrossProduct(&y_axis, cy_vector);
+	rot_angle = acos(vector_DotProduct(&y_axis, cy_vector));
+	rot_matrix = rot_matrix_create(rot_vector, rot_angle);
+	ray->origin = vector_create(rot_matrix.m[0].x * ray->origin.x + rot_matrix.m[0].y * ray->origin.y + rot_matrix.m[0].z * ray->origin.z,
+		rot_matrix.m[1].x * ray->origin.x + rot_matrix.m[1].y * ray->origin.y + rot_matrix.m[1].z * ray->origin.z,
+		rot_matrix.m[2].x * ray->origin.x + rot_matrix.m[2].y * ray->origin.y + rot_matrix.m[2].z * ray->origin.z);
+	ray->vector = vector_create(rot_matrix.m[0].x * ray->vector.x + rot_matrix.m[0].y * ray->vector.y + rot_matrix.m[0].z * ray->vector.z,
+		rot_matrix.m[1].x * ray->vector.x + rot_matrix.m[1].y * ray->vector.y + rot_matrix.m[1].z * ray->vector.z,
+		rot_matrix.m[2].x * ray->vector.x + rot_matrix.m[2].y * ray->vector.y + rot_matrix.m[2].z * ray->vector.z);
+}
+
 bool	check_cylinder_caps(t_qdtc *qd, t_ray *ray, t_cy_helper *cyh, float *t)
 {
 	float	cap_x;
@@ -83,6 +134,7 @@ bool	hit_cylinder(t_ray *ray, t_cylinder *cylinder, float *t)
 	t_qdtc		qd;
 	t_cy_helper	cyh;
 
+	ray_rotate(ray, &cylinder->vector);
 	cyh.radius = cylinder->radius;
 	cyh.cy_x = ray->origin.x - cylinder->position.x;
 	cyh.cy_z = ray->origin.z - cylinder->position.z;
