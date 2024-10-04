@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 17:36:15 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/03 22:11:38 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI_RT_H
-# define MINI_RT_H
+#ifndef MINIRT_H
+# define MINIRT_H
 
 # include "../library/libft/includes/libft.h"
 # include "../library/mlx/mlx.h"
@@ -26,37 +26,38 @@
 
 # define IMG_WIDTH 800
 # define IMG_HEIGHT 600
-# define PI 3.14159265358979323846
 # define MAX_OBJ 10
+# define PI 3.14159265358979323846
+# define EPSILON 1e-6
 
 // Struct for RGB values
 typedef struct s_rgb
 {
-	int r;
-	int g;
-	int b;
+	int	r;
+	int	g;
+	int	b;
 }	t_rgb;
 
 // Struct for camera data
 // vector is the orientation vector (given)
 typedef struct s_camera
 {
-	t_vec 	position;
-	t_vec 	vector;
-	int			fov;
-	float		aspect_ratio;
-	int			vertical_fov;
-	float		scale;
+	t_vec	position;
+	t_vec	vector;
+	int		fov;
+	float	aspect_ratio;
+	int		vertical_fov;
+	float	scale;
 	t_vec	up_vector;
 	t_vec	right_vector;
-	float		half_width;
-	float		half_height;
+	float	half_width;
+	float	half_height;
 }	t_camera;
 
 // Struct for light data
 typedef struct s_light
 {
-	t_vec position;
+	t_vec	position;
 	float	brightness;
 	t_rgb	rgb;
 }	t_light;
@@ -64,22 +65,49 @@ typedef struct s_light
 // Ray data related
 typedef struct s_ray
 {
-	t_vec origin;
-	t_vec vector;
+	t_vec	origin;
+	t_vec	vector;
 } t_ray;
 
 typedef struct s_rayparams
 {
 	float	t;
 	float	min_dist;
-	t_rgb	amb;
-	t_rgb	diffuse;
+	int		color_fin;
+	// Components to calculate final color
+	t_rgb	amb_fin;
+	t_rgb	diffuse_fin;
+	// Derivatives to find above components
+	t_rgb	amb_def;
 	t_rgb	prim_col;
 	t_vec	prim_pos;
 	t_vec	normal;
 	t_vec	hitpoint;
 	float	light_intensity;
 } t_rayparams;
+
+// Helper struct for solving quadratic equations
+typedef struct s_qdtc
+{
+	float	discrim;
+	float	discrim_sqrt;
+	float	a;
+	float	b;
+	float	c;
+	float	t1;
+	float	t2;
+}	t_qdtc;
+
+// Helper struct for cylinder calculations
+typedef struct s_cy_helper
+{
+	float	radius;
+	int		cy_x;
+	int		cy_z;
+	float	y_min;
+	float	y_max;
+	float	y_hit;
+}	t_cy_helper;
 
 // Struct for sphere data
 typedef struct s_sphere
@@ -103,9 +131,10 @@ typedef struct s_cylinder
 {
 	t_vec	position;
 	t_vec	vector;
-	float		diameter;
-	double		height;
-	t_rgb		rgb;
+	float	diameter;
+	float	radius;
+	float	height;
+	t_rgb	rgb;
 }	t_cylinder;
 
 // mlx image struct
@@ -209,7 +238,6 @@ int	save_Sphere(t_data *data, char **s);
 int	save_Plane(t_data *data, char **s);
 int	save_Cylinder(t_data *data, char **s);
 int	save_RGB(t_rgb *array, char *s);
-int	save_XYZ(t_vec *array, char *s);
 int	save_Vector(t_vec *array, char *s);
 
 // handlers
@@ -230,6 +258,9 @@ t_image	*new_img(t_prog *mlx);
 t_ray	make_ray(t_data *data, int x, int y);
 bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t);
 int		trace_ray(t_ray *ray, t_data *data);
+
+// ray - hit
+bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
 
 // render
 void	render_ambient(t_prog *mlx, float s, t_rgb *amb);

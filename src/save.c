@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   save.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 17:36:37 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 22:57:02 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	save_Camera(t_data *data, char **s)
 {
 	if (ft_strncmp(s[0], "C", 1) == 0)
 	{
-		save_XYZ(&(data->camera.position), s[1]);
+		save_Vector(&(data->camera.position), s[1]);
 		save_Vector(&(data->camera.vector), s[2]);
 		data->camera.fov = ft_atoi(s[3]);
 		data->camera.aspect_ratio = IMG_WIDTH / (float)IMG_HEIGHT;
@@ -74,7 +74,7 @@ int	save_Light(t_data *data, char **s)
 {
 	if (ft_strncmp(s[0], "L", 1) == 0)
 	{
-		save_XYZ(&(data->light.position), s[1]);
+		save_Vector(&(data->light.position), s[1]);
 		data->light.brightness = ft_atof(s[2]);
 		save_RGB(&(data->light.rgb), "255,255,255");
 	}
@@ -88,18 +88,18 @@ int	save_Sphere(t_data *data, char **s)
 	if (ft_strncmp(s[0], "sp", 2) == 0)
 	{
 		/**
-		save_XYZ(&(data->sphere.position), s[1]);
+		save_Vector(&(data->sphere.position), s[1]);
 		data->sphere.diameter = ft_atof(s[2]);
 		save_RGB(&(data->sphere.rgb), s[3]);
 		**/
 		// save the sphere info in the array;
 		if (data->sphere_count < MAX_OBJ)
 		{
-			// save_XYZ(&(data->spheres[data->sphere_count].position),s[1]);
+			// save_Vector(&(data->spheres[data->sphere_count].position),s[1]);
 			// data->spheres[data->sphere_count].diameter = ft_atof(s[2]);
 			// data->spheres[data->sphere_count].radius = ft_atof(s[2]) / 2;
 			// save_RGB(&(data->spheres[data->sphere_count].rgb), s[3]);
-			save_XYZ(&sp.position, s[1]);
+			save_Vector(&sp.position, s[1]);
 			sp.diameter = ft_atof(s[2]);
 			sp.radius = sp.diameter / 2;
 			save_RGB(&sp.rgb, s[3]);
