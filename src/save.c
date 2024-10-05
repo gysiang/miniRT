@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 22:57:02 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 02:05:30 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,29 +87,12 @@ int	save_Sphere(t_data *data, char **s)
 
 	if (ft_strncmp(s[0], "sp", 2) == 0)
 	{
-		/**
-		save_Vector(&(data->sphere.position), s[1]);
-		data->sphere.diameter = ft_atof(s[2]);
-		save_RGB(&(data->sphere.rgb), s[3]);
-		**/
-		// save the sphere info in the array;
-		if (data->sphere_count < MAX_OBJ)
-		{
-			// save_Vector(&(data->spheres[data->sphere_count].position),s[1]);
-			// data->spheres[data->sphere_count].diameter = ft_atof(s[2]);
-			// data->spheres[data->sphere_count].radius = ft_atof(s[2]) / 2;
-			// save_RGB(&(data->spheres[data->sphere_count].rgb), s[3]);
-			save_Vector(&sp.position, s[1]);
-			sp.diameter = ft_atof(s[2]);
-			sp.radius = sp.diameter / 2;
-			save_RGB(&sp.rgb, s[3]);
-			data->spheres[data->sphere_count] = sp;
-			data->sphere_count++;
-			// * Single array version
-			data->prims[data->prim_count].p_data.sp = sp;
-			data->prims[data->prim_count].p_type = SP;
-			data->prim_count++;
-		}
+		sp.radius = ft_atof(s[2]) / 2;
+		data->prims[data->prim_count].p_data.sp = sp;
+		save_RGB(&data->prims[data->prim_count].rgb, s[3]);
+		save_Vector(&data->prims[data->prim_count].position, s[1]);
+		data->prims[data->prim_count].p_type = SP;
+		data->prim_count++;
 	}
 	return (0);
 }
