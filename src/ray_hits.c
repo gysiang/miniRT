@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/04 11:55:10 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/05 20:55:31 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,126 +33,83 @@ bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t)
 	t_qdtc	qd;
 
 	// vector from ray origin to sphere center
-	oc = vector_Subtract(&ray->origin, &sphere->position);
-	qd.a = vector_DotProduct(&ray->vector, &ray->vector);
-	qd.b = 2.0 * vector_DotProduct(&oc, &ray->vector);
-	qd.c = vector_DotProduct(&oc, &oc) - sphere->radius * sphere->radius;
+	oc = vector_Subtract(ray->origin, sphere->position);
+	qd.a = vector_DotProduct(ray->vector, ray->vector);
+	qd.b = 2.0 * vector_DotProduct(oc, ray->vector);
+	qd.c = vector_DotProduct(oc, oc) - sphere->radius * sphere->radius;
 	return (do_quadratic(&qd, t));
 }
 
-bool	hit_plane(t_ray *ray, t_plane *plane, float *t)
+bool	hit_plane(t_ray *ray, t_vec pos, t_vec vector, float *t)
 {
 	float	a;
 	float	b;
 	t_vec	po;
 
-	po = vector_Subtract(&plane->position, &ray->origin);
-	a = vector_DotProduct(&plane->vector, &po);
-	b = vector_DotProduct(&plane->vector, &ray->vector);
+	po = vector_Subtract(pos, ray->origin);
+	a = vector_DotProduct(vector, po);
+	b = vector_DotProduct(vector, ray->vector);
 	*t = a / b;
 	if (*t > EPSILON)
 		return (true);
 	return (false);
 }
 
-t_matrix transpose_matrix(const t_matrix *matrix)
+bool	hit_disc(float t_cap, t_cy_helper *cyh, float y_offset, float *t)
 {
-	t_matrix transposed;
+	float	d2;
+	t_vec	v;
+	t_vec	p;
 
-	transposed.m[0] = vector_create(matrix->m[0].x, matrix->m[1].x, matrix->m[2].x);
-	transposed.m[1] = vector_create(matrix->m[0].y, matrix->m[1].y, matrix->m[2].y);
-	transposed.m[2] = vector_create(matrix->m[0].z, matrix->m[1].z, matrix->m[2].z);
-	return (transposed);
-}
-
-t_matrix	rot_matrix_create(t_vec rot_vector, float rot_angle)
-{
-	t_matrix	rot_matrix;
-	float		cos_theta;
-	float		sin_theta;
-
-	rot_vector = vector_Normalize(&rot_vector);
-	cos_theta = cos(rot_angle);
-	sin_theta = sin(rot_angle);
-	rot_matrix.m[0] = vector_create(cos_theta + rot_vector.x * rot_vector.x * (1 - cos_theta),
-		rot_vector.x * rot_vector.y * (1 - cos_theta) - rot_vector.z * sin_theta,
-		rot_vector.x * rot_vector.z * (1 - cos_theta) + rot_vector.y * sin_theta);
-	rot_matrix.m[1] = vector_create(rot_vector.x * rot_vector.y * (1 - cos_theta) + rot_vector.z * sin_theta,
-		cos_theta + rot_vector.y * rot_vector.y * (1 - cos_theta),
-		rot_vector.y * rot_vector.z * (1 - cos_theta) - rot_vector.x * sin_theta);
-	rot_matrix.m[2] = vector_create(rot_vector.x * rot_vector.z * (1 - cos_theta) - rot_vector.y * sin_theta,
-		rot_vector.y * rot_vector.z * (1 - cos_theta) + rot_vector.x * sin_theta,
-		cos_theta + rot_vector.z * rot_vector.z * (1 - cos_theta));
-	rot_matrix = transpose_matrix(&rot_matrix);
-	return (rot_matrix);
-}
-
-void	ray_rotate(t_ray *ray, t_vec *cy_vector)
-{
-	t_vec		y_axis;
-	t_vec		rot_vector;
-	float		rot_angle;
-	t_matrix	rot_matrix;
-
-	y_axis = vector_create(0.0, 1.0, 0.0);
-	rot_vector = vector_CrossProduct(&y_axis, cy_vector);
-	rot_angle = acos(vector_DotProduct(&y_axis, cy_vector));
-	rot_matrix = rot_matrix_create(rot_vector, rot_angle);
-	ray->origin = vector_create(rot_matrix.m[0].x * ray->origin.x + rot_matrix.m[0].y * ray->origin.y + rot_matrix.m[0].z * ray->origin.z,
-		rot_matrix.m[1].x * ray->origin.x + rot_matrix.m[1].y * ray->origin.y + rot_matrix.m[1].z * ray->origin.z,
-		rot_matrix.m[2].x * ray->origin.x + rot_matrix.m[2].y * ray->origin.y + rot_matrix.m[2].z * ray->origin.z);
-	ray->vector = vector_create(rot_matrix.m[0].x * ray->vector.x + rot_matrix.m[0].y * ray->vector.y + rot_matrix.m[0].z * ray->vector.z,
-		rot_matrix.m[1].x * ray->vector.x + rot_matrix.m[1].y * ray->vector.y + rot_matrix.m[1].z * ray->vector.z,
-		rot_matrix.m[2].x * ray->vector.x + rot_matrix.m[2].y * ray->vector.y + rot_matrix.m[2].z * ray->vector.z);
-}
-
-bool	check_cylinder_caps(t_qdtc *qd, t_ray *ray, t_cy_helper *cyh, float *t)
-{
-	float	cap_x;
-	float	cap_z;
-
-	cap_x = cyh->cy_x + qd->t1 * ray->vector.x;
-	cap_z = cyh->cy_z + qd->t1 * ray->vector.z;
-	cyh->radius *= cyh->radius;
-	if (cap_x * cap_x + cap_z * cap_z <= cyh->radius)
+	if (t_cap > EPSILON && t_cap < *t)
 	{
-		*t = qd->t1;
-		return (true);
-	}
-	cap_x = cyh->cy_x + qd->t2 * ray->vector.x;
-	cap_z = cyh->cy_z + qd->t2 * ray->vector.z;
-	if (cap_x * cap_x + cap_z * cap_z <= cyh->radius)
-	{
-		*t = qd->t2;
-		return (true);
+		cyh->cap_center = vector_Add(cyh->cylinder->position, vector_Multiply(cyh->cylinder->vector, y_offset));
+		p = vector_Add(cyh->ray->origin, vector_Multiply(cyh->ray->vector, t_cap));
+		v = vector_Subtract(p, cyh->cap_center);
+		d2 = vector_DotProduct(v, v);
+		if (d2 <= cyh->cylinder->radius * cyh->cylinder->radius && t_cap < *t)
+		{
+			*t = t_cap;
+			return (true);
+		}
 	}
 	return (false);
 }
 
+void	init_cy_helper(t_ray *ray, t_cylinder *cylinder, t_cy_helper *cyh)
+{
+	cyh->ray = ray;
+	cyh->cylinder = cylinder;
+	// Vector from ray origin to cylinder center
+	cyh->oc = vector_Subtract(ray->origin, cylinder->position);
+	// Project ray direction and oc onto cylinder axis
+	cyh->axis_proj = vector_Multiply(cylinder->vector, vector_DotProduct(ray->vector, cylinder->vector));
+	// Calculate perpendicular components
+	cyh->perp = vector_Subtract(ray->vector, cyh->axis_proj);
+	cyh->oc_perp = vector_Subtract(cyh->oc, vector_Multiply(cylinder->vector, vector_DotProduct(cyh->oc, cylinder->vector)));
+}
+
 bool	hit_cylinder(t_ray *ray, t_cylinder *cylinder, float *t)
 {
-	t_qdtc		qd;
-	t_cy_helper	cyh;
+	t_qdtc qd;
+	t_cy_helper cyh;
 
-	ray_rotate(ray, &cylinder->vector);
-	cyh.radius = cylinder->radius;
-	cyh.cy_x = ray->origin.x - cylinder->position.x;
-	cyh.cy_z = ray->origin.z - cylinder->position.z;
-	qd.a = ray->vector.x * ray->vector.x + ray->vector.z * ray->vector.z;
-	qd.b = 2 * (cyh.cy_x * ray->vector.x + cyh.cy_z * ray->vector.z);
-	qd.c = cyh.cy_x * cyh.cy_x + cyh.cy_z * cyh.cy_z - cyh.radius * cyh.radius;
+	init_cy_helper(ray, cylinder, &cyh);
+	qd.a = vector_DotProduct(cyh.perp, cyh.perp);
+	qd.b = 2 * vector_DotProduct(cyh.perp, cyh.oc_perp);
+	qd.c = vector_DotProduct(cyh.oc_perp, cyh.oc_perp) - cylinder->radius * cylinder->radius;
 	if (!do_quadratic(&qd, t))
 		return (false);
-	// Check if ray is within the height of the cylinder
-	cyh.y_min = cylinder->position.y - cylinder->height / 2;
-	cyh.y_max = cylinder->position.y + cylinder->height / 2;
-	cyh.y_hit = ray->origin.y + *t * ray->vector.y;
-	if (cyh.y_hit >= cyh.y_min && cyh.y_hit <= cyh.y_max)
-		return (true);
-	// Check if ray hits the caps instead
-	qd.t1 = (cyh.y_min - ray->origin.y) / ray->vector.y;
-	qd.t2 = (cyh.y_max - ray->origin.y) / ray->vector.y;
-	return (check_cylinder_caps(&qd, ray, &cyh, t));
+	// Check if intersection is within cylinder height
+	cyh.y_hit = vector_DotProduct(vector_Add(cyh.oc, vector_Multiply(ray->vector, *t)), cylinder->vector);
+	cyh.y_min = -cylinder->height / 2;
+	cyh.y_max = cylinder->height / 2;
+	if (cyh.y_hit < cyh.y_min || cyh.y_hit > cyh.y_max)
+		return (false);
+	// Check if intersection is within cylinder caps
+	cyh.t_cap1 = (cyh.y_min - vector_DotProduct(cylinder->vector, cyh.oc)) / vector_DotProduct(cylinder->vector, ray->vector);
+	cyh.t_cap2 = (cyh.y_max - vector_DotProduct(cylinder->vector, cyh.oc)) / vector_DotProduct(cylinder->vector, ray->vector);
+	return (hit_disc(cyh.t_cap1, &cyh, cyh.y_min, t) || hit_disc(cyh.t_cap2, &cyh, cyh.y_max, t));
 }
 
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
@@ -167,7 +124,7 @@ bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
 	{
 		rp->prim_col = prim.p_data.pl.rgb;
 		rp->prim_pos = prim.p_data.pl.vector;
-		return (hit_plane(ray, &prim.p_data.pl, &rp->t));
+		return (hit_plane(ray, prim.p_data.pl.position, prim.p_data.pl.vector, &rp->t));
 	}
 	if (prim.p_type == CY)
 	{

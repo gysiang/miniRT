@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/03 11:31:04 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/04 20:42:07 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_vec	surface_normal(t_vec *hitpoint, t_vec pos, t_type type)
 
 	if (type != PL)
 	{
-		n = vector_Subtract(hitpoint, &pos);
+		n = vector_Subtract(*hitpoint, pos);
 		n = vector_Normalize(&n);
 	}
 	else
@@ -58,10 +58,10 @@ float	calculate_lighting(t_vec *hitpoint, t_vec *normal, t_light *light)
 	t_vec	light_dir;
 	float		intensity;
 	// vector from intersection to light source
-	light_dir = vector_Subtract(&light->position, hitpoint);
+	light_dir = vector_Subtract(light->position, *hitpoint);
 	light_dir = vector_Normalize(&light_dir);
 	// angle between light direction and surface vector
-	intensity = vector_DotProduct(&light_dir, normal);
+	intensity = vector_DotProduct(light_dir, *normal);
 	if (intensity < 0)
 		intensity = 0;
 	// scale it by the light brightness

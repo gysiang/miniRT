@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/03 22:11:38 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/05 00:03:55 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,17 +98,6 @@ typedef struct s_qdtc
 	float	t2;
 }	t_qdtc;
 
-// Helper struct for cylinder calculations
-typedef struct s_cy_helper
-{
-	float	radius;
-	int		cy_x;
-	int		cy_z;
-	float	y_min;
-	float	y_max;
-	float	y_hit;
-}	t_cy_helper;
-
 // Struct for sphere data
 typedef struct s_sphere
 {
@@ -136,6 +125,23 @@ typedef struct s_cylinder
 	float	height;
 	t_rgb	rgb;
 }	t_cylinder;
+
+// Helper struct for cylinder calculations
+typedef struct s_cy_helper
+{
+	t_ray	*ray;
+	t_cylinder	*cylinder;
+	t_vec	oc;
+	t_vec	axis_proj;
+	t_vec	perp;
+	t_vec	oc_perp;
+	float	y_hit;
+	float	y_min;
+	float	y_max;
+	t_vec	cap_center;
+	float	t_cap1;
+	float	t_cap2;
+}	t_cy_helper;
 
 // mlx image struct
 typedef struct s_image
