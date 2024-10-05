@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/05 00:03:55 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/05 21:50:12 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,6 @@ typedef struct s_cy_helper
 	float	y_min;
 	float	y_max;
 	t_vec	cap_center;
-	float	t_cap1;
-	float	t_cap2;
 }	t_cy_helper;
 
 // mlx image struct

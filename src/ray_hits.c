@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/05 20:55:31 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/05 22:02:56 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 bool	do_quadratic(t_qdtc *qd, float *t)
 {
 	qd->discrim = qd->b * qd->b - 4 * qd->a * qd->c;
+	if (qd->discrim < 0)
+		return (false);
 	qd->discrim_sqrt = sqrt(qd->discrim);
 	qd->t1 = (-qd->b - qd->discrim_sqrt) / (2.0 * qd->a);
 	qd->t2 = (-qd->b + qd->discrim_sqrt) / (2.0 * qd->a);
@@ -55,21 +57,23 @@ bool	hit_plane(t_ray *ray, t_vec pos, t_vec vector, float *t)
 	return (false);
 }
 
-bool	hit_disc(float t_cap, t_cy_helper *cyh, float y_offset, float *t)
+bool	hit_disc(t_ray *ray, t_cy_helper *cyh, float y_offset, float *t)
 {
+	float	t_mem;
 	float	d2;
 	t_vec	v;
 	t_vec	p;
 
-	if (t_cap > EPSILON && t_cap < *t)
+	t_mem = *t;
+	cyh->cap_center = vector_Add(cyh->cylinder->position, vector_Multiply(cyh->cylinder->vector, y_offset));
+	if (hit_plane(ray, cyh->cap_center, cyh->cylinder->vector, &t_mem))
 	{
-		cyh->cap_center = vector_Add(cyh->cylinder->position, vector_Multiply(cyh->cylinder->vector, y_offset));
-		p = vector_Add(cyh->ray->origin, vector_Multiply(cyh->ray->vector, t_cap));
+		p = vector_Add(ray->origin, vector_Multiply(ray->vector, t_mem));
 		v = vector_Subtract(p, cyh->cap_center);
 		d2 = vector_DotProduct(v, v);
-		if (d2 <= cyh->cylinder->radius * cyh->cylinder->radius && t_cap < *t)
+		if (d2 <= cyh->cylinder->radius * cyh->cylinder->radius && t_mem < *t - EPSILON)
 		{
-			*t = t_cap;
+			*t = t_mem;
 			return (true);
 		}
 	}
@@ -91,6 +95,8 @@ void	init_cy_helper(t_ray *ray, t_cylinder *cylinder, t_cy_helper *cyh)
 
 bool	hit_cylinder(t_ray *ray, t_cylinder *cylinder, float *t)
 {
+	bool	hit_body;
+	bool	hit_cap;
 	t_qdtc qd;
 	t_cy_helper cyh;
 
@@ -104,12 +110,10 @@ bool	hit_cylinder(t_ray *ray, t_cylinder *cylinder, float *t)
 	cyh.y_hit = vector_DotProduct(vector_Add(cyh.oc, vector_Multiply(ray->vector, *t)), cylinder->vector);
 	cyh.y_min = -cylinder->height / 2;
 	cyh.y_max = cylinder->height / 2;
-	if (cyh.y_hit < cyh.y_min || cyh.y_hit > cyh.y_max)
-		return (false);
+	hit_body = cyh.y_hit >= cyh.y_min && cyh.y_hit <= cyh.y_max;
 	// Check if intersection is within cylinder caps
-	cyh.t_cap1 = (cyh.y_min - vector_DotProduct(cylinder->vector, cyh.oc)) / vector_DotProduct(cylinder->vector, ray->vector);
-	cyh.t_cap2 = (cyh.y_max - vector_DotProduct(cylinder->vector, cyh.oc)) / vector_DotProduct(cylinder->vector, ray->vector);
-	return (hit_disc(cyh.t_cap1, &cyh, cyh.y_min, t) || hit_disc(cyh.t_cap2, &cyh, cyh.y_max, t));
+	hit_cap = hit_disc(ray, &cyh, cyh.y_min, t) || hit_disc(ray, &cyh, cyh.y_max, t);
+	return (hit_body || hit_cap);
 }
 
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
