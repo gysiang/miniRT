@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 16:06:44 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/06 02:20:15 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,21 @@ void	print_data(t_data *data)
 	printf("Right Vector : %.1f,%.1f,%.1f\n", data->camera.right_vector.x, data->camera.right_vector.y, data->camera.right_vector.z);
 	printf("Up Vector : %.1f,%.1f,%.1f\n", data->camera.up_vector.x, data->camera.up_vector.y, data->camera.up_vector.z);
 
-	printf("Sphere\n");
-	printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->spheres[0].position.x, data->spheres[0].position.y, data->spheres[0].position.z);
-	printf("Diameter %.1f\n", data->spheres[0].diameter);
-	printf("Sphere rgb: %d,%d,%d\n", data->spheres[0].rgb.r, data->spheres[0].rgb.g, data->spheres[0].rgb.b);
-	/** *
-	printf("Plane\n");
-	printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->planes[0].position.x, data->planes[0].position.y, data->planes[0].position.z);
-	printf("Vector Coordinates: %.1f,%.1f,%.1f\n", data->planes[0].vector.x, data->planes[0].vector.y, data->planes[0].vector.z);
-	printf("Plane rgb: %d,%d,%d\n", data->planes[0].rgb.r, data->planes[0].rgb.g, data->planes[0].rgb.b);
-	printf("Cylinder\n");
-	printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->cylinders[0].position.x, data->cylinders[0].position.y, data->cylinders[0].position.z);
-	printf("Vector Coordinates: %.1f,%.1f,%.1f\n", data->cylinders[0].vector.x, data->cylinders[0].vector.y, data->cylinders[0].vector.z);
-	printf("Diameter %.1f\n", data->cylinders[0].diameter);
-	printf("Height %.2f\n", data->cylinders[0].height);
-	printf("Cylinder rgb: %d,%d,%d\n", data->cylinders[0].rgb.r, data->cylinders[0].rgb.g, data->cylinders[0].rgb.b);
-	printf("All data is printed successfully\n");	**/
+	// printf("Sphere\n");
+	// printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->spheres[0].position.x, data->spheres[0].position.y, data->spheres[0].position.z);
+	// printf("Diameter %.1f\n", data->spheres[0].diameter);
+	// printf("Sphere rgb: %d,%d,%d\n", data->spheres[0].rgb.r, data->spheres[0].rgb.g, data->spheres[0].rgb.b);
+	// printf("Plane\n");
+	// printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->planes[0].position.x, data->planes[0].position.y, data->planes[0].position.z);
+	// printf("Vector Coordinates: %.1f,%.1f,%.1f\n", data->planes[0].vector.x, data->planes[0].vector.y, data->planes[0].vector.z);
+	// printf("Plane rgb: %d,%d,%d\n", data->planes[0].rgb.r, data->planes[0].rgb.g, data->planes[0].rgb.b);
+	// printf("Cylinder\n");
+	// printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->cylinders[0].position.x, data->cylinders[0].position.y, data->cylinders[0].position.z);
+	// printf("Vector Coordinates: %.1f,%.1f,%.1f\n", data->cylinders[0].vector.x, data->cylinders[0].vector.y, data->cylinders[0].vector.z);
+	// printf("Diameter %.1f\n", data->cylinders[0].diameter);
+	// printf("Height %.2f\n", data->cylinders[0].height);
+	// printf("Cylinder rgb: %d,%d,%d\n", data->cylinders[0].rgb.r, data->cylinders[0].rgb.g, data->cylinders[0].rgb.b);
+	// printf("All data is printed successfully\n");
 }
 
 int	main(int ac, char **av)

@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/03 22:11:38 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 21:41:45 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef struct s_ray
 {
 	t_vec	origin;
 	t_vec	vector;
+	t_vec	hit_coord;
+	t_vec	normal;
 } t_ray;
 
 typedef struct s_rayparams
@@ -80,9 +82,6 @@ typedef struct s_rayparams
 	// Derivatives to find above components
 	t_rgb	amb_def;
 	t_rgb	prim_col;
-	t_vec	prim_pos;
-	t_vec	normal;
-	t_vec	hitpoint;
 	float	light_intensity;
 } t_rayparams;
 
@@ -98,44 +97,40 @@ typedef struct s_qdtc
 	float	t2;
 }	t_qdtc;
 
-// Helper struct for cylinder calculations
-typedef struct s_cy_helper
-{
-	float	radius;
-	int		cy_x;
-	int		cy_z;
-	float	y_min;
-	float	y_max;
-	float	y_hit;
-}	t_cy_helper;
-
 // Struct for sphere data
 typedef struct s_sphere
 {
-	t_vec	position;
-	float		diameter;
-	float		radius;
-	t_rgb		rgb;
+	float	radius;
 }	t_sphere;
 
 // Struct for plane data
-typedef struct s_plane
-{
-	t_vec	position;
-	t_vec	vector;
-	t_rgb		rgb;
-}	t_plane;
+// typedef struct s_plane
+// {
+// }	t_plane;
 
 // Struct for cylinder data
 typedef struct s_cylinder
 {
-	t_vec	position;
-	t_vec	vector;
-	float	diameter;
 	float	radius;
 	float	height;
-	t_rgb	rgb;
 }	t_cylinder;
+
+// Helper struct for cylinder calculations
+typedef struct s_cy_helper
+{
+	t_ray	*ray;
+	t_vec	oc;
+	t_vec	axis_proj;
+	t_vec	perp;
+	t_vec	oc_perp;
+	bool	hit_body;
+	bool	hit_cap;
+	float	y_hit;
+	float	y_min;
+	float	y_max;
+	t_vec	cap_center;
+	bool	top_cap;
+}	t_cy_helper;
 
 // mlx image struct
 typedef struct s_image
@@ -165,7 +160,6 @@ typedef enum type
 union	u_type
 {
 	t_sphere	sp;
-	t_plane		pl;
 	t_cylinder	cy;
 };
 
@@ -173,6 +167,9 @@ typedef struct	s_prim
 {
 	union u_type	p_data;
 	t_type			p_type;
+	t_vec			position;
+	t_vec			vector;
+	t_rgb			rgb;
 }	t_prim;
 
 // Main image struct
@@ -187,13 +184,6 @@ typedef struct s_data
 	//An array that contains all ray hittable primitives
 	t_prim		*prims;
 	int			prim_count;
-	// There can be multiple planes, cylinder, spheres so there needs to have an array to store it
-	t_sphere	spheres[MAX_OBJ];
-	int			sphere_count;
-	t_plane		planes[MAX_OBJ];
-	int			plane_count;
-	t_cylinder	cylinders[MAX_OBJ];
-	int			cylinder_count;
 }	t_data;
 
 
@@ -256,7 +246,6 @@ t_image	*new_img(t_prog *mlx);
 
 // ray logic
 t_ray	make_ray(t_data *data, int x, int y);
-bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t);
 int		trace_ray(t_ray *ray, t_data *data);
 
 // ray - hit
