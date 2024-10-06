@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 02:21:32 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 19:50:07 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef struct s_ray
 {
 	t_vec	origin;
 	t_vec	vector;
+	t_vec	hit_coord;
+	t_vec	normal;
 } t_ray;
 
 typedef struct s_rayparams
@@ -81,8 +83,6 @@ typedef struct s_rayparams
 	t_rgb	amb_def;
 	t_rgb	prim_col;
 	t_vec	prim_pos;
-	t_vec	normal;
-	t_vec	hitpoint;
 	float	light_intensity;
 } t_rayparams;
 

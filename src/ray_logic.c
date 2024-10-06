@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 02:27:50 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 19:51:32 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,6 @@ t_ray	make_ray(t_data *data, int x, int y)
 	ray.vector = vector_Normalize(&ray.vector);
 	//printf("Ray direction: (%f, %f, %f)\n", ray.vector.x, ray.vector.y, ray.vector.z);
 	return (ray);
-}
-
-t_vec	intersection_point(t_ray *ray, float t)
-{
-	t_vec s;
-
-	// point where the ray hits the prim
-	s.x = ray->origin.x + ray->vector.x * t;
-	s.y = ray->origin.y + ray->vector.y * t;
-	s.z = ray->origin.z + ray->vector.z * t;
-	return (s);
-}
-
-t_vec	surface_normal(t_vec *hitpoint, t_prim *prim)
-{
-	t_vec n;
-
-	if (prim->p_type != PL)
-	{
-		n = vector_Subtract(hitpoint, &prim->position);
-		n = vector_Normalize(&n);
-	}
-	else
-		n = prim->vector;
-	return (n);
 }
 
 float	calculate_lighting(t_vec *hitpoint, t_vec *normal, t_light *light)
@@ -98,9 +73,7 @@ int trace_ray(t_ray *ray, t_data *data)
 				rp.prim_col = data->prims[i].rgb;
 				rp.prim_pos = data->prims[i].position;
 				rp.min_dist = rp.t;
-				rp.hitpoint = intersection_point(ray, rp.t);
-				rp.normal = surface_normal(&rp.hitpoint, &data->prims[i]);
-				rp.light_intensity = calculate_lighting(&rp.hitpoint, &rp.normal, &data->light);
+				rp.light_intensity = calculate_lighting(&ray->hit_coord, &ray->normal, &data->light);
 				// color of the sphere affected by each light
 				rp.diffuse_fin = rgb_mix(rp.prim_col, rgb_mul(data->light.rgb, rp.light_intensity));
 				rp.amb_fin = rgb_mix(rp.prim_col, rp.amb_def);

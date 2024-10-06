@@ -6,11 +6,36 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/06 02:19:26 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 19:51:00 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+t_vec	intersection_point(t_ray *ray, float t)
+{
+	t_vec s;
+
+	// point where the ray hits the prim
+	s.x = ray->origin.x + ray->vector.x * t;
+	s.y = ray->origin.y + ray->vector.y * t;
+	s.z = ray->origin.z + ray->vector.z * t;
+	return (s);
+}
+
+t_vec	surface_normal(t_vec *hitpoint, t_prim *prim)
+{
+	t_vec n;
+
+	if (prim->p_type != PL)
+	{
+		n = vector_Subtract(hitpoint, &prim->position);
+		n = vector_Normalize(&n);
+	}
+	else
+		n = prim->vector;
+	return (n);
+}
 
 bool	do_quadratic(t_qdtc *qd, float *t)
 {
@@ -37,7 +62,12 @@ bool	hit_sphere(t_ray *ray, t_prim *prim, float *t)
 	qd.a = vector_DotProduct(&ray->vector, &ray->vector);
 	qd.b = 2.0 * vector_DotProduct(&oc, &ray->vector);
 	qd.c = vector_DotProduct(&oc, &oc) - prim->p_data.sp.radius * prim->p_data.sp.radius;
-	return (do_quadratic(&qd, t));
+	if (!do_quadratic(&qd, t))
+		return (false);
+	ray->hit_coord = intersection_point(ray, *t);
+	ray->normal = vector_Subtract(&ray->hit_coord, &prim->position);
+	ray->normal = vector_Normalize(&ray->normal);
+	return (true);
 }
 
 bool	hit_plane(t_ray *ray, t_prim *prim, float *t)
@@ -50,9 +80,11 @@ bool	hit_plane(t_ray *ray, t_prim *prim, float *t)
 	a = vector_DotProduct(&prim->vector, &po);
 	b = vector_DotProduct(&prim->vector, &ray->vector);
 	*t = a / b;
-	if (*t > EPSILON)
-		return (true);
-	return (false);
+	if (*t < EPSILON)
+		return (false);
+	ray->hit_coord = intersection_point(ray, *t);
+	ray->normal = prim->vector;
+	return (true);
 }
 
 bool	check_cylinder_caps(t_qdtc *qd, t_ray *ray, t_cy_helper *cyh, float *t)
