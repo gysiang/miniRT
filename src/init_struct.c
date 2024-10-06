@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/04 20:59:36 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 21:00:30 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,4 @@ void	init_img_data(t_data *data)
 	data->light.brightness = 0.0;
 	// scene
 	data->prim_count = 0;
-	data->sphere_count = 0;
-	data->plane_count = 0;
-	data->cylinder_count = 0;
 }

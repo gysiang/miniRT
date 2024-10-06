@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:05:57 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/04 20:52:25 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 21:03:47 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,13 @@
 
 int	save_Plane(t_data *data, char **s)
 {
-	t_plane	pl;
-
 	if (ft_strncmp(s[0], "pl", 2) == 0)
 	{
-		if (data->plane_count < MAX_OBJ)
-		{
-			// save_Vector(&(data->planes[data->plane_count].position), s[1]);
-			// save_Vector(&(data->planes[data->plane_count].vector), s[2]);
-			// save_RGB(&(data->planes[data->plane_count].rgb), s[3]);
-			save_Vector(&pl.position, s[1]);
-			save_Vector(&pl.vector, s[2]);
-			save_RGB(&pl.rgb, s[3]);
-			data->planes[data->plane_count] = pl;
-			data->plane_count++;
-			// * Single array version
-			data->prims[data->prim_count].p_data.pl = pl;
-			data->prims[data->prim_count].p_type = PL;
-			data->prim_count++;
-		}
+		save_Vector(&data->prims[data->prim_count].position, s[1]);
+		save_Vector(&data->prims[data->prim_count].vector, s[2]);
+		save_RGB(&data->prims[data->prim_count].rgb, s[3]);
+		data->prims[data->prim_count].p_type = PL;
+		data->prim_count++;
 	}
 	return (0);
 }
@@ -43,27 +31,14 @@ int	save_Cylinder(t_data *data, char **s)
 
 	if (ft_strncmp(s[0], "cy", 2) == 0)
 	{
-		if (data->cylinder_count < MAX_OBJ)
-		{
-			// save_Vector(&(data->cylinders[data->cylinder_count].position), s[1]);
-			// save_Vector(&(data->cylinders[data->cylinder_count].vector), s[2]);
-			// data->cylinders[data->cylinder_count].diameter = ft_atof(s[3]);
-			// data->cylinders[data->cylinder_count].height = ft_atof(s[4]);
-			// save_RGB(&(data->cylinders[data->cylinder_count].rgb), s[5]);
-			save_Vector(&cy.position, s[1]);
-			save_Vector(&cy.vector, s[2]);
-			cy.vector = vector_Normalize(&cy.vector);
-			cy.diameter = ft_atof(s[3]);
-			cy.radius = cy.diameter / 2;
-			cy.height = ft_atof(s[4]);
-			save_RGB(&cy.rgb, s[5]);
-			data->cylinders[data->cylinder_count] = cy;
-			data->cylinder_count++;
-			// * Single array version
-			data->prims[data->prim_count].p_data.cy = cy;
-			data->prims[data->prim_count].p_type = CY;
-			data->prim_count++;
-		}
+		cy.radius = ft_atof(s[3]) / 2;
+		cy.height = ft_atof(s[4]);
+		data->prims[data->prim_count].p_data.cy = cy;
+		save_Vector(&data->prims[data->prim_count].position, s[1]);
+		save_Vector(&data->prims[data->prim_count].vector, s[2]);
+		save_RGB(&data->prims[data->prim_count].rgb, s[5]);
+		data->prims[data->prim_count].p_type = CY;
+		data->prim_count++;
 	}
 	return (0);
 }

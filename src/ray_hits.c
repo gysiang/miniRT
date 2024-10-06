@@ -6,11 +6,22 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/05 22:02:56 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 21:18:39 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+t_vec	intersection_point(t_ray *ray, float t)
+{
+	t_vec s;
+
+	// point where the ray hits the prim
+	s.x = ray->origin.x + ray->vector.x * t;
+	s.y = ray->origin.y + ray->vector.y * t;
+	s.z = ray->origin.z + ray->vector.z * t;
+	return (s);
+}
 
 bool	do_quadratic(t_qdtc *qd, float *t)
 {
@@ -29,35 +40,42 @@ bool	do_quadratic(t_qdtc *qd, float *t)
 	return (true);
 }
 
-bool	hit_sphere(t_ray *ray, t_sphere *sphere, float *t)
+bool	hit_sphere(t_ray *ray, t_prim *prim, float *t)
 {
 	t_vec		oc;
 	t_qdtc	qd;
 
 	// vector from ray origin to sphere center
-	oc = vector_Subtract(ray->origin, sphere->position);
+	oc = vector_Subtract(ray->origin, prim->position);
 	qd.a = vector_DotProduct(ray->vector, ray->vector);
 	qd.b = 2.0 * vector_DotProduct(oc, ray->vector);
-	qd.c = vector_DotProduct(oc, oc) - sphere->radius * sphere->radius;
-	return (do_quadratic(&qd, t));
+	qd.c = vector_DotProduct(oc, oc) - prim->p_data.sp.radius * prim->p_data.sp.radius;
+	if (!do_quadratic(&qd, t))
+		return (false);
+	ray->hit_coord = intersection_point(ray, *t);
+	ray->normal = vector_Subtract(ray->hit_coord, prim->position);
+	ray->normal = vector_Normalize(&ray->normal);
+	return (true);
 }
 
-bool	hit_plane(t_ray *ray, t_vec pos, t_vec vector, float *t)
+bool	hit_plane(t_ray *ray, t_prim *prim, float *t)
 {
 	float	a;
 	float	b;
 	t_vec	po;
 
-	po = vector_Subtract(pos, ray->origin);
-	a = vector_DotProduct(vector, po);
-	b = vector_DotProduct(vector, ray->vector);
+	po = vector_Subtract(prim->position, ray->origin);
+	a = vector_DotProduct(prim->vector, po);
+	b = vector_DotProduct(prim->vector, ray->vector);
 	*t = a / b;
-	if (*t > EPSILON)
-		return (true);
-	return (false);
+	if (*t < EPSILON)
+		return (false);
+	ray->hit_coord = intersection_point(ray, *t);
+	ray->normal = prim->vector;
+	return (true);
 }
 
-bool	hit_disc(t_ray *ray, t_cy_helper *cyh, float y_offset, float *t)
+bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t)
 {
 	float	t_mem;
 	float	d2;
@@ -65,13 +83,13 @@ bool	hit_disc(t_ray *ray, t_cy_helper *cyh, float y_offset, float *t)
 	t_vec	p;
 
 	t_mem = *t;
-	cyh->cap_center = vector_Add(cyh->cylinder->position, vector_Multiply(cyh->cylinder->vector, y_offset));
-	if (hit_plane(ray, cyh->cap_center, cyh->cylinder->vector, &t_mem))
+	cyh->cap_center = vector_Add(prim->position, vector_Multiply(prim->vector, y_offset));
+	if (hit_plane(cyh->ray, prim, &t_mem))
 	{
-		p = vector_Add(ray->origin, vector_Multiply(ray->vector, t_mem));
+		p = vector_Add(cyh->ray->origin, vector_Multiply(cyh->ray->vector, t_mem));
 		v = vector_Subtract(p, cyh->cap_center);
 		d2 = vector_DotProduct(v, v);
-		if (d2 <= cyh->cylinder->radius * cyh->cylinder->radius && t_mem < *t - EPSILON)
+		if (d2 <= prim->p_data.cy.radius * prim->p_data.cy.radius && t_mem < *t - EPSILON)
 		{
 			*t = t_mem;
 			return (true);
@@ -80,61 +98,48 @@ bool	hit_disc(t_ray *ray, t_cy_helper *cyh, float y_offset, float *t)
 	return (false);
 }
 
-void	init_cy_helper(t_ray *ray, t_cylinder *cylinder, t_cy_helper *cyh)
+void	init_cy_helper(t_ray *ray, t_prim *prim, t_cy_helper *cyh)
 {
 	cyh->ray = ray;
-	cyh->cylinder = cylinder;
 	// Vector from ray origin to cylinder center
-	cyh->oc = vector_Subtract(ray->origin, cylinder->position);
+	cyh->oc = vector_Subtract(ray->origin, prim->position);
 	// Project ray direction and oc onto cylinder axis
-	cyh->axis_proj = vector_Multiply(cylinder->vector, vector_DotProduct(ray->vector, cylinder->vector));
+	cyh->axis_proj = vector_Multiply(prim->vector, vector_DotProduct(ray->vector, prim->vector));
 	// Calculate perpendicular components
 	cyh->perp = vector_Subtract(ray->vector, cyh->axis_proj);
-	cyh->oc_perp = vector_Subtract(cyh->oc, vector_Multiply(cylinder->vector, vector_DotProduct(cyh->oc, cylinder->vector)));
+	cyh->oc_perp = vector_Subtract(cyh->oc, vector_Multiply(prim->vector, vector_DotProduct(cyh->oc, prim->vector)));
 }
 
-bool	hit_cylinder(t_ray *ray, t_cylinder *cylinder, float *t)
+bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t)
 {
 	bool	hit_body;
 	bool	hit_cap;
 	t_qdtc qd;
 	t_cy_helper cyh;
 
-	init_cy_helper(ray, cylinder, &cyh);
+	init_cy_helper(ray, prim, &cyh);
 	qd.a = vector_DotProduct(cyh.perp, cyh.perp);
 	qd.b = 2 * vector_DotProduct(cyh.perp, cyh.oc_perp);
-	qd.c = vector_DotProduct(cyh.oc_perp, cyh.oc_perp) - cylinder->radius * cylinder->radius;
+	qd.c = vector_DotProduct(cyh.oc_perp, cyh.oc_perp) - prim->p_data.cy.radius * prim->p_data.cy.radius;
 	if (!do_quadratic(&qd, t))
 		return (false);
 	// Check if intersection is within cylinder height
-	cyh.y_hit = vector_DotProduct(vector_Add(cyh.oc, vector_Multiply(ray->vector, *t)), cylinder->vector);
-	cyh.y_min = -cylinder->height / 2;
-	cyh.y_max = cylinder->height / 2;
+	cyh.y_hit = vector_DotProduct(vector_Add(cyh.oc, vector_Multiply(ray->vector, *t)), prim->vector);
+	cyh.y_min = -prim->p_data.cy.height / 2;
+	cyh.y_max = prim->p_data.cy.height / 2;
 	hit_body = cyh.y_hit >= cyh.y_min && cyh.y_hit <= cyh.y_max;
 	// Check if intersection is within cylinder caps
-	hit_cap = hit_disc(ray, &cyh, cyh.y_min, t) || hit_disc(ray, &cyh, cyh.y_max, t);
+	hit_cap = hit_disc(&cyh, prim, cyh.y_min, t) || hit_disc(&cyh, prim, cyh.y_max, t);
 	return (hit_body || hit_cap);
 }
 
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
 {
 	if (prim.p_type == SP)
-	{
-		rp->prim_col = prim.p_data.sp.rgb;
-		rp->prim_pos = prim.p_data.sp.position;
-		return (hit_sphere(ray, &prim.p_data.sp, &rp->t));
-	}
+		return (hit_sphere(ray, &prim, &rp->t));
 	if (prim.p_type == PL)
-	{
-		rp->prim_col = prim.p_data.pl.rgb;
-		rp->prim_pos = prim.p_data.pl.vector;
-		return (hit_plane(ray, prim.p_data.pl.position, prim.p_data.pl.vector, &rp->t));
-	}
+		return (hit_plane(ray, &prim, &rp->t));
 	if (prim.p_type == CY)
-	{
-		rp->prim_col = prim.p_data.cy.rgb;
-		rp->prim_pos = prim.p_data.cy.vector;
-		return (hit_cylinder(ray, &prim.p_data.cy, &rp->t));
-	}
+		return (hit_cylinder(ray, &prim, &rp->t));
 	return (0);
 }
