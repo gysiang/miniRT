@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 21:23:37 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 21:41:45 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,13 @@ typedef struct s_cy_helper
 	t_vec	axis_proj;
 	t_vec	perp;
 	t_vec	oc_perp;
+	bool	hit_body;
+	bool	hit_cap;
 	float	y_hit;
 	float	y_min;
 	float	y_max;
 	t_vec	cap_center;
+	bool	top_cap;
 }	t_cy_helper;
 
 // mlx image struct

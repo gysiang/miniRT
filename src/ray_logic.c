@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 21:23:28 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 22:06:43 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int trace_ray(t_ray *ray, t_data *data)
 	int			i;
 
 	rp = init_rayparams(data);
-	i = 0;
-	while (i < data->prim_count)
+	i = -1;
+	while (++i < data->prim_count)
 	{
 		if (hit_prim(ray, data->prims[i], &rp))
 		{
@@ -80,7 +80,6 @@ int trace_ray(t_ray *ray, t_data *data)
 				rp.color_fin = rgb_get(rgb_add(rp.amb_fin, rp.diffuse_fin));
 			}
 		}
-		i++;
 	}
 	return (rp.color_fin);
 }
