@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:37:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 21:21:16 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 21:26:47 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ float vector_DotProduct(const t_vec a, const t_vec b)
 }
 
 // scale the vector to have a length of 1 while maintaining its direction
-t_vec vector_Normalize(const t_vec *v)
+t_vec vector_Normalize(t_vec *v)
 {
 	float		len;
 	t_vec	result;
@@ -60,7 +60,7 @@ t_vec vector_Normalize(const t_vec *v)
 	result.x = v->x / len;
 	result.y = v->y / len;
 	result.z = v->z / len;
-
+	*v = result;
 	return (result);
 }
 

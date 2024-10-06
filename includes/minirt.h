@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 21:13:59 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 21:23:37 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ typedef struct s_rayparams
 	// Derivatives to find above components
 	t_rgb	amb_def;
 	t_rgb	prim_col;
-	t_vec	prim_pos;
 	float	light_intensity;
 } t_rayparams;
 

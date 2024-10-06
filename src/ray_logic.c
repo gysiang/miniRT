@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 21:04:22 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/06 21:23:28 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int trace_ray(t_ray *ray, t_data *data)
 			if (rp.t < rp.min_dist)
 			{
 				rp.prim_col = data->prims[i].rgb;
-				rp.prim_pos = data->prims[i].position;
 				rp.min_dist = rp.t;
 				rp.light_intensity = calculate_lighting(&ray->hit_coord, &ray->normal, &data->light);
 				// color of the sphere affected by each light
