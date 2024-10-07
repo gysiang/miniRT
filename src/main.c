@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 02:20:15 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 11:11:22 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	main(int ac, char **av)
 		data = malloc(sizeof(*data));
 		if (!data)
 			return (printf("Error.\n Image data failed to initalise."));
+		data->prim_count = 0;
 		if (!check_FileType(av[1]))
 			return (printf("Error.\nFile provided is not .rt file.\n"));
 		fd = open(av[1], O_RDONLY);
@@ -71,7 +72,6 @@ int	main(int ac, char **av)
 			return (printf("Error.\nThe file cannot be opened."));
 		if (check_FileContents(data, fd))
 			return (1);
-		init_img_data(data);
 		lseek(fd, 0, SEEK_SET);
 		save_FileContents(data, fd);
 		//print_data(data);

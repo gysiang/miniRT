@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 09:51:28 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 10:26:16 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,24 +131,6 @@ typedef struct s_cy_helper
 	bool	top_cap;
 }	t_cy_helper;
 
-// mlx image struct
-typedef struct s_image
-{
-	void	*img;
-	char	*ptr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}	t_image;
-
-// to save program data like mlx
-typedef struct s_prog
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-	t_image	*image;
-}	t_prog;
-
 typedef enum type
 {
 	SP,
@@ -171,7 +153,25 @@ typedef struct	s_prim
 	t_rgb			rgb;
 }	t_prim;
 
-// Main image struct
+// mlx image struct
+typedef struct s_image
+{
+	void	*img;
+	char	*ptr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_image;
+
+// to save program data like mlx
+typedef struct s_prog
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+	t_image	*image;
+}	t_prog;
+
+// Main data struct
 typedef struct s_data
 {
 	t_prog		program;
@@ -187,7 +187,7 @@ typedef struct s_data
 
 
 void	free_array(char **array);
-void	cleanup(t_prog *prog);
+void	cleanup(t_data *data);
 
 // init_struct
 void	init_img_data(t_data *data);
@@ -230,8 +230,7 @@ int	save_RGB(t_rgb *array, char *s);
 int	save_Vector(t_vec *array, char *s);
 
 // handlers
-void	exit_program(t_prog *prog);
-int		handle_exit(t_prog *prog);
+int		handle_exit(t_data *data);
 int		handle_keypress(KeySym keysym, t_data *data);
 int		handle_mouse_click(int button, int x, int y);
 
