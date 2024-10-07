@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 22:06:43 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 13:02:50 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,23 @@
 t_ray	make_ray(t_data *data, int x, int y)
 {
 	t_ray	ray;
+	float	u;
+	float	v;
+	t_vec	right_vec;
+	t_vec	up_vec;
 
 	ray.origin = data->camera.position;
-	// normalize the x and y coord to range of -1,1
-	ray.vector.x = (2 * (x + 0.5) / (float)IMG_WIDTH - 1) * data->camera.scale * data->camera.aspect_ratio;
-	ray.vector.y = (1 - 2 * (y + 0.5) / (float)IMG_HEIGHT) * data->camera.scale;
-	ray.vector.z = 1;
-	ray.vector = vector_Normalize(&ray.vector);
-	//printf("Ray direction: (%f, %f, %f)\n", ray.vector.x, ray.vector.y, ray.vector.z);
+	// get pixel coordinates
+	u = (1 - 2 * (x + 0.5) / (float)IMG_WIDTH) * data->camera.scale * data->camera.aspect_ratio;
+	v = (1 - 2 * (y + 0.5) / (float)IMG_HEIGHT) * data->camera.scale;
+	// create rotation matrix
+	right_vec = vector_Normalize(vector_CrossProduct(data->camera.vector, data->camera.up_vector));
+	up_vec = vector_Normalize(vector_CrossProduct(right_vec, data->camera.vector));
+	// add rotations to ray vector
+	ray.vector = data->camera.vector;
+	ray.vector = vector_Add(ray.vector, vector_Multiply(right_vec, u));
+	ray.vector = vector_Add(ray.vector, vector_Multiply(up_vec, v));
+	ray.vector = vector_Normalize(ray.vector);
 	return (ray);
 }
 
@@ -34,7 +43,7 @@ float	calculate_lighting(t_vec *hitpoint, t_vec *normal, t_light *light)
 	float		intensity;
 	// vector from intersection to light source
 	light_dir = vector_Subtract(light->position, *hitpoint);
-	light_dir = vector_Normalize(&light_dir);
+	light_dir = vector_Normalize(light_dir);
 	// angle between light direction and surface vector
 	intensity = vector_DotProduct(light_dir, *normal);
 	if (intensity < 0)

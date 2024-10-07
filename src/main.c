@@ -6,30 +6,30 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 11:11:22 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 13:42:33 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 // Prints out all the saved data
-void	print_data(t_data *data)
-{
+// void	print_data(t_data *data)
+// {
 
-	printf("Ambient light\n");
-	printf("Amient lightning ratio %.1f\n", data->amb_light);
-	printf("Amient rgb: %d,%d,%d\n", data->amb_rgb.r, data->amb_rgb.g, data->amb_rgb.b);
-	printf("Camera\n");
-	printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
-	printf("Vector Coordinates: %.1f,%.1f,%.1f\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
-	printf("FOV %d\n", data->camera.fov);
-	printf("Light\n");
-	printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->light.position.x, data->light.position.y, data->light.position.z);
-	printf("Light Brightness %.1f\n", data->light.brightness);
-	printf("Camera\n");
-	printf("Vector : %.1f,%.1f,%.1f\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
-	printf("Right Vector : %.1f,%.1f,%.1f\n", data->camera.right_vector.x, data->camera.right_vector.y, data->camera.right_vector.z);
-	printf("Up Vector : %.1f,%.1f,%.1f\n", data->camera.up_vector.x, data->camera.up_vector.y, data->camera.up_vector.z);
+// 	printf("Ambient light\n");
+// 	printf("Amient lightning ratio %.1f\n", data->amb_light);
+// 	printf("Amient rgb: %d,%d,%d\n", data->amb_rgb.r, data->amb_rgb.g, data->amb_rgb.b);
+// 	printf("Camera\n");
+// 	printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
+// 	printf("Vector Coordinates: %.1f,%.1f,%.1f\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
+// 	printf("FOV %d\n", data->camera.fov);
+// 	printf("Light\n");
+// 	printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->light.position.x, data->light.position.y, data->light.position.z);
+// 	printf("Light Brightness %.1f\n", data->light.brightness);
+// 	printf("Camera\n");
+// 	printf("Vector : %.1f,%.1f,%.1f\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
+// 	printf("Right Vector : %.1f,%.1f,%.1f\n", data->camera.right_vector.x, data->camera.right_vector.y, data->camera.right_vector.z);
+// 	printf("Up Vector : %.1f,%.1f,%.1f\n", data->camera.up_vector.x, data->camera.up_vector.y, data->camera.up_vector.z);
 
 	// printf("Sphere\n");
 	// printf("XYZ Coordinates: %.1f,%.1f,%.1f\n", data->spheres[0].position.x, data->spheres[0].position.y, data->spheres[0].position.z);
@@ -46,7 +46,7 @@ void	print_data(t_data *data)
 	// printf("Height %.2f\n", data->cylinders[0].height);
 	// printf("Cylinder rgb: %d,%d,%d\n", data->cylinders[0].rgb.r, data->cylinders[0].rgb.g, data->cylinders[0].rgb.b);
 	// printf("All data is printed successfully\n");
-}
+// }
 
 int	main(int ac, char **av)
 {

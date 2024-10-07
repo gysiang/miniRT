@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 11:16:43 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 10:25:51 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 13:42:02 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ int	handle_exit(t_data *data)
 
 int handle_keypress(KeySym keysym, t_data *data)
 {
-	char	*keyname;
 	float	speed;
+	float	sensitivity;
 
 	speed = 0.1;
-	keyname = XKeysymToString(keysym);
+	sensitivity = 0.01;
 	if (keysym == XK_Escape)
 		handle_exit(data);
 	else if (keysym == XK_W || keysym == XK_w)
@@ -47,17 +47,31 @@ int handle_keypress(KeySym keysym, t_data *data)
 	else if (keysym == XK_A || keysym == XK_a)
 	{
 		printf("A key pressed, camera moved left\n");
-		move_camera(&data->camera.position, &data->camera.right_vector, -speed);
+		move_camera(&data->camera.position, &data->camera.vector, -speed);
 		printf("Camera position: (%f, %f, %f)\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
 	}
 	else if (keysym == XK_D || keysym == XK_d)
 	{
 		printf("D key pressed, camera moved right\n");
-		move_camera(&data->camera.position, &data->camera.right_vector, speed);
+		move_camera(&data->camera.position, &data->camera.vector, speed);
 		printf("Camera position: (%f, %f, %f)\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
 	}
-	else
-		printf("Key pressed: %s\n", keyname);
+	else if (keysym == XK_Q || keysym == XK_q)
+	{
+		printf("Q key pressed, yaw (horizontal) rotation left\n");
+		data->camera.yaw -= sensitivity;
+		rotate_camera(&data->camera);
+		re_render_image(data);
+		printf("Camera direction: (%f, %f, %f)\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
+	}
+	else if (keysym == XK_E || keysym == XK_e)
+	{
+		printf("E key pressed, pitch (vertical) rotation up\n");
+		data->camera.pitch += sensitivity;
+		rotate_camera(&data->camera);
+		re_render_image(data);
+		printf("Camera direction: (%f, %f, %f)\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
+	}
 	return (0);
 }
 

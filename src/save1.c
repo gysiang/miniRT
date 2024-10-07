@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:05:57 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 09:50:35 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 13:42:58 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	save_Cylinder(t_data *data, char **s)
 		data->prims[data->prim_count].p_data.cy = cy;
 		save_Vector(&data->prims[data->prim_count].position, s[1]);
 		save_Vector(&data->prims[data->prim_count].vector, s[2]);
-		vector_Normalize(&data->prims[data->prim_count].vector);
+		data->prims[data->prim_count].vector = vector_Normalize(data->prims[data->prim_count].vector);
 		save_RGB(&data->prims[data->prim_count].rgb, s[5]);
 		data->prims[data->prim_count].p_type = CY;
 		data->prim_count++;

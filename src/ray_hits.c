@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/06 23:24:36 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 12:36:51 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ bool	hit_sphere(t_ray *ray, t_prim *prim, float *t)
 		return (false);
 	ray->hit_coord = intersection_point(ray->origin, ray, *t);
 	ray->normal = vector_Subtract(ray->hit_coord, prim->position);
-	ray->normal = vector_Normalize(&ray->normal);
+	ray->normal = vector_Normalize(ray->normal);
 	return (true);
 }
 
@@ -80,7 +80,7 @@ bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t)
 	temp.vector = prim->vector;
 	if (y_offset < 0)
 		temp.vector = vector_Multiply(prim->vector, -1);
-	vector_Normalize(&temp.vector);
+	temp.vector = vector_Normalize(temp.vector);
 	if (hit_plane(cyh->ray, &temp, &t_cap))
 	{
 		p = vector_Add(cyh->ray->origin, vector_Multiply(cyh->ray->vector, t_cap));
@@ -116,7 +116,7 @@ void	hit_cylinder_body(t_cy_helper *cyh, t_prim *prim, float *t)
 {
 	cyh->ray->hit_coord = intersection_point(cyh->ray->origin, cyh->ray, *t);
 	cyh->ray->normal = vector_Subtract(cyh->ray->hit_coord, prim->position);
-	vector_Normalize(&cyh->ray->normal);
+	cyh->ray->normal = vector_Normalize(cyh->ray->normal);
 }
 
 void	hit_cylinder_caps(t_cy_helper *cyh, t_prim *prim, float *t)
@@ -125,7 +125,7 @@ void	hit_cylinder_caps(t_cy_helper *cyh, t_prim *prim, float *t)
 	cyh->ray->normal = prim->vector;
 	if (!cyh->top_cap)
 		cyh->ray->normal = vector_Multiply(prim->vector, -1);
-	vector_Normalize(&cyh->ray->normal);
+	cyh->ray->normal = vector_Normalize(cyh->ray->normal);
 }
 
 bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t)
