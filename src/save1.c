@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:05:57 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 12:39:48 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 13:42:58 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	save_RGB(t_rgb *array, char *s)
 {
 	char	**rgb_values;
 
-	rgb_values = ft_split(s, ',');
+	rgb_values = ft_split(s, ",");
 	if (!rgb_values)
 		return (1);
 	array->r = ft_atoi(rgb_values[0]);
@@ -62,7 +62,7 @@ int	save_Vector(t_vec *array, char *s)
 {
 	char **vector_values;
 
-	vector_values = ft_split(s, ',');
+	vector_values = ft_split(s, ",");
 	if (!vector_values)
 		return (1);
 	array->x = ft_atof(vector_values[0]);

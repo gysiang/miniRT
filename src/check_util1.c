@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:31:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/03 11:57:51 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 09:50:01 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	check_RGB(char *s)
 	int		rgb;
 	int		i;
 
-	rgb_values = ft_split(s, ',');
+	rgb_values = ft_split(s, ",");
 	if (!rgb_values)
 		return (1);
 	i = 0;
@@ -75,7 +75,7 @@ int	check_XYZ(char *s)
 	int		i;
 
 	i = 0;
-	xyz_values = ft_split(s, ',');
+	xyz_values = ft_split(s, ",");
 	if (!xyz_values)
 		return (1);
 	while (xyz_values[i] != NULL)

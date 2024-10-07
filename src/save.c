@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 12:41:02 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 16:36:29 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,13 @@
 int save_FileContents(t_data *data, int fd)
 {
 	char	*line;
-	char	*norm_line;
 	char	**split_line;
 	int		error_flag;
 
 	error_flag = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		norm_line = normalize_whitespace(line);
-		split_line = ft_split(norm_line, ' ');
+		split_line = ft_split(line, " \t\n\v\f\r");
 		if (save_AmbientLight(data, split_line) || save_Camera(data, split_line) ||
 			save_Light(data, split_line) || save_Sphere(data, split_line) ||
 			save_Plane(data, split_line) || save_Cylinder(data, split_line))
@@ -32,6 +30,7 @@ int save_FileContents(t_data *data, int fd)
 			break;
 		}
 		free(line);
+		free_array(split_line);
 	}
 	if (line != NULL)
 	{

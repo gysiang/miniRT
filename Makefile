@@ -10,7 +10,7 @@ MLX	     	:=  $(MLX_DIR)/libmlx.a
 # Compiler and flags
 CC       := clang
 LEAKCHECK:= #-fsanitize=address
-CFLAGS   := -g -O3 -Wall -Wextra -Werror -Wno-unused-result $(LEAKCHECK)
+CFLAGS   := -gdwarf-4 -O3 -Wall -Wextra -Werror -Wno-unused-result $(LEAKCHECK)
 LFLAGS   := -L$(LIBFT_DIR) -lft
 IFLAGS   := -I$(LIBFT_DIR) -I$(INCLUDES_DIR)
 MLXFLAGS := -L$(MLX_DIR) -lmlx -lXext -lX11 -lbsd -lm
@@ -33,7 +33,6 @@ SRC_FILES :=	main.c \
 				check_util2.c \
 				save.c \
 				save1.c \
-				utils.c \
 				init_struct.c \
 				movement.c \
 				handlers.c \
@@ -57,7 +56,7 @@ $(NAME): $(LIBFT) $(MLX) $(OBJ) $(INCLUDES)
 
 all: $(NAME)
 
-$(LIBFT):
+$(LIBFT) libft:
 	@echo "Building libft..."
 	@make -C $(LIBFT_DIR) --no-print-directory
 
@@ -76,7 +75,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
-.PHONY: all bonus
+.PHONY: all bonus libft
 
 # Cleanup rules
 clean:
