@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:22:12 by axlee             #+#    #+#             */
-/*   Updated: 2024/09/18 19:13:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/07 08:57:58 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s1, char const *set);
-char				**ft_split(char const *s, char c);
+char				**ft_split(char const *s, char *set);
 int					ft_sprintf(char *str, const char *format, ...);
 void				ft_split_free(char ***str_array);
 char				*ft_itoa(int n);
