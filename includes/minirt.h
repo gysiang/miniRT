@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 21:41:45 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 10:54:59 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ typedef struct s_camera
 	t_vec	right_vector;
 	float	half_width;
 	float	half_height;
+	float	yaw;
+	float	pitch;
 }	t_camera;
 
 // Struct for light data
@@ -254,7 +256,6 @@ bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
 // render
 void	render_ambient(t_prog *mlx, float s, t_rgb *amb);
 void	render_image(t_prog *prog, t_data *data);
-void draw_sphere_projection(t_prog *prog, t_sphere *sphere);
 
 // render - rgb
 int		rgb_get(t_rgb rgb);
@@ -264,6 +265,8 @@ t_rgb	rgb_mix(t_rgb x, t_rgb y);
 t_rgb	rgb_lerp(t_rgb x, t_rgb y, float frac);
 
 // camera movement;
-void move_camera(t_vec *pos, t_vec *direction, float speed);
+void	move_camera(t_vec *pos, t_vec *direction, float speed);
+void	rotate_camera(t_camera *camera);
+void	re_render_image(t_data *data);
 
 #endif

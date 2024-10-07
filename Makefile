@@ -43,7 +43,8 @@ SRC_FILES :=	main.c \
 				mlx_image.c \
 				ray_logic.c \
 				ray_hits.c \
-				vector_op.c
+				vector_op.c \
+				matrix.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 

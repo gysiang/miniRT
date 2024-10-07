@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_logic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 22:06:43 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 10:58:37 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,34 @@
 t_ray	make_ray(t_data *data, int x, int y)
 {
 	t_ray	ray;
+	t_vec		target;
+	t_vec		t;
+	matrix4x4	cameraToWorld;
 
+	/** *
 	ray.origin = data->camera.position;
 	// normalize the x and y coord to range of -1,1
 	ray.vector.x = (2 * (x + 0.5) / (float)IMG_WIDTH - 1) * data->camera.scale * data->camera.aspect_ratio;
 	ray.vector.y = (1 - 2 * (y + 0.5) / (float)IMG_HEIGHT) * data->camera.scale;
 	ray.vector.z = 1;
+	ray.vector = vector_Normalize(&ray.vector);
+	**/
+
+	ray.origin = CAM_ORIGIN;
+	target.x = (2 * (x + 0.5) / (float)IMG_WIDTH - 1) * data->camera.scale * data->camera.aspect_ratio;
+	target.y = (1 - 2 * (y + 0.5) / (float)IMG_HEIGHT) * data->camera.scale;
+	target.z = -1;
+
+	//transform the camera into a 4x4 matrix, so can capture rotation and translation
+	cameraToWorld = create_camera_to_world_matrix(
+		data->camera.position, data->camera.vector, data->camera.up_vector);
+
+	// transform the ray origin and direction to world space in 4x4
+	ray.origin = matrix_multiply_vector(&cameraToWorld, &data->camera.position);
+	t = matrix_multiply_vector(&cameraToWorld, &target);
+
+	// get ray direction in world space
+	ray.vector = vector_Subtract(t, ray.origin);
 	ray.vector = vector_Normalize(&ray.vector);
 	//printf("Ray direction: (%f, %f, %f)\n", ray.vector.x, ray.vector.y, ray.vector.z);
 	return (ray);

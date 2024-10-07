@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 11:16:43 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 17:15:57 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/07 10:56:00 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	exit_program(t_prog *prog)
 
 int handle_keypress(KeySym keysym, t_data *data)
 {
-	char	*keyname;
 	float	speed;
+	float	sensitivity;
 
 	speed = 0.1;
-	keyname = XKeysymToString(keysym);
+	sensitivity = 0.01;
 	if (keysym == XK_Escape)
 		exit_program(&data->program);
 	else if (keysym == XK_W || keysym == XK_w)
@@ -56,8 +56,22 @@ int handle_keypress(KeySym keysym, t_data *data)
 		move_camera(&data->camera.position, &data->camera.right_vector, speed);
 		printf("Camera position: (%f, %f, %f)\n", data->camera.position.x, data->camera.position.y, data->camera.position.z);
 	}
-	else
-		printf("Key pressed: %s\n", keyname);
+	else if (keysym == XK_Q || keysym == XK_q)
+	{
+		printf("Q key pressed, yaw (horizontal) rotation left\n");
+		data->camera.yaw -= sensitivity;
+		rotate_camera(&data->camera);
+		re_render_image(data);
+		printf("Camera direction: (%f, %f, %f)\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
+	}
+	else if (keysym == XK_E || keysym == XK_e)
+	{
+		printf("E key pressed, pitch (vertical) rotation up\n");
+		data->camera.pitch += sensitivity;
+		rotate_camera(&data->camera);
+		re_render_image(data);
+		printf("Camera direction: (%f, %f, %f)\n", data->camera.vector.x, data->camera.vector.y, data->camera.vector.z);
+	}
 	return (0);
 }
 
