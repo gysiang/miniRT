@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:52:48 by axlee             #+#    #+#             */
-/*   Updated: 2024/10/07 08:56:03 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 09:40:27 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@ static int	is_set(char c, char *set)
 	return (0);
 }
 
-static int	ft_wcount(char const *s, char c)
+static int	ft_wcount(char const *s, char *set)
 {
 	int		n;
 
 	n = 0;
-	while (*s && is_set(*s, c))
+	while (*s && is_set(*s, set))
 		s++;
 	while (*s)
 	{
-		while (*s && !is_set(*s, c))
+		while (*s && !is_set(*s, set))
 			s++;
 		n++;
-		while (*s && is_set(*s, c))
+		while (*s && is_set(*s, set))
 			s++;
 	}
 	return (n);

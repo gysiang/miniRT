@@ -33,7 +33,6 @@ SRC_FILES :=	main.c \
 				check_util2.c \
 				save.c \
 				save1.c \
-				utils.c \
 				init_struct.c \
 				movement.c \
 				handlers.c \
@@ -56,7 +55,7 @@ $(NAME): $(LIBFT) $(MLX) $(OBJ) $(INCLUDES)
 
 all: $(NAME)
 
-$(LIBFT):
+$(LIBFT) libft:
 	@echo "Building libft..."
 	@make -C $(LIBFT_DIR) --no-print-directory
 
@@ -75,7 +74,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
-.PHONY: all bonus
+.PHONY: all bonus libft
 
 # Cleanup rules
 clean:

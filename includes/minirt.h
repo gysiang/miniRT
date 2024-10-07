@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 21:41:45 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 09:51:28 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ typedef struct s_cy_helper
 	float	y_hit;
 	float	y_min;
 	float	y_max;
-	t_vec	cap_center;
 	bool	top_cap;
 }	t_cy_helper;
 
@@ -235,9 +234,6 @@ void	exit_program(t_prog *prog);
 int		handle_exit(t_prog *prog);
 int		handle_keypress(KeySym keysym, t_data *data);
 int		handle_mouse_click(int button, int x, int y);
-
-// utils
-char *normalize_whitespace(const char *str);
 
 // image
 void	set_img_pixel(t_image *img, int x, int y, int color);
