@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:17:51 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/02 17:30:40 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/07 23:04:47 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 int	check_Planes(t_data *data, char **s)
 {
-	if (ft_strncmp(s[0], "pl", 2) == 0)
+	if (ft_strcmp(s[0], "pl") == 0)
 	{
 		if (!check_NumOfInputs(s, 4))
-			return (set_error_msg(data, "Error.\nThe number of inputs in Plane is not correct.\n"));
+			return (ft_error("Proper Plane Usage: <pl x,y,z u,v,w r,g,b>"));
 		if (check_XYZ(s[1]))
-			return (set_error_msg(data, "Error.\nThe XYZ coordinates in Plane is not valid.\n"));
+			return (ft_error("Plane XYZ coordinates are invalid"));
 		if (check_Vector(s[2]))
-			return (set_error_msg(data, "Error.\nThe Vector values in Plane is not valid.\n"));
+			return (ft_error("Plane vector values must be between -1.0 and 1.0"));
 		if (check_RGB(s[3]))
-			return (set_error_msg(data, "Error.\nThe RGB values in Plane is not valid.\n"));
+			return (ft_error("Plane RGB values must be between 0 and 255"));
+		data->prim_count++;
 	}
-	data->prim_count++;
 	return (0);
 }
 
@@ -34,23 +34,23 @@ int	check_Cylinders(t_data *data, char **s)
 	float	diameter;
 	float	height;
 
-	if (ft_strncmp(s[0], "cy", 2) == 0)
+	if (ft_strcmp(s[0], "cy") == 0)
 	{
 		if (!check_NumOfInputs(s, 6))
-			return (set_error_msg(data, "Error.\nThe number of inputs in Cylinder is not correct.\n"));
+			return (ft_error("Proper Cylinder Usage: <cy x,y,z u,v,w diameter height r,g,b>"));
 		if (check_XYZ(s[1]))
-			return (set_error_msg(data, "Error.\nThe XYZ coordinates in Cylinder is not valid.\n"));
+			return (ft_error("Cylinder XYZ coordinates are invalid"));
 		if (check_Vector(s[2]))
-			return (set_error_msg(data, "Error.\nThe vector values in Cylinder is not valid.\n"));
+			return (ft_error("Cylinder vector values must be between -1.0 and 1.0"));
 		diameter = ft_atof(s[3]);
 		if (diameter < 0 || !ft_isnumeric(s[3]))
-			return (set_error_msg(data, "Error.\nThe diameter of in Cylinder is not valid.\n"));
+			return (ft_error("Cylinder diameter is invalid"));
 		height = ft_atof(s[3]);
 		if (height < 0 || !ft_isnumeric(s[4]))
-			return (set_error_msg(data, "Error.\nThe height of in Cylinder is not valid.\n"));
+			return (ft_error("Cylinder height is invalid"));
 		if (check_RGB(s[5]))
-			return (set_error_msg(data, "Error.\nThe RGB values in Cylinder is not valid.\n"));
+			return (ft_error("Cylinder RGB values must be between 0 and 255"));
+		data->prim_count++;
 	}
-	data->prim_count++;
 	return (0);
 }

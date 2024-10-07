@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:07:02 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 16:33:16 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 23:04:57 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,78 +16,87 @@ int	check_FileContents(t_data *data, int fd)
 {
 	char	*line;
 	char	**split_line;
-	int		error_flag;
 
-	error_flag = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		split_line = ft_split(line, " \t\n\v\f\r");
-		if (check_Ambients(data, split_line) || check_Cams(data, split_line) ||
-			check_Lights(data, split_line) || check_Planes(data, split_line)  ||
-			check_Spheres(data, split_line) || check_Cylinders(data , split_line))
-		{
-			error_flag = 1;
-			break;
-		}
 		free(line);
+		if (not_element(split_line))
+			return (free_array(split_line), 1);
+		if (check_Ambients(data, split_line) || check_Cams(data, split_line)
+			|| check_Lights(data, split_line) || check_Planes(data, split_line)
+			|| check_Spheres(data, split_line) || check_Cylinders(data, split_line))
+			return (free_array(split_line), 1);
 		free_array(split_line);
 	}
-	if (line != NULL)
-	{
-		free(line);
-		free_array(split_line);
-	}
-	if (error_flag)
-		printf("%s",data->error_msg);
-	else
-		printf("Success: All elements have been checked successfully.\n");
+	if (check_capital_elements(data))
+		return (1);
+	printf("Success: All elements have been checked successfully\n");
 	data->prims = malloc(data->prim_count * sizeof(t_prim));
 	if (!data->prims)
-		return (printf("Error.\n Primitives data failed to initalise."));
+		return (ft_error("Primitives data failed to initialise"));
 	data->prim_count = 0;
-	return (error_flag);
+	return (0);
+}
+
+int	not_element(char **s)
+{
+	if (ft_strcmp(s[0], "A") && ft_strcmp(s[0], "C") && ft_strcmp(s[0], "L")
+		&& ft_strcmp(s[0], "sp") && ft_strcmp(s[0], "pl") && ft_strcmp(s[0], "cy"))
+		return (ft_error("Invalid element"));
+	return (0);
+}
+
+int	check_capital_elements(t_data *data)
+{
+	if (data->amb_count != 1 || data->cam_count != 1 || data->light_count > 1)
+		return (ft_error("There must be one Ambient and Camera, and at most one Light"));
+	return (0);
 }
 
 int	check_Ambients(t_data *data, char **s)
 {
-	if (ft_strncmp(s[0], "A", 1) == 0)
+	if (ft_strcmp(s[0], "A") == 0)
 	{
 		if (!check_NumOfInputs(s, 3))
-			return (set_error_msg(data, "Error.\nThe number of inputs in Camera is not correct.\n"));
+			return (ft_error("Proper Ambient Usage: <A ratio r,g,b>"));
 		if (check_Ratio(s[1]))
-			return (set_error_msg(data, "Error.\nThe lighting ratio in ambient is not valid.\n"));
+			return (ft_error("Ambient ratio must be between 0.0 and 1.0"));
 		if (check_RGB(s[2]))
-			return (set_error_msg(data, "Error.\nThe RGB values in ambient is not valid.\n"));
+			return (ft_error("Ambient RGB values must be between 0 and 255"));
+		data->amb_count++;
 	}
 	return (0);
 }
 
 int	check_Cams(t_data *data, char **s)
 {
-	if (ft_strncmp(s[0], "C", 1) == 0)
+	if (ft_strcmp(s[0], "C") == 0)
 	{
 		if (!check_NumOfInputs(s, 4))
-			return (set_error_msg(data, "Error.\nThe number of inputs in Camera is not correct.\n"));
+			return (ft_error("Proper Camera Usage: <C x,y,z u,v,w fov>"));
 		if (check_XYZ(s[1]))
-			return (set_error_msg(data, "Error.\nThe XYZ coordinates in Camera is not valid.\n"));
+			return (ft_error("Camera XYZ coordinates are invalid"));
 		if (check_Vector(s[2]))
-			return (set_error_msg(data, "Error.\nThe Vector values in Camera is not valid.\n"));
+			return (ft_error("Camera vector values must be between -1.0 and 1.0"));
 		if (check_FOV(s[3]))
-			return (set_error_msg(data, "Error.\nThe FOV values in Camera is not valid.\n"));
+			return (ft_error("Camera FOV must be between 0 and 180"));
+		data->cam_count++;
 	}
 	return (0);
 }
 
 int	check_Lights(t_data *data, char **s)
 {
-	if (ft_strncmp(s[0], "L", 1) == 0)
+	if (ft_strcmp(s[0], "L") == 0)
 	{
 		if (!check_NumOfInputs(s, 3))
-			return (set_error_msg(data, "Error.\nThe number of inputs in Lights is not correct.\n"));
+			return (ft_error("Proper Light Usage: <L x,y,z ratio>"));
 		if (check_XYZ(s[1]))
-			return (set_error_msg(data, "Error.\nThe XYZ coordinates in Lights is not valid.\n"));
+			return (ft_error("Light XYZ coordinates are invalid"));
 		if (check_Ratio(s[2]))
-			return (set_error_msg(data, "Error.\nThe Brightness ratio in Lights is not valid.\n"));
+			return (ft_error("Light ratio must be between 0.0 and 1.0"));
+		data->light_count++;
 	}
 	return (0);
 }
@@ -99,16 +108,16 @@ int	check_Spheres(t_data *data, char **s)
 	if (ft_strncmp(s[0], "sp", 2) == 0)
 	{
 		if (!check_NumOfInputs(s, 4))
-			return (set_error_msg(data, "Error.\nThe number of inputs in Sphere is not correct.\n"));
+			return (ft_error("Proper Sphere Usage: <sp x,y,z diameter r,g,b>"));
 		if (check_XYZ(s[1]))
-			return (set_error_msg(data, "Error.\nThe XYZ coordinates in Sphere is not valid.\n"));
+			return (ft_error("Sphere XYZ coordinates are invalid"));
 		diameter = ft_atof(s[2]);
 		if (diameter < 0)
-			return (set_error_msg(data, "Error.\nThe diameter of the Sphere is not valid.\n"));
+			return (ft_error("Sphere diameter is invalid"));
 		if (check_RGB(s[3]))
-			return (set_error_msg(data, "Error.\nThe RGB values in Sphere is not valid.\n"));
+			return (ft_error("Sphere RGB values must be between 0 and 255"));
+		data->prim_count++;
 	}
-	data->prim_count++;
 	return (0);
 }
 

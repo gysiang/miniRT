@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 15:27:31 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 15:52:47 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 22:27:46 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,4 @@ void	cleanup(t_data *data)
 	mlx_destroy_display(data->program.mlx_ptr);
 	free(data->prims);
 	free(data->program.mlx_ptr);
-	free(data);
 }
