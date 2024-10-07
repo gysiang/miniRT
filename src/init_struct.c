@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 21:00:30 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 10:22:40 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	init_img_data(t_data *data)
 	data->camera.vector.y = 0;
 	data->camera.vector.z = 0;
 	data->camera.fov = 0;
+	data->camera.yaw = 0;
+	data->camera.pitch = 0;
 	// light (no rgb)
 	data->light.position.x = 0;
 	data->light.position.y = 0;
