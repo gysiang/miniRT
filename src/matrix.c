@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 10:28:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 10:29:23 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/07 12:48:08 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ matrix4x4 create_camera_to_world_matrix(t_vec position, t_vec forward, t_vec up)
 	t_vec right;
 
 	right = vector_CrossProduct(forward, up);
-	right = vector_Normalize(&right);
+	right = vector_Normalize(right);
 
 	mat.m[0][0] = right.x;
 	mat.m[0][1] = right.y;

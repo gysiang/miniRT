@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_logic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 10:58:37 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/07 13:02:50 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,36 +17,23 @@
 t_ray	make_ray(t_data *data, int x, int y)
 {
 	t_ray	ray;
-	t_vec		target;
-	t_vec		t;
-	matrix4x4	cameraToWorld;
+	float	u;
+	float	v;
+	t_vec	right_vec;
+	t_vec	up_vec;
 
-	/** *
 	ray.origin = data->camera.position;
-	// normalize the x and y coord to range of -1,1
-	ray.vector.x = (2 * (x + 0.5) / (float)IMG_WIDTH - 1) * data->camera.scale * data->camera.aspect_ratio;
-	ray.vector.y = (1 - 2 * (y + 0.5) / (float)IMG_HEIGHT) * data->camera.scale;
-	ray.vector.z = 1;
-	ray.vector = vector_Normalize(&ray.vector);
-	**/
-
-	ray.origin = CAM_ORIGIN;
-	target.x = (2 * (x + 0.5) / (float)IMG_WIDTH - 1) * data->camera.scale * data->camera.aspect_ratio;
-	target.y = (1 - 2 * (y + 0.5) / (float)IMG_HEIGHT) * data->camera.scale;
-	target.z = -1;
-
-	//transform the camera into a 4x4 matrix, so can capture rotation and translation
-	cameraToWorld = create_camera_to_world_matrix(
-		data->camera.position, data->camera.vector, data->camera.up_vector);
-
-	// transform the ray origin and direction to world space in 4x4
-	ray.origin = matrix_multiply_vector(&cameraToWorld, &data->camera.position);
-	t = matrix_multiply_vector(&cameraToWorld, &target);
-
-	// get ray direction in world space
-	ray.vector = vector_Subtract(t, ray.origin);
-	ray.vector = vector_Normalize(&ray.vector);
-	//printf("Ray direction: (%f, %f, %f)\n", ray.vector.x, ray.vector.y, ray.vector.z);
+	// get pixel coordinates
+	u = (1 - 2 * (x + 0.5) / (float)IMG_WIDTH) * data->camera.scale * data->camera.aspect_ratio;
+	v = (1 - 2 * (y + 0.5) / (float)IMG_HEIGHT) * data->camera.scale;
+	// create rotation matrix
+	right_vec = vector_Normalize(vector_CrossProduct(data->camera.vector, data->camera.up_vector));
+	up_vec = vector_Normalize(vector_CrossProduct(right_vec, data->camera.vector));
+	// add rotations to ray vector
+	ray.vector = data->camera.vector;
+	ray.vector = vector_Add(ray.vector, vector_Multiply(right_vec, u));
+	ray.vector = vector_Add(ray.vector, vector_Multiply(up_vec, v));
+	ray.vector = vector_Normalize(ray.vector);
 	return (ray);
 }
 
@@ -56,7 +43,7 @@ float	calculate_lighting(t_vec *hitpoint, t_vec *normal, t_light *light)
 	float		intensity;
 	// vector from intersection to light source
 	light_dir = vector_Subtract(light->position, *hitpoint);
-	light_dir = vector_Normalize(&light_dir);
+	light_dir = vector_Normalize(light_dir);
 	// angle between light direction and surface vector
 	intensity = vector_DotProduct(light_dir, *normal);
 	if (intensity < 0)

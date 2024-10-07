@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/06 21:04:14 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 12:41:02 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ int	save_Camera(t_data *data, char **s)
 	{
 		save_Vector(&(data->camera.position), s[1]);
 		save_Vector(&(data->camera.vector), s[2]);
+		data->camera.vector = vector_Normalize(data->camera.vector);
 		data->camera.fov = ft_atoi(s[3]);
 		data->camera.aspect_ratio = IMG_WIDTH / (float)IMG_HEIGHT;
 		data->camera.scale = tan(data->camera.fov * 0.5 * (PI / 180.0));
-		data->camera.up_vector = UP_VECTOR;
-		data->camera.right_vector = vector_CrossProduct(data->camera.vector, data->camera.up_vector);
+		data->camera.up_vector = vector_create(0, 1, 0);
 		data->camera.half_width = tan(data->camera.fov * 0.5 * (PI / 180.0));
 		data->camera.half_height = data->camera.half_width / data->camera.aspect_ratio;
 	}
