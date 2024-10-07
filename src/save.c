@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 13:42:46 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 16:36:29 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int save_FileContents(t_data *data, int fd)
 			break;
 		}
 		free(line);
+		free_array(split_line);
 	}
 	if (line != NULL)
 	{

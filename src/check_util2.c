@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:51:32 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 09:50:18 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 16:30:14 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	check_Vector(char *s)
 		}
 		i++;
 	}
+	free_array(vector_values);
 	return (0);
 }
 

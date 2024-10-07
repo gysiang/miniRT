@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 13:42:21 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 15:49:41 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	init_program(t_data *data)
 	t_prog *prog;
 
 	prog = &data->program;
+	prog->mlx_ptr = NULL;
 	prog->mlx_ptr = mlx_init();
 	prog->win_ptr = mlx_new_window(prog->mlx_ptr, IMG_WIDTH, IMG_HEIGHT, "MiniRT");
 	prog->image = new_img(prog);
