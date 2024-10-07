@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:07:02 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 23:04:57 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 23:18:16 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	check_Spheres(t_data *data, char **s)
 		if (check_XYZ(s[1]))
 			return (ft_error("Sphere XYZ coordinates are invalid"));
 		diameter = ft_atof(s[2]);
-		if (diameter < 0)
+		if (diameter < 0 || !ft_isnumeric(s[2]))
 			return (ft_error("Sphere diameter is invalid"));
 		if (check_RGB(s[3]))
 			return (ft_error("Sphere RGB values must be between 0 and 255"));

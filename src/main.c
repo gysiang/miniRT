@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 22:27:51 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 23:09:54 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ int	main(int ac, char **av)
 		close(fd);
 		if (open_file(&fd, av[1]))
 			return (ft_error(".rt file cannot be opened"));
-		save_FileContents(&data, fd);
+		if (save_FileContents(&data, fd))
+			return (ft_error("Failure saving file contents"));
 		init_program(&data);
 	}
 	else
