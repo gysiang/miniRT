@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 13:41:49 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 23:01:18 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,26 +176,31 @@ typedef struct s_prog
 typedef struct s_data
 {
 	t_prog		program;
-	char		*error_msg;
 	float		amb_light;	// Ambient light ratio
 	t_rgb		amb_rgb;	// Ambient light color
+	int			amb_count;
 	t_camera	camera;		// Camera data
+	int			cam_count;
 	t_light		light;		// Light data
+	int			light_count;
 	//An array that contains all ray hittable primitives
 	t_prim		*prims;
 	int			prim_count;
+	int			error_flag;
 }	t_data;
 
-
+// free
 void	free_array(char **array);
 void	cleanup(t_data *data);
 
 // init_struct
-void	init_img_data(t_data *data);
 void	init_program(t_data *data);
+t_data	init_data(void);
 
 // checks
 int	check_FileContents(t_data *data, int fd);
+int	not_element(char **s);
+int	check_capital_elements(t_data *data);
 int	check_Ambients(t_data *data, char **s);
 int	check_Cams(t_data *data, char **s);
 int	check_Lights(t_data *data, char **s);
@@ -207,7 +212,8 @@ int	check_Cylinders(t_data *data, char **s);
 
 // check_util1
 int	check_FileType(const char *filename);
-int set_error_msg(t_data *data, char *msg);
+int	open_file(int *fd, const char *filename);
+int ft_error(char *msg);
 int	check_NumOfInputs(char **s, int n);
 int	check_RGB(char *s);
 int	check_XYZ(char *s);
@@ -218,7 +224,7 @@ int	check_FOV(char *s);
 int	check_Ratio(char *s);
 
 // save
-int save_FileContents(t_data *data, int fd);
+int	save_FileContents(t_data *data, int fd);
 int	save_AmbientLight(t_data *data, char **s);
 int	save_Camera(t_data *data, char **s);
 int	save_Light(t_data *data, char **s);
