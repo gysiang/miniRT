@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:31:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 22:02:50 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/08 23:34:11 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,15 @@ int	check_RGB(char *s)
 	while (rgb_values[i] != NULL)
 	{
 		if (!ft_isnumeric(rgb_values[i]))
-		{
-			free_array(rgb_values);
-			return (1);
-		}
+			return (free_array(rgb_values), 1);
 		rgb = ft_atoi(rgb_values[i]);
 		if (rgb < 0 || rgb > 255)
-		{
-			free_array(rgb_values);
-			return (1);
-		}
+			return (free_array(rgb_values), 1);
 		i++;
 	}
 	free_array(rgb_values);
+	if (i != 3)
+		return (1);
 	return (0);
 }
 
@@ -91,9 +87,11 @@ int	check_XYZ(char *s)
 	while (xyz_values[i] != NULL)
 	{
 		if (!ft_isnumeric(xyz_values[i]))
-			return (1);
+			return (free_array(xyz_values), 1);
 		i++;
 	}
 	free_array(xyz_values);
+	if (i != 3)
+		return (1);
 	return (0);
 }
