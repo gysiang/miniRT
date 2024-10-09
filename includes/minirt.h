@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 10:35:43 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/09 12:40:00 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,32 @@ typedef struct s_rgb
 
 static const t_rgb BLACK_RGB = {0.0f, 0.0f, 0.0f};
 
+// Ray data related
+typedef struct s_ray
+{
+	t_vec	origin;
+	t_vec	vector;
+	t_vec	hit_coord;
+	t_vec	normal;
+} t_ray;
+
+typedef struct s_rayparams
+{
+	float	t;
+	float	min_dist;
+	t_ray	*saved_ray;
+	int		color_fin;
+	// Components to calculate final color
+	t_rgb	amb_fin;
+	t_rgb	diffuse_fin;
+	// Derivatives to find above components
+	t_rgb	amb_def;
+	t_rgb	prim_col;
+	float	light_intensity;
+	t_ray	shadow;
+	float	dl;
+} t_rayparams;
+
 // Struct for camera data
 // vector is the orientation vector (given)
 typedef struct s_camera
@@ -64,31 +90,6 @@ typedef struct s_light
 	float	brightness;
 	t_rgb	rgb;
 }	t_light;
-
-// Ray data related
-typedef struct s_ray
-{
-	t_vec	origin;
-	t_vec	vector;
-	t_vec	hit_coord;
-	t_vec	normal;
-} t_ray;
-
-typedef struct s_rayparams
-{
-	float	t;
-	float	min_dist;
-	int		color_fin;
-	// Components to calculate final color
-	t_rgb	amb_fin;
-	t_rgb	diffuse_fin;
-	// Derivatives to find above components
-	t_rgb	amb_def;
-	t_rgb	prim_col;
-	float	light_intensity;
-	t_ray	shadow;
-	float	dl;
-} t_rayparams;
 
 // Helper struct for solving quadratic equations
 typedef struct s_qdtc
@@ -253,6 +254,7 @@ t_image	*new_img(t_prog *mlx);
 // ray logic
 t_ray	make_ray(t_data *data, int x, int y);
 int		trace_ray(t_ray *ray, t_data *data);
+void	calc_color(t_ray *ray, t_data *data, t_rayparams *rp);
 
 // ray - hit
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);

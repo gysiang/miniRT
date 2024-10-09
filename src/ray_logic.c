@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_logic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 10:30:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/09 12:44:36 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,6 @@ t_rayparams	init_rayparams(t_data *data)
 	return (rp);
 }
 
-float vector_Length(t_vec v)
-{
-	return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-}
-
 t_ray	create_shadow(t_data *data, t_ray *ray)
 {
 	t_ray	s;
@@ -89,7 +84,6 @@ bool	in_shadow(t_data *data, t_ray *ray)
 	i = -1;
 	dl = 0;
 	sr = create_shadow(data, ray);
-
 	while (++i < data->prim_count)
 	{
 		// shadow ray hits object
@@ -108,9 +102,11 @@ int trace_ray(t_ray *ray, t_data *data)
 {
 	t_rayparams	rp;
 	int			i;
+	bool		hit;
 
 	rp = init_rayparams(data);
 	i = -1;
+	hit = false;
 	while (++i < data->prim_count)
 	{
 		if (hit_prim(ray, data->prims[i], &rp))
@@ -119,18 +115,28 @@ int trace_ray(t_ray *ray, t_data *data)
 			{
 				rp.prim_col = data->prims[i].rgb;
 				rp.min_dist = rp.t;
-				if (in_shadow(data, ray))
-				{
-					rp.amb_fin = rgb_mix(rp.prim_col, rp.amb_def);
-					rp.color_fin = rgb_get(rgb_add(rp.amb_fin, BLACK_RGB));
-					return (rp.color_fin);
-				}
-				rp.light_intensity = calculate_lighting(&ray->hit_coord, &ray->normal, &data->light);
-				rp.diffuse_fin = rgb_mix(rp.prim_col, rgb_mul(data->light.rgb, rp.light_intensity));
-				rp.amb_fin = rgb_mix(rp.prim_col, rp.amb_def);
-				rp.color_fin = rgb_get(rgb_add(rp.amb_fin, rp.diffuse_fin));
+				rp.saved_ray = ray;
+				hit = true;
 			}
 		}
 	}
+	if (hit)
+		calc_color(rp.saved_ray, data, &rp);
 	return (rp.color_fin);
+}
+
+void	calc_color(t_ray *ray, t_data *data, t_rayparams *rp)
+{
+	// if (in_shadow(data, ray))
+	// {
+	// 	rp->amb_fin = rgb_mix(rp->prim_col, rp->amb_def);
+	// 	rp->color_fin = rgb_get(rgb_add(rp->amb_fin, BLACK_RGB));
+	// }
+	// else
+	{
+		rp->light_intensity = calculate_lighting(&ray->hit_coord, &ray->normal, &data->light);
+		rp->diffuse_fin = rgb_mix(rp->prim_col, rgb_mul(data->light.rgb, rp->light_intensity));
+		rp->amb_fin = rgb_mix(rp->prim_col, rp->amb_def);
+		rp->color_fin = rgb_get(rgb_add(rp->amb_fin, rp->diffuse_fin));
+	}
 }
