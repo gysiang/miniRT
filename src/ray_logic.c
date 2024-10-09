@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 10:30:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/09 21:44:38 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_ray	create_shadow(t_data *data, t_ray *ray)
 {
 	t_ray	s;
 
-	s.origin = vector_Add(ray->hit_coord, vector_Multiply(ray->normal, 0.01));
+	s.origin = vector_Add(ray->hit_coord, vector_Multiply(ray->normal, 0.001));
 	s.vector = vector_Normalize(vector_Subtract(data->light.position, ray->hit_coord));
 	return (s);
 }
@@ -89,13 +89,11 @@ bool	in_shadow(t_data *data, t_ray *ray)
 	i = -1;
 	dl = 0;
 	sr = create_shadow(data, ray);
-
 	while (++i < data->prim_count)
 	{
 		// shadow ray hits object
 		if (hit_prim(&sr, data->prims[i], &sp))
 		{
-			// distance to light
 			dl = vector_Length(vector_Subtract(sr.origin, data->light.position));
 			if (sp.t > 0 && sp.t < dl)
 				return (true);
