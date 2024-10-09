@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 13:58:49 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/09 15:27:27 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 15:37:42 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,15 @@
 
 void	calc_color(t_data *data, t_rayparams *rp)
 {
+	t_rgb	black;
+
+	black.r = 0;
+	black.g = 0;
+	black.b = 0;
 	if (in_shadow(data, rp))
 	{
 		rp->amb_fin = rgb_mix(rp->prim_col, rp->amb_def);
-		rp->color_fin = rgb_get(rgb_add(rp->amb_fin, BLACK_RGB));
+		rp->color_fin = rgb_get(rgb_add(rp->amb_fin, black));
 	}
 	else
 	{
@@ -67,7 +72,7 @@ bool	in_shadow(t_data *data, t_rayparams *rp)
 		if (hit_prim(&sr, data->prims[i], &sp))
 		{
 			// distance to light
-			if (sp.t > 0 && sp.t < dl)
+			if (sp.t > EPSILON && sp.t < dl)
 				return (true);
 		}
 	}

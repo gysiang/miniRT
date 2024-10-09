@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 15:15:55 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 15:39:47 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ typedef struct s_rgb
 	int	b;
 }	t_rgb;
 
-static const t_rgb BLACK_RGB = {0.0f, 0.0f, 0.0f};
-
 // Ray data related
 typedef struct s_ray
 {
@@ -46,7 +44,7 @@ typedef struct s_ray
 	t_vec	vector;
 	t_vec	hitpoint;
 	t_vec	normal;
-} t_ray;
+}	t_ray;
 
 typedef struct s_rayparams
 {
@@ -64,7 +62,7 @@ typedef struct s_rayparams
 	float	light_intensity;
 	t_ray	shadow;
 	float	dl;
-} t_rayparams;
+}	t_rayparams;
 
 // Struct for camera data
 // vector is the orientation vector (given)
@@ -145,7 +143,7 @@ union	u_type
 	t_cylinder	cy;
 };
 
-typedef struct	s_prim
+typedef struct s_prim
 {
 	union u_type	p_data;
 	t_type			p_type;
@@ -198,43 +196,43 @@ void	init_program(t_data *data);
 t_data	init_data(void);
 
 // checks
-int	check_FileContents(t_data *data, int fd);
-int	not_element(char **s);
-int	check_capital_elements(t_data *data);
-int	check_Ambients(t_data *data, char **s);
-int	check_Cams(t_data *data, char **s);
-int	check_Lights(t_data *data, char **s);
-int	check_Spheres(t_data *data, char **s);
+int		check_FileContents(t_data *data, int fd);
+int		not_element(char **s);
+int		check_capital_elements(t_data *data);
+int		check_Ambients(t_data *data, char **s);
+int		check_Cams(t_data *data, char **s);
+int		check_Lights(t_data *data, char **s);
+int		check_Spheres(t_data *data, char **s);
 
 // checks1
-int	check_Planes(t_data *data, char **s);
-int	check_Cylinders(t_data *data, char **s);
+int		check_Planes(t_data *data, char **s);
+int		check_Cylinders(t_data *data, char **s);
 
 // check_util1
-int	check_FileType(const char *filename);
-int	open_file(int *fd, const char *filename);
-int ft_error(char *msg);
-int	check_NumOfInputs(char **s, int n);
-int	check_RGB(char *s);
-int	check_XYZ(char *s);
+int		check_FileType(const char *filename);
+int		open_file(int *fd, const char *filename);
+int		ft_error(char *msg);
+int		check_NumOfInputs(char **s, int n);
+int		check_RGB(char *s);
+int		check_XYZ(char *s);
 
 // check_util2
-int	check_Vector(char *s);
-int	check_FOV(char *s);
-int	check_Ratio(char *s);
+int		check_Vector(char *s);
+int		check_FOV(char *s);
+int		check_Ratio(char *s);
 
 // save
-int	save_FileContents(t_data *data, int fd);
-int	save_AmbientLight(t_data *data, char **s);
-int	save_Camera(t_data *data, char **s);
-int	save_Light(t_data *data, char **s);
-int	save_Sphere(t_data *data, char **s);
+int		save_FileContents(t_data *data, int fd);
+int		save_AmbientLight(t_data *data, char **s);
+int		save_Camera(t_data *data, char **s);
+int		save_Light(t_data *data, char **s);
+int		save_Sphere(t_data *data, char **s);
 
 // save1
-int	save_Plane(t_data *data, char **s);
-int	save_Cylinder(t_data *data, char **s);
-int	save_RGB(t_rgb *array, char *s);
-int	save_Vector(t_vec *array, char *s);
+int		save_Plane(t_data *data, char **s);
+int		save_Cylinder(t_data *data, char **s);
+int		save_RGB(t_rgb *array, char *s);
+int		save_Vector(t_vec *array, char *s);
 
 // handlers
 int		handle_exit(t_data *data);
