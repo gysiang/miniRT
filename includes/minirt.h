@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 16:50:11 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 22:44:53 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,7 @@ int		save_Vector(t_vec *array, char *s);
 
 // handlers
 int		handle_exit(t_data *data);
-int		handle_keypress(KeySym keysym, t_data *data);
+int 	handle_keypress(KeySym keysym, t_data *data);
 int		handle_mouse_click(int button, int x, int y);
 
 // image
@@ -278,7 +278,6 @@ t_rgb	rgb_mix(t_rgb x, t_rgb y);
 t_rgb	rgb_lerp(t_rgb x, t_rgb y, float frac);
 
 // camera movement;
-void	move_camera(t_vec *pos, float scalar, int type);
 void	rotate_camera(t_camera *camera);
 
 #endif
