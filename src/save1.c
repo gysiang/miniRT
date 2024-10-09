@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:05:57 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 12:39:48 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 23:10:47 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	save_Plane(t_data *data, char **s)
 {
-	if (ft_strncmp(s[0], "pl", 2) == 0)
+	if (ft_strcmp(s[0], "pl") == 0)
 	{
 		save_Vector(&data->prims[data->prim_count].position, s[1]);
 		save_Vector(&data->prims[data->prim_count].vector, s[2]);
@@ -29,7 +29,7 @@ int	save_Cylinder(t_data *data, char **s)
 {
 	t_cylinder cy;
 
-	if (ft_strncmp(s[0], "cy", 2) == 0)
+	if (ft_strcmp(s[0], "cy") == 0)
 	{
 		cy.radius = ft_atof(s[3]) / 2;
 		cy.height = ft_atof(s[4]);
@@ -48,7 +48,7 @@ int	save_RGB(t_rgb *array, char *s)
 {
 	char	**rgb_values;
 
-	rgb_values = ft_split(s, ',');
+	rgb_values = ft_split(s, ",");
 	if (!rgb_values)
 		return (1);
 	array->r = ft_atoi(rgb_values[0]);
@@ -60,9 +60,9 @@ int	save_RGB(t_rgb *array, char *s)
 
 int	save_Vector(t_vec *array, char *s)
 {
-	char **vector_values;
+	char	**vector_values;
 
-	vector_values = ft_split(s, ',');
+	vector_values = ft_split(s, ",");
 	if (!vector_values)
 		return (1);
 	array->x = ft_atof(vector_values[0]);

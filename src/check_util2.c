@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_util2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:51:32 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/09/19 18:58:56 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/07 16:30:14 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	check_Vector(char *s)
 	float	vector;
 
 	i = 0;
-	vector_values = ft_split(s, ',');
+	vector_values = ft_split(s, ",");
 	if (!vector_values)
 		return (1);
 	while (vector_values[i] != NULL)
@@ -37,6 +37,7 @@ int	check_Vector(char *s)
 		}
 		i++;
 	}
+	free_array(vector_values);
 	return (0);
 }
 

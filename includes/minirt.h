@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 06:22:24 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/09 10:35:43 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,27 +133,8 @@ typedef struct s_cy_helper
 	float	y_hit;
 	float	y_min;
 	float	y_max;
-	t_vec	cap_center;
 	bool	top_cap;
 }	t_cy_helper;
-
-// mlx image struct
-typedef struct s_image
-{
-	void	*img;
-	char	*ptr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}	t_image;
-
-// to save program data like mlx
-typedef struct s_prog
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-	t_image	*image;
-}	t_prog;
 
 typedef enum type
 {
@@ -177,30 +158,53 @@ typedef struct	s_prim
 	t_rgb			rgb;
 }	t_prim;
 
-// Main image struct
+// mlx image struct
+typedef struct s_image
+{
+	void	*img;
+	char	*ptr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_image;
+
+// to save program data like mlx
+typedef struct s_prog
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+	t_image	*image;
+}	t_prog;
+
+// Main data struct
 typedef struct s_data
 {
 	t_prog		program;
-	char		*error_msg;
 	float		amb_light;	// Ambient light ratio
 	t_rgb		amb_rgb;	// Ambient light color
+	int			amb_count;
 	t_camera	camera;		// Camera data
+	int			cam_count;
 	t_light		light;		// Light data
+	int			light_count;
 	//An array that contains all ray hittable primitives
 	t_prim		*prims;
 	int			prim_count;
+	int			error_flag;
 }	t_data;
 
-
+// free
 void	free_array(char **array);
-void	cleanup(t_prog *prog);
+void	cleanup(t_data *data);
 
 // init_struct
-void	init_img_data(t_data *data);
 void	init_program(t_data *data);
+t_data	init_data(void);
 
 // checks
 int	check_FileContents(t_data *data, int fd);
+int	not_element(char **s);
+int	check_capital_elements(t_data *data);
 int	check_Ambients(t_data *data, char **s);
 int	check_Cams(t_data *data, char **s);
 int	check_Lights(t_data *data, char **s);
@@ -212,7 +216,8 @@ int	check_Cylinders(t_data *data, char **s);
 
 // check_util1
 int	check_FileType(const char *filename);
-int set_error_msg(t_data *data, char *msg);
+int	open_file(int *fd, const char *filename);
+int ft_error(char *msg);
 int	check_NumOfInputs(char **s, int n);
 int	check_RGB(char *s);
 int	check_XYZ(char *s);
@@ -223,7 +228,7 @@ int	check_FOV(char *s);
 int	check_Ratio(char *s);
 
 // save
-int save_FileContents(t_data *data, int fd);
+int	save_FileContents(t_data *data, int fd);
 int	save_AmbientLight(t_data *data, char **s);
 int	save_Camera(t_data *data, char **s);
 int	save_Light(t_data *data, char **s);
@@ -236,13 +241,9 @@ int	save_RGB(t_rgb *array, char *s);
 int	save_Vector(t_vec *array, char *s);
 
 // handlers
-void	exit_program(t_prog *prog);
-int		handle_exit(t_prog *prog);
+int		handle_exit(t_data *data);
 int		handle_keypress(KeySym keysym, t_data *data);
 int		handle_mouse_click(int button, int x, int y);
-
-// utils
-char *normalize_whitespace(const char *str);
 
 // image
 void	set_img_pixel(t_image *img, int x, int y, int color);

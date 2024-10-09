@@ -6,18 +6,18 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 11:16:43 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 15:43:48 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/09 10:35:47 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	exit_program(t_prog *prog)
+int	handle_exit(t_data *data)
 {
-	if (prog->win_ptr)
+	if (data->program.win_ptr)
 	{
-		mlx_destroy_window(prog->mlx_ptr, prog->win_ptr);
-		cleanup(prog);
+		mlx_destroy_window(data->program.mlx_ptr, data->program.win_ptr);
+		cleanup(data);
 	}
 	printf("Successfully exited miniRT.\n");
 	exit(0);
@@ -31,7 +31,7 @@ int handle_keypress(KeySym keysym, t_data *data)
 	speed = 0.1;
 	sensitivity = 0.01;
 	if (keysym == XK_Escape)
-		exit_program(&data->program);
+		handle_exit(data);
 	else if (keysym == XK_W || keysym == XK_w)
 	{
 		printf("W key pressed, camera moved forward\n");
@@ -89,11 +89,5 @@ int handle_mouse_click(int button, int x, int y)
 		printf("Middle click at (%d, %d)\n", x, y);
 	else
 		printf("Unknown mouse button %d clicked at (%d, %d)\n", button, x, y);
-	return (0);
-}
-
-int	handle_exit(t_prog *prog)
-{
-	exit_program(prog);
 	return (0);
 }

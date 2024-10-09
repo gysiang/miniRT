@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:31:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/03 11:57:51 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 22:02:50 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,19 @@ int	check_FileType(const char *filename)
 	return (0);
 }
 
-int set_error_msg(t_data *data, char *msg)
+int	open_file(int *fd, const char *filename)
 {
-	data->error_msg = msg;
+	*fd = open(filename, O_RDONLY);
+	if (*fd == -1)
+		return (1);
+	return (0);
+}
+
+int ft_error(char *msg)
+{
+	ft_putstr_fd("Error.\n", STDERR_FILENO);
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd(".\n", STDERR_FILENO);
 	return (1);
 }
 
@@ -46,7 +56,7 @@ int	check_RGB(char *s)
 	int		rgb;
 	int		i;
 
-	rgb_values = ft_split(s, ',');
+	rgb_values = ft_split(s, ",");
 	if (!rgb_values)
 		return (1);
 	i = 0;
@@ -75,7 +85,7 @@ int	check_XYZ(char *s)
 	int		i;
 
 	i = 0;
-	xyz_values = ft_split(s, ',');
+	xyz_values = ft_split(s, ",");
 	if (!xyz_values)
 		return (1);
 	while (xyz_values[i] != NULL)
