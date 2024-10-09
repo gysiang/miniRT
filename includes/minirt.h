@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 12:41:14 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 06:22:24 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ typedef struct s_rgb
 	int	g;
 	int	b;
 }	t_rgb;
+
+static const t_rgb BLACK_RGB = {0.0f, 0.0f, 0.0f};
 
 // Struct for camera data
 // vector is the orientation vector (given)
@@ -84,6 +86,8 @@ typedef struct s_rayparams
 	t_rgb	amb_def;
 	t_rgb	prim_col;
 	float	light_intensity;
+	t_ray	shadow;
+	float	dl;
 } t_rayparams;
 
 // Helper struct for solving quadratic equations
