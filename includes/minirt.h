@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 15:39:47 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 16:50:11 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@
 # define IMG_HEIGHT 600
 # define PI 3.14159265358979323846
 # define EPSILON 1e-6
+
+# define SPEED 5
+# define SENSITIV 0.01
+
+enum e_move
+{
+	UPDOWN,
+	LEFTRIGHT,
+	FORWARDBACK
+};
 
 // Struct for RGB values
 typedef struct s_rgb
@@ -258,8 +268,7 @@ t_ray	create_shadow(t_data *data, t_rayparams *rp);
 bool	in_shadow(t_data *data, t_rayparams *rp);
 
 // render
-void	render_ambient(t_prog *mlx, float s, t_rgb *amb);
-void	render_image(t_prog *prog, t_data *data);
+void	render_image(t_data *data);
 
 // render - rgb
 int		rgb_get(t_rgb rgb);
@@ -269,8 +278,7 @@ t_rgb	rgb_mix(t_rgb x, t_rgb y);
 t_rgb	rgb_lerp(t_rgb x, t_rgb y, float frac);
 
 // camera movement;
-void	move_camera(t_vec *pos, t_vec *direction, float speed);
+void	move_camera(t_vec *pos, float scalar, int type);
 void	rotate_camera(t_camera *camera);
-void	re_render_image(t_data *data);
 
 #endif

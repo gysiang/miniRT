@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:05:57 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 14:21:21 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 16:58:17 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	save_Plane(t_data *data, char **s)
 	{
 		save_Vector(&data->prims[data->prim_count].position, s[1]);
 		save_Vector(&data->prims[data->prim_count].vector, s[2]);
-		data->prims[data->prim_count].vector = vector_Normalize(data->prims[data->prim_count].vector);
 		save_RGB(&data->prims[data->prim_count].rgb, s[3]);
 		data->prims[data->prim_count].p_type = PL;
 		data->prim_count++;
