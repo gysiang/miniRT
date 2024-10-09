@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 22:44:53 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 22:51:45 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,6 +269,7 @@ bool	in_shadow(t_data *data, t_rayparams *rp);
 
 // render
 void	render_image(t_data *data);
+void	re_render_image(t_data *data);
 
 // render - rgb
 int		rgb_get(t_rgb rgb);
