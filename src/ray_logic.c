@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_logic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 13:02:50 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 10:30:26 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,20 @@ t_ray	make_ray(t_data *data, int x, int y)
 	ray.vector = data->camera.vector;
 	ray.vector = vector_Add(ray.vector, vector_Multiply(right_vec, u));
 	ray.vector = vector_Add(ray.vector, vector_Multiply(up_vec, v));
+
 	ray.vector = vector_Normalize(ray.vector);
 	return (ray);
 }
 
 float	calculate_lighting(t_vec *hitpoint, t_vec *normal, t_light *light)
 {
-	t_vec	light_dir;
+	t_vec		lv;
 	float		intensity;
+
 	// vector from intersection to light source
-	light_dir = vector_Subtract(light->position, *hitpoint);
-	light_dir = vector_Normalize(light_dir);
+	lv = vector_Normalize(vector_Subtract(light->position, *hitpoint));
 	// angle between light direction and surface vector
-	intensity = vector_DotProduct(light_dir, *normal);
+	intensity = vector_DotProduct(lv, *normal);
 	if (intensity < 0)
 		intensity = 0;
 	// scale it by the light brightness
@@ -56,16 +57,53 @@ t_rayparams	init_rayparams(t_data *data)
 {
 	t_rayparams	rp;
 
-	rp.t = 0;
+	rp.t = 0.01;
+	rp.dl = 0;
 	rp.min_dist = INFINITY;
 	rp.amb_def = rgb_mul(data->amb_rgb, data->amb_light);
 	rp.color_fin = rgb_get(rp.amb_def);
 	return (rp);
 }
 
-/**
- * if it hits the sphere, return rgb of sphere, else return rgb of ambient.
- */
+float vector_Length(t_vec v)
+{
+	return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
+t_ray	create_shadow(t_data *data, t_ray *ray)
+{
+	t_ray	s;
+
+	s.origin = vector_Add(ray->hit_coord, vector_Multiply(ray->normal, 0.01));
+	s.vector = vector_Normalize(vector_Subtract(data->light.position, ray->hit_coord));
+	return (s);
+}
+
+bool	in_shadow(t_data *data, t_ray *ray)
+{
+	int			i;
+	float		dl;
+	t_rayparams	sp;
+	t_ray		sr;
+
+	i = -1;
+	dl = 0;
+	sr = create_shadow(data, ray);
+
+	while (++i < data->prim_count)
+	{
+		// shadow ray hits object
+		if (hit_prim(&sr, data->prims[i], &sp))
+		{
+			// distance to light
+			dl = vector_Length(vector_Subtract(sr.origin, data->light.position));
+			if (sp.t > 0 && sp.t < dl)
+				return (true);
+		}
+	}
+	return (false);
+}
+
 int trace_ray(t_ray *ray, t_data *data)
 {
 	t_rayparams	rp;
@@ -81,11 +119,15 @@ int trace_ray(t_ray *ray, t_data *data)
 			{
 				rp.prim_col = data->prims[i].rgb;
 				rp.min_dist = rp.t;
+				if (in_shadow(data, ray))
+				{
+					rp.amb_fin = rgb_mix(rp.prim_col, rp.amb_def);
+					rp.color_fin = rgb_get(rgb_add(rp.amb_fin, BLACK_RGB));
+					return (rp.color_fin);
+				}
 				rp.light_intensity = calculate_lighting(&ray->hit_coord, &ray->normal, &data->light);
-				// color of the sphere affected by each light
 				rp.diffuse_fin = rgb_mix(rp.prim_col, rgb_mul(data->light.rgb, rp.light_intensity));
 				rp.amb_fin = rgb_mix(rp.prim_col, rp.amb_def);
-				// final color should be all lights added
 				rp.color_fin = rgb_get(rgb_add(rp.amb_fin, rp.diffuse_fin));
 			}
 		}

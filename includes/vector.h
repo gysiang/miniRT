@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 10:12:09 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 12:35:54 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/07 19:54:50 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_matrix
 
 static const t_vec UP_VECTOR = {0.0, 1.0, 0.0};
 static const t_vec RIGHT_VECTOR = {1.0, 0.0, 0.0};
-static const t_vec CAM_ORIGIN = {0.0, 0.0, 0.0};
 
 t_vec	vector_Add(const t_vec a, const t_vec b);
 t_vec	vector_Subtract(const t_vec a, const t_vec b);
