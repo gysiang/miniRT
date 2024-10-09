@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 10:35:43 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/09 21:29:24 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ int	save_Vector(t_vec *array, char *s);
 
 // handlers
 int		handle_exit(t_data *data);
-int		handle_keypress(KeySym keysym, t_data *data);
+int 	handle_keypress(KeySym keysym, t_data *data);
 int		handle_mouse_click(int button, int x, int y);
 
 // image
@@ -258,8 +258,8 @@ int		trace_ray(t_ray *ray, t_data *data);
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
 
 // render
-void	render_ambient(t_prog *mlx, float s, t_rgb *amb);
 void	render_image(t_prog *prog, t_data *data);
+void	re_render_image(t_data *data);
 
 // render - rgb
 int		rgb_get(t_rgb rgb);
@@ -269,8 +269,6 @@ t_rgb	rgb_mix(t_rgb x, t_rgb y);
 t_rgb	rgb_lerp(t_rgb x, t_rgb y, float frac);
 
 // camera movement;
-void	move_camera(t_vec *pos, t_vec *direction, float speed);
 void	rotate_camera(t_camera *camera);
-void	re_render_image(t_data *data);
 
 #endif
