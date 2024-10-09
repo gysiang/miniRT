@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 11:05:20 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/01 23:14:23 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 15:03:37 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ t_rgb	rgb_mul(t_rgb rgb, float ratio)
 	rgb.r = (int)(rgb.r * ratio);
 	rgb.g = (int)(rgb.g * ratio);
 	rgb.b = (int)(rgb.b * ratio);
+	if (rgb.r > 255)
+		rgb.r = 255;
+	if (rgb.g > 255)
+		rgb.g = 255;
+	if (rgb.b > 255)
+		rgb.b = 255;
 	return (rgb);
 }
 

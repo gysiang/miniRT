@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 12:40:00 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 15:15:55 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 
 # define IMG_WIDTH 800
 # define IMG_HEIGHT 600
-# define MAX_OBJ 10
 # define PI 3.14159265358979323846
 # define EPSILON 1e-6
 
@@ -45,7 +44,7 @@ typedef struct s_ray
 {
 	t_vec	origin;
 	t_vec	vector;
-	t_vec	hit_coord;
+	t_vec	hitpoint;
 	t_vec	normal;
 } t_ray;
 
@@ -53,7 +52,8 @@ typedef struct s_rayparams
 {
 	float	t;
 	float	min_dist;
-	t_ray	*saved_ray;
+	t_vec	t_hitpoint;
+	t_vec	t_normal;
 	int		color_fin;
 	// Components to calculate final color
 	t_rgb	amb_fin;
@@ -108,11 +108,6 @@ typedef struct s_sphere
 {
 	float	radius;
 }	t_sphere;
-
-// Struct for plane data
-// typedef struct s_plane
-// {
-// }	t_plane;
 
 // Struct for cylinder data
 typedef struct s_cylinder
@@ -251,13 +246,18 @@ void	set_img_pixel(t_image *img, int x, int y, int color);
 t_image	*del_img(t_prog *mlx, t_image *img);
 t_image	*new_img(t_prog *mlx);
 
-// ray logic
+// ray - logic
 t_ray	make_ray(t_data *data, int x, int y);
 int		trace_ray(t_ray *ray, t_data *data);
-void	calc_color(t_ray *ray, t_data *data, t_rayparams *rp);
 
 // ray - hit
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
+
+// ray - lighting
+void	calc_color(t_data *data, t_rayparams *rp);
+float	calculate_lighting(t_vec *hitpoint, t_vec *normal, t_light *light);
+t_ray	create_shadow(t_data *data, t_rayparams *rp);
+bool	in_shadow(t_data *data, t_rayparams *rp);
 
 // render
 void	render_ambient(t_prog *mlx, float s, t_rgb *amb);
