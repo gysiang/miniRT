@@ -10,7 +10,7 @@ MLX	     	:=  $(MLX_DIR)/libmlx.a
 # Compiler and flags
 CC       := clang
 LEAKCHECK:= #-fsanitize=address
-CFLAGS   := -g -O3 -Wall -Wextra -Werror -Wno-unused-result $(LEAKCHECK)
+CFLAGS   := -g -Wall -Wextra -Werror -Wno-unused-result $(LEAKCHECK)
 LFLAGS   := -L$(LIBFT_DIR) -lft
 IFLAGS   := -I$(LIBFT_DIR) -I$(INCLUDES_DIR)
 MLXFLAGS := -L$(MLX_DIR) -lmlx -lXext -lX11 -lbsd -lm

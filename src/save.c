@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 23:16:34 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 13:21:24 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int save_FileContents(t_data *data, int fd)
 	{
 		split_line = ft_split(line, " \t\n\v\f\r");
 		free(line);
+		if (!split_line)
+			continue ;
 		if (save_AmbientLight(data, split_line) || save_Camera(data, split_line)
 			|| save_Light(data, split_line) || save_Sphere(data, split_line)
 			|| save_Plane(data, split_line) || save_Cylinder(data, split_line))
