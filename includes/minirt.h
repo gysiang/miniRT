@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 22:51:45 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 23:25:45 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@
 # define PI 3.14159265358979323846
 # define EPSILON 1e-6
 
-# define SPEED 5
-# define SENSITIV 0.01
+# define MV_SPEED 5
+# define ROT_SPEED 0.05
 
 enum e_move
 {
-	UPDOWN,
 	LEFTRIGHT,
+	UPDOWN,
 	FORWARDBACK
 };
 
@@ -249,6 +249,10 @@ int		handle_exit(t_data *data);
 int 	handle_keypress(KeySym keysym, t_data *data);
 int		handle_mouse_click(int button, int x, int y);
 
+// handlers - camera movement;
+void	rotate_camera(t_camera *camera);
+void	move_camera(t_vec *pos, float scalar, int type);
+
 // image
 void	set_img_pixel(t_image *img, int x, int y, int color);
 t_image	*del_img(t_prog *mlx, t_image *img);
@@ -277,8 +281,5 @@ t_rgb	rgb_add(t_rgb x, t_rgb y);
 t_rgb	rgb_mul(t_rgb rgb, float ratio);
 t_rgb	rgb_mix(t_rgb x, t_rgb y);
 t_rgb	rgb_lerp(t_rgb x, t_rgb y, float frac);
-
-// camera movement;
-void	rotate_camera(t_camera *camera);
 
 #endif

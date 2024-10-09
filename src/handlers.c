@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 11:16:43 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 22:48:06 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 23:28:25 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ char	*assign_dir(KeySym keysym)
 		d = "left";
 	else if (keysym == XK_D || keysym == XK_d)
 		d = "right";
+	else if (keysym == XK_Q || keysym == XK_q)
+		d = "up";
+	else if (keysym == XK_E || keysym == XK_e)
+		d = "down";
 	return (d);
 }
 
@@ -51,19 +55,21 @@ int	handle_cam_movement(t_data *data, KeySym keysym)
 {
 	char 		*keyname;
 	float		speed;
-	t_camera	cam;
 	char		*dir;
 
-	speed = 0.1;
-	cam = data->camera;
+	speed = MV_SPEED;
 	keyname = XKeysymToString(keysym);
 	dir = NULL;
 	dir = assign_dir(keysym);
-	printf("%s is pressed. Camera moved %s.\n", keyname, dir);
-	if (keysym == XK_S || keysym == XK_s || keysym == XK_A || keysym == XK_a)
+	if (keysym == XK_S || keysym == XK_s || keysym == XK_A || keysym == XK_a || keysym == XK_E || keysym == XK_e)
 		speed *= -1;
-	data->camera.position = vector_Add(cam.position, vector_Multiply(cam.vector, speed));
-	re_render_image(data);
+	if (keysym == XK_A || keysym == XK_a || keysym == XK_D || keysym == XK_d)
+		move_camera(&data->camera.position, speed, LEFTRIGHT);
+	else if (keysym == XK_Q || keysym == XK_q || keysym == XK_E || keysym == XK_e)
+		move_camera(&data->camera.position, speed, UPDOWN);
+	else if (keysym == XK_W || keysym == XK_w || keysym == XK_S || keysym == XK_s)
+		move_camera(&data->camera.position, speed, FORWARDBACK);
+	printf("%s is pressed. Camera moved %s.\n", keyname, dir);
 	return (0);
 }
 
@@ -74,22 +80,17 @@ int	handle_cam_rotation(t_data *data, KeySym keysym)
 	char	*dir;
 
 	keyname = XKeysymToString(keysym);
-	s = 0.01;
+	s = ROT_SPEED;
 	dir = NULL;
 	dir = assign_dir(keysym);
-	if (keysym == XK_Left || keysym == XK_Up)
+	if (keysym == XK_Left || keysym == XK_Down)
 		s *= -1;
-	if (keysym == XK_Left)
-		data->camera.yaw -= s;
-	else if (keysym == XK_Right)
+	if (keysym == XK_Left || keysym == XK_Right)
 		data->camera.yaw += s;
-	else if (keysym == XK_Up)
+	else if (keysym == XK_Up || keysym == XK_Down)
 		data->camera.pitch += s;
-	else if (keysym == XK_Down)
-		data->camera.pitch -= s;
-	printf("%s is pressed. Camera rotate %s.\n", keyname, dir);
 	rotate_camera(&data->camera);
-	re_render_image(data);
+	printf("%s is pressed. Camera rotate %s.\n", keyname, dir);
 	return (0);
 }
 
@@ -98,10 +99,11 @@ int handle_keypress(KeySym keysym, t_data *data)
 	if (keysym == XK_Escape)
 		handle_exit(data);
 	else if (keysym == XK_W || keysym == XK_w || keysym == XK_S || keysym == XK_s || keysym == XK_A || keysym == XK_a
-		|| keysym == XK_D || keysym == XK_d)
+		|| keysym == XK_D || keysym == XK_d || keysym == XK_Q || keysym == XK_q || keysym == XK_E || keysym == XK_e)
 		handle_cam_movement(data, keysym);
 	else if (keysym == XK_Left || keysym == XK_Right || keysym == XK_Up || keysym == XK_Down)
 		handle_cam_rotation(data, keysym);
+	re_render_image(data);
 	return (0);
 }
 

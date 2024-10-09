@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement.c                                         :+:      :+:    :+:   */
+/*   handlers_cam.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 14:14:34 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 22:47:33 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 23:03:02 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-/**
- *  Upates the camera position based on wasd
- */
-
-void move_camera(t_vec *pos, float scalar, int type)
+void	move_camera(t_vec *pos, float scalar, int type)
 {
 	if (type == LEFTRIGHT)
 		pos->x += scalar;
