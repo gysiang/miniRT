@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 12:39:14 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/09 22:51:51 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/10 21:31:03 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,13 @@ void	render_image(t_data *data)
 		x = -1;
 		while (x++ < IMG_WIDTH)
 		{
-			// get the ray direction
 			ray = make_ray(data, x, y);
-			// trace the ray to see if it hits the obj else it will return the ambient color
 			color = trace_ray(&ray, data);
-			//draw_sphere_projection(prog, &data->spheres[0]);
 			set_img_pixel(prog.image, x, y, color);
 		}
 	}
-	mlx_put_image_to_window(prog.mlx_ptr, prog.win_ptr, prog.image->img, 0, 0);
+	mlx_put_image_to_window(prog.mlx_ptr, prog.win_ptr,
+		prog.image->img, 0, 0);
 }
 
 void	re_render_image(t_data *data)

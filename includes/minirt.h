@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/10 12:13:20 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 01:14:48 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,47 +208,52 @@ void	init_program(t_data *data);
 t_data	init_data(void);
 
 // checks
-int		check_FileContents(t_data *data, int fd);
+int		check_filecontents(t_data *data, int fd);
 int		not_element(char **s);
 int		check_capital_elements(t_data *data);
-int		check_Ambients(t_data *data, char **s);
-int		check_Cams(t_data *data, char **s);
-int		check_Lights(t_data *data, char **s);
-int		check_Spheres(t_data *data, char **s);
+int		check_ambients(t_data *data, char **s);
+int		check_cams(t_data *data, char **s);
+int		check_lights(t_data *data, char **s);
+int		check_spheres(t_data *data, char **s);
 
 // checks1
-int		check_Planes(t_data *data, char **s);
-int		check_Cylinders(t_data *data, char **s);
+int		check_planes(t_data *data, char **s);
+int		check_cylinders(t_data *data, char **s);
 
 // check_util1
-int		check_FileType(const char *filename);
+int		check_filetype(const char *filename);
 int		open_file(int *fd, const char *filename);
 int		ft_error(char *msg);
-int		check_NumOfInputs(char **s, int n);
-int		check_RGB(char *s);
-int		check_XYZ(char *s);
+int		check_numofinputs(char **s, int n);
+int		check_rgb(char *s);
+int		check_xyz(char *s);
 
 // check_util2
-int		check_Vector(char *s);
-int		check_FOV(char *s);
-int		check_Ratio(char *s);
+int		check_vector(char *s);
+int		check_fov(char *s);
+int		check_ratio(char *s);
 
 // save
-int		save_FileContents(t_data *data, int fd);
-int		save_AmbientLight(t_data *data, char **s);
-int		save_Camera(t_data *data, char **s);
-int		save_Light(t_data *data, char **s);
-int		save_Sphere(t_data *data, char **s);
+int		save_filecontents(t_data *data, int fd);
+int		save_ambientlight(t_data *data, char **s);
+int		save_camera(t_data *data, char **s);
+int		save_light(t_data *data, char **s);
+int		save_sphere(t_data *data, char **s);
 
 // save1
-int		save_Plane(t_data *data, char **s);
-int		save_Cylinder(t_data *data, char **s);
-int		save_RGB(t_rgb *array, char *s);
-int		save_Vector(t_vec *array, char *s);
+int		save_plane(t_data *data, char **s);
+int		save_cylinder(t_data *data, char **s);
+int		save_rgb(t_rgb *array, char *s);
+int		save_vector(t_vec *array, char *s);
 
 // handlers
 int		handle_exit(t_data *data);
-int 	handle_keypress(KeySym keysym, t_data *data);
+int		handle_cam_movement(t_data *data, KeySym keysym);
+int		handle_cam_rotation(t_data *data, KeySym keysym);
+int		handle_light_movement(t_data *data, KeySym keysym);
+
+// handlers1
+int		handle_keypress(KeySym keysym, t_data *data);
 int		handle_mouse_click(int button, int x, int y);
 
 // handlers - camera movement;
@@ -263,8 +268,20 @@ t_image	*new_img(t_prog *mlx);
 // ray - logic
 t_ray	make_ray(t_data *data, int x, int y);
 int		trace_ray(t_ray *ray, t_data *data);
+void	update_hit_params(t_ray *ray, t_rayparams *rp, t_prim *prim);
 
 // ray - hit
+t_vec	get_hitpoint(t_vec origin, t_ray *ray, float t);
+bool	do_quadratic(t_qdtc *qd, float *t);
+bool	hit_sphere(t_ray *ray, t_prim *prim, float *t);
+bool	hit_plane(t_ray *ray, t_prim *prim, float *t);
+bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t);
+
+// ray_hits1
+void	init_cy_helper(t_ray *ray, t_prim *prim, t_cy_helper *cyh);
+void	hit_cylinder_body(t_cy_helper *cyh, t_prim *prim, float *t);
+void	hit_cylinder_caps(t_cy_helper *cyh, t_prim *prim, float *t);
+bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t);
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
 
 // ray - lighting

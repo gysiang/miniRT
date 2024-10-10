@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   save.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 13:21:24 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/10 23:07:44 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int save_FileContents(t_data *data, int fd)
+int	save_filecontents(t_data *data, int fd)
 {
 	char	*line;
 	char	**split_line;
@@ -23,9 +23,9 @@ int save_FileContents(t_data *data, int fd)
 		free(line);
 		if (!split_line)
 			continue ;
-		if (save_AmbientLight(data, split_line) || save_Camera(data, split_line)
-			|| save_Light(data, split_line) || save_Sphere(data, split_line)
-			|| save_Plane(data, split_line) || save_Cylinder(data, split_line))
+		if (save_ambientlight(data, split_line) || save_camera(data, split_line)
+			|| save_light(data, split_line) || save_sphere(data, split_line)
+			|| save_plane(data, split_line) || save_cylinder(data, split_line))
 			return (free_array(split_line), 1);
 		free_array(split_line);
 	}
@@ -33,23 +33,23 @@ int save_FileContents(t_data *data, int fd)
 	return (0);
 }
 
-int	save_AmbientLight(t_data *data, char **s)
+int	save_ambientlight(t_data *data, char **s)
 {
 	if (ft_strcmp(s[0], "A") == 0)
 	{
 		data->amb_light = ft_atof(s[1]);
-		save_RGB(&(data->amb_rgb), s[2]);
+		save_rgb(&(data->amb_rgb), s[2]);
 	}
 	return (0);
 }
 
-int	save_Camera(t_data *data, char **s)
+int	save_camera(t_data *data, char **s)
 {
 	if (ft_strcmp(s[0], "C") == 0)
 	{
-		save_Vector(&(data->camera.position), s[1]);
-		save_Vector(&(data->camera.vector), s[2]);
-		data->camera.vector = vector_Normalize(data->camera.vector);
+		save_vector(&(data->camera.position), s[1]);
+		save_vector(&(data->camera.vector), s[2]);
+		data->camera.vector = vector_normalize(data->camera.vector);
 		data->camera.fov = ft_atoi(s[3]);
 		data->camera.aspect_ratio = (float)IMG_WIDTH / IMG_HEIGHT;
 		data->camera.scale = tan(data->camera.fov * 0.5 * (PI / 180.0));
@@ -58,18 +58,18 @@ int	save_Camera(t_data *data, char **s)
 	return (0);
 }
 
-int	save_Light(t_data *data, char **s)
+int	save_light(t_data *data, char **s)
 {
 	if (ft_strcmp(s[0], "L") == 0)
 	{
-		save_Vector(&(data->light.position), s[1]);
+		save_vector(&(data->light.position), s[1]);
 		data->light.brightness = ft_atof(s[2]);
-		save_RGB(&(data->light.rgb), "255,255,255");
+		save_rgb(&(data->light.rgb), "255,255,255");
 	}
 	return (0);
 }
 
-int	save_Sphere(t_data *data, char **s)
+int	save_sphere(t_data *data, char **s)
 {
 	t_sphere	sp;
 
@@ -77,8 +77,8 @@ int	save_Sphere(t_data *data, char **s)
 	{
 		sp.radius = ft_atof(s[2]) / 2;
 		data->prims[data->prim_count].p_data.sp = sp;
-		save_RGB(&data->prims[data->prim_count].rgb, s[3]);
-		save_Vector(&data->prims[data->prim_count].position, s[1]);
+		save_rgb(&data->prims[data->prim_count].rgb, s[3]);
+		save_vector(&data->prims[data->prim_count].position, s[1]);
 		data->prims[data->prim_count].p_type = SP;
 		data->prim_count++;
 	}

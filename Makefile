@@ -36,6 +36,7 @@ SRC_FILES :=	main.c \
 				save1.c \
 				init_struct.c \
 				handlers.c \
+				handlers1.c \
 				handlers_cam.c \
 				free.c	\
 				render.c \
@@ -43,9 +44,10 @@ SRC_FILES :=	main.c \
 				mlx_image.c \
 				ray_logic.c \
 				ray_hits.c \
+				ray_hits1.c \
 				ray_lighting.c \
 				vector_op.c \
-				matrix.c
+				vector_op1.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 

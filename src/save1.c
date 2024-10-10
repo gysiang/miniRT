@@ -3,51 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   save1.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:05:57 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 22:04:02 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/10 21:41:36 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	save_Plane(t_data *data, char **s)
+int	save_plane(t_data *data, char **s)
 {
 	if (ft_strcmp(s[0], "pl") == 0)
 	{
-		save_Vector(&data->prims[data->prim_count].position, s[1]);
-		save_Vector(&data->prims[data->prim_count].vector, s[2]);
-		data->prims[data->prim_count].vector = \
-			vector_Normalize(data->prims[data->prim_count].vector);
-		save_RGB(&data->prims[data->prim_count].rgb, s[3]);
+		save_vector(&data->prims[data->prim_count].position, s[1]);
+		save_vector(&data->prims[data->prim_count].vector, s[2]);
+		data->prims[data->prim_count].vector
+			= vector_normalize(data->prims[data->prim_count].vector);
+		save_rgb(&data->prims[data->prim_count].rgb, s[3]);
 		data->prims[data->prim_count].p_type = PL;
 		data->prim_count++;
 	}
 	return (0);
 }
 
-int	save_Cylinder(t_data *data, char **s)
+int	save_cylinder(t_data *data, char **s)
 {
-	t_cylinder cy;
+	t_cylinder	cy;
 
 	if (ft_strcmp(s[0], "cy") == 0)
 	{
 		cy.radius = ft_atof(s[3]) / 2;
 		cy.height = ft_atof(s[4]);
 		data->prims[data->prim_count].p_data.cy = cy;
-		save_Vector(&data->prims[data->prim_count].position, s[1]);
-		save_Vector(&data->prims[data->prim_count].vector, s[2]);
-		data->prims[data->prim_count].vector = \
-			vector_Normalize(data->prims[data->prim_count].vector);
-		save_RGB(&data->prims[data->prim_count].rgb, s[5]);
+		save_vector(&data->prims[data->prim_count].position, s[1]);
+		save_vector(&data->prims[data->prim_count].vector, s[2]);
+		data->prims[data->prim_count].vector
+			= vector_normalize(data->prims[data->prim_count].vector);
+		save_rgb(&data->prims[data->prim_count].rgb, s[5]);
 		data->prims[data->prim_count].p_type = CY;
 		data->prim_count++;
 	}
 	return (0);
 }
 
-int	save_RGB(t_rgb *array, char *s)
+int	save_rgb(t_rgb *array, char *s)
 {
 	char	**rgb_values;
 
@@ -61,7 +61,7 @@ int	save_RGB(t_rgb *array, char *s)
 	return (0);
 }
 
-int	save_Vector(t_vec *array, char *s)
+int	save_vector(t_vec *array, char *s)
 {
 	char	**vector_values;
 
