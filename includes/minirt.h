@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 23:01:18 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 23:25:45 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,18 @@
 
 # define IMG_WIDTH 800
 # define IMG_HEIGHT 600
-# define MAX_OBJ 10
 # define PI 3.14159265358979323846
 # define EPSILON 1e-6
+
+# define MV_SPEED 5
+# define ROT_SPEED 0.05
+
+enum e_move
+{
+	LEFTRIGHT,
+	UPDOWN,
+	FORWARDBACK
+};
 
 // Struct for RGB values
 typedef struct s_rgb
@@ -37,6 +46,33 @@ typedef struct s_rgb
 	int	g;
 	int	b;
 }	t_rgb;
+
+// Ray data related
+typedef struct s_ray
+{
+	t_vec	origin;
+	t_vec	vector;
+	t_vec	hitpoint;
+	t_vec	normal;
+}	t_ray;
+
+typedef struct s_rayparams
+{
+	float	t;
+	float	min_dist;
+	t_vec	t_hitpoint;
+	t_vec	t_normal;
+	int		color_fin;
+	// Components to calculate final color
+	t_rgb	amb_fin;
+	t_rgb	diffuse_fin;
+	// Derivatives to find above components
+	t_rgb	amb_def;
+	t_rgb	prim_col;
+	float	light_intensity;
+	t_ray	shadow;
+	float	dl;
+}	t_rayparams;
 
 // Struct for camera data
 // vector is the orientation vector (given)
@@ -63,29 +99,6 @@ typedef struct s_light
 	t_rgb	rgb;
 }	t_light;
 
-// Ray data related
-typedef struct s_ray
-{
-	t_vec	origin;
-	t_vec	vector;
-	t_vec	hit_coord;
-	t_vec	normal;
-} t_ray;
-
-typedef struct s_rayparams
-{
-	float	t;
-	float	min_dist;
-	int		color_fin;
-	// Components to calculate final color
-	t_rgb	amb_fin;
-	t_rgb	diffuse_fin;
-	// Derivatives to find above components
-	t_rgb	amb_def;
-	t_rgb	prim_col;
-	float	light_intensity;
-} t_rayparams;
-
 // Helper struct for solving quadratic equations
 typedef struct s_qdtc
 {
@@ -103,11 +116,6 @@ typedef struct s_sphere
 {
 	float	radius;
 }	t_sphere;
-
-// Struct for plane data
-// typedef struct s_plane
-// {
-// }	t_plane;
 
 // Struct for cylinder data
 typedef struct s_cylinder
@@ -145,7 +153,7 @@ union	u_type
 	t_cylinder	cy;
 };
 
-typedef struct	s_prim
+typedef struct s_prim
 {
 	union u_type	p_data;
 	t_type			p_type;
@@ -198,64 +206,74 @@ void	init_program(t_data *data);
 t_data	init_data(void);
 
 // checks
-int	check_FileContents(t_data *data, int fd);
-int	not_element(char **s);
-int	check_capital_elements(t_data *data);
-int	check_Ambients(t_data *data, char **s);
-int	check_Cams(t_data *data, char **s);
-int	check_Lights(t_data *data, char **s);
-int	check_Spheres(t_data *data, char **s);
+int		check_FileContents(t_data *data, int fd);
+int		not_element(char **s);
+int		check_capital_elements(t_data *data);
+int		check_Ambients(t_data *data, char **s);
+int		check_Cams(t_data *data, char **s);
+int		check_Lights(t_data *data, char **s);
+int		check_Spheres(t_data *data, char **s);
 
 // checks1
-int	check_Planes(t_data *data, char **s);
-int	check_Cylinders(t_data *data, char **s);
+int		check_Planes(t_data *data, char **s);
+int		check_Cylinders(t_data *data, char **s);
 
 // check_util1
-int	check_FileType(const char *filename);
-int	open_file(int *fd, const char *filename);
-int ft_error(char *msg);
-int	check_NumOfInputs(char **s, int n);
-int	check_RGB(char *s);
-int	check_XYZ(char *s);
+int		check_FileType(const char *filename);
+int		open_file(int *fd, const char *filename);
+int		ft_error(char *msg);
+int		check_NumOfInputs(char **s, int n);
+int		check_RGB(char *s);
+int		check_XYZ(char *s);
 
 // check_util2
-int	check_Vector(char *s);
-int	check_FOV(char *s);
-int	check_Ratio(char *s);
+int		check_Vector(char *s);
+int		check_FOV(char *s);
+int		check_Ratio(char *s);
 
 // save
-int	save_FileContents(t_data *data, int fd);
-int	save_AmbientLight(t_data *data, char **s);
-int	save_Camera(t_data *data, char **s);
-int	save_Light(t_data *data, char **s);
-int	save_Sphere(t_data *data, char **s);
+int		save_FileContents(t_data *data, int fd);
+int		save_AmbientLight(t_data *data, char **s);
+int		save_Camera(t_data *data, char **s);
+int		save_Light(t_data *data, char **s);
+int		save_Sphere(t_data *data, char **s);
 
 // save1
-int	save_Plane(t_data *data, char **s);
-int	save_Cylinder(t_data *data, char **s);
-int	save_RGB(t_rgb *array, char *s);
-int	save_Vector(t_vec *array, char *s);
+int		save_Plane(t_data *data, char **s);
+int		save_Cylinder(t_data *data, char **s);
+int		save_RGB(t_rgb *array, char *s);
+int		save_Vector(t_vec *array, char *s);
 
 // handlers
 int		handle_exit(t_data *data);
-int		handle_keypress(KeySym keysym, t_data *data);
+int 	handle_keypress(KeySym keysym, t_data *data);
 int		handle_mouse_click(int button, int x, int y);
+
+// handlers - camera movement;
+void	rotate_camera(t_camera *camera);
+void	move_camera(t_vec *pos, float scalar, int type);
 
 // image
 void	set_img_pixel(t_image *img, int x, int y, int color);
 t_image	*del_img(t_prog *mlx, t_image *img);
 t_image	*new_img(t_prog *mlx);
 
-// ray logic
+// ray - logic
 t_ray	make_ray(t_data *data, int x, int y);
 int		trace_ray(t_ray *ray, t_data *data);
 
 // ray - hit
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
 
+// ray - lighting
+void	calc_color(t_data *data, t_rayparams *rp);
+float	calculate_lighting(t_vec *hitpoint, t_vec *normal, t_light *light);
+t_ray	create_shadow(t_data *data, t_rayparams *rp);
+bool	in_shadow(t_data *data, t_rayparams *rp);
+
 // render
-void	render_ambient(t_prog *mlx, float s, t_rgb *amb);
-void	render_image(t_prog *prog, t_data *data);
+void	render_image(t_data *data);
+void	re_render_image(t_data *data);
 
 // render - rgb
 int		rgb_get(t_rgb rgb);
@@ -263,10 +281,5 @@ t_rgb	rgb_add(t_rgb x, t_rgb y);
 t_rgb	rgb_mul(t_rgb rgb, float ratio);
 t_rgb	rgb_mix(t_rgb x, t_rgb y);
 t_rgb	rgb_lerp(t_rgb x, t_rgb y, float frac);
-
-// camera movement;
-void	move_camera(t_vec *pos, t_vec *direction, float speed);
-void	rotate_camera(t_camera *camera);
-void	re_render_image(t_data *data);
 
 #endif

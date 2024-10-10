@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:07:02 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 23:48:53 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 13:03:21 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	check_FileContents(t_data *data, int fd)
 	{
 		split_line = ft_split(line, " \t\n\v\f\r");
 		free(line);
+		if (!split_line)
+			continue ;
 		if (not_element(split_line))
 			return (free_array(split_line), 1);
 		if (check_Ambients(data, split_line) || check_Cams(data, split_line)

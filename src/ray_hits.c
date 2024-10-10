@@ -6,13 +6,13 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/07 12:36:51 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 22:39:22 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vec	intersection_point(t_vec origin, t_ray *ray, float t)
+t_vec	get_hitpoint(t_vec origin, t_ray *ray, float t)
 {
 	return (vector_Add(origin, vector_Multiply(ray->vector, t)));
 }
@@ -46,8 +46,8 @@ bool	hit_sphere(t_ray *ray, t_prim *prim, float *t)
 	qd.c = vector_DotProduct(oc, oc) - prim->p_data.sp.radius * prim->p_data.sp.radius;
 	if (!do_quadratic(&qd, t))
 		return (false);
-	ray->hit_coord = intersection_point(ray->origin, ray, *t);
-	ray->normal = vector_Subtract(ray->hit_coord, prim->position);
+	ray->hitpoint = get_hitpoint(ray->origin, ray, *t);
+	ray->normal = vector_Subtract(ray->hitpoint, prim->position);
 	ray->normal = vector_Normalize(ray->normal);
 	return (true);
 }
@@ -64,7 +64,7 @@ bool	hit_plane(t_ray *ray, t_prim *prim, float *t)
 	*t = a / b;
 	if (*t < EPSILON)
 		return (false);
-	ray->hit_coord = intersection_point(ray->origin, ray, *t);
+	ray->hitpoint = get_hitpoint(ray->origin, ray, *t);
 	ray->normal = prim->vector;
 	return (true);
 }
@@ -114,17 +114,15 @@ void	init_cy_helper(t_ray *ray, t_prim *prim, t_cy_helper *cyh)
 
 void	hit_cylinder_body(t_cy_helper *cyh, t_prim *prim, float *t)
 {
-	cyh->ray->hit_coord = intersection_point(cyh->ray->origin, cyh->ray, *t);
-	cyh->ray->normal = vector_Subtract(cyh->ray->hit_coord, prim->position);
+	cyh->ray->hitpoint = get_hitpoint(cyh->ray->origin, cyh->ray, *t);
+	cyh->ray->normal = vector_Subtract(cyh->ray->hitpoint, prim->position);
 	cyh->ray->normal = vector_Normalize(cyh->ray->normal);
 }
 
 void	hit_cylinder_caps(t_cy_helper *cyh, t_prim *prim, float *t)
 {
-	cyh->ray->hit_coord = intersection_point(cyh->ray->origin, cyh->ray, *t);
+	cyh->ray->hitpoint = get_hitpoint(cyh->ray->origin, cyh->ray, *t);
 	cyh->ray->normal = prim->vector;
-	if (!cyh->top_cap)
-		cyh->ray->normal = vector_Multiply(prim->vector, -1);
 	cyh->ray->normal = vector_Normalize(cyh->ray->normal);
 }
 

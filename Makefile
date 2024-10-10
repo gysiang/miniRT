@@ -35,14 +35,15 @@ SRC_FILES :=	main.c \
 				save.c \
 				save1.c \
 				init_struct.c \
-				movement.c \
 				handlers.c \
+				handlers_cam.c \
 				free.c	\
 				render.c \
 				rgb.c \
 				mlx_image.c \
 				ray_logic.c \
 				ray_hits.c \
+				ray_lighting.c \
 				vector_op.c \
 				matrix.c
 

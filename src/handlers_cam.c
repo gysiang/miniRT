@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement.c                                         :+:      :+:    :+:   */
+/*   handlers_cam.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 14:14:34 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/07 12:43:26 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 23:03:02 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-/**
- *  Upates the camera position based on wasd
- */
-
-void move_camera(t_vec *pos, t_vec *direction, float speed)
+void	move_camera(t_vec *pos, float scalar, int type)
 {
-	pos->x += direction->x * speed;
-	pos->y += direction->y * speed;
-	pos->z += direction->z * speed;
+	if (type == LEFTRIGHT)
+		pos->x += scalar;
+	else if (type == UPDOWN)
+		pos->y += scalar;
+	else if (type == FORWARDBACK)
+		pos->z += scalar;
 }
 
 void	rotate_camera(t_camera *camera)
@@ -32,29 +31,4 @@ void	rotate_camera(t_camera *camera)
 	new_direction.z = cos(camera->pitch) * cos(camera->yaw);
 	new_direction = vector_Normalize(new_direction);
 	camera->vector = new_direction;
-}
-
-void	re_render_image(t_data *data)
-{
-	int		x;
-	int		y;
-	t_ray	ray;
-	int		color;
-	t_prog	prog;
-
-	prog = data->program;
-	mlx_clear_window(data->program.mlx_ptr, data->program.win_ptr);
-
-	y = -1;
-	while (y++ < IMG_HEIGHT)
-	{
-		x = -1;
-		while (x++ < IMG_WIDTH)
-		{
-			ray = make_ray(data, x, y);
-			color = trace_ray(&ray, data);
-			set_img_pixel(prog.image, x, y, color);
-		}
-	}
-	mlx_put_image_to_window(prog.mlx_ptr, prog.win_ptr, prog.image->img, 0, 0);
 }
