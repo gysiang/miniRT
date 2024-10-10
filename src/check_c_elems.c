@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 23:48:12 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/07 23:48:37 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/08 23:38:18 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ int	check_Ambients(t_data *data, char **s)
 	{
 		if (!check_NumOfInputs(s, 3))
 			return (ft_error("Proper Ambient Usage: <A ratio r,g,b>"));
-		if (check_Ratio(s[1]))
+		if (check_Ratio(s[1]) || !ft_isnumeric(s[1]))
 			return (ft_error("Ambient ratio must be between 0.0 and 1.0"));
 		if (check_RGB(s[2]))
-			return (ft_error("Ambient RGB values must be between 0 and 255"));
+			return (ft_error("Ambient RGB values are invalid"));
 		data->amb_count++;
 	}
 	return (0);
@@ -36,7 +36,7 @@ int	check_Cams(t_data *data, char **s)
 		if (check_XYZ(s[1]))
 			return (ft_error("Camera XYZ coordinates are invalid"));
 		if (check_Vector(s[2]))
-			return (ft_error("Camera vector values must be between -1.0 and 1.0"));
+			return (ft_error("Camera vector values are invalid"));
 		if (check_FOV(s[3]))
 			return (ft_error("Camera FOV must be between 0 and 180"));
 		data->cam_count++;

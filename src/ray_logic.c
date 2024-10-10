@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 22:47:03 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/10 12:11:18 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int trace_ray(t_ray *ray, t_data *data)
 	hit = false;
 	while (++i < data->prim_count)
 	{
+		ray->norm_flip = false;
 		if (hit_prim(ray, data->prims[i], &rp))
 		{
 			if (rp.t < rp.min_dist)
@@ -68,6 +69,7 @@ int trace_ray(t_ray *ray, t_data *data)
 				rp.min_dist = rp.t;
 				rp.t_hitpoint = ray->hitpoint;
 				rp.t_normal = ray->normal;
+				rp.t_norm_flip = ray->norm_flip;
 				hit = true;
 			}
 		}
