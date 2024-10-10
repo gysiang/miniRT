@@ -1,16 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checks.c                                           :+:      :+:    :+:   */
+/*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:07:02 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 13:03:21 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/10 14:14:50 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+int	check_all_elements(t_data *data, char **s)
+{
+	return (check_ambient(data, s) || check_cam(data, s)
+		|| check_lights(data, s) || check_planes(data, s)
+		|| check_spheres(data, s) || check_cylinders(data, s)
+		|| check_cones(data, s));
+}
 
 int	check_FileContents(t_data *data, int fd)
 {
@@ -25,9 +33,7 @@ int	check_FileContents(t_data *data, int fd)
 			continue ;
 		if (not_element(split_line))
 			return (free_array(split_line), 1);
-		if (check_Ambients(data, split_line) || check_Cams(data, split_line)
-			|| check_Lights(data, split_line) || check_Planes(data, split_line)
-			|| check_Spheres(data, split_line) || check_Cylinders(data, split_line))
+		if (check_all_elements(data, split_line))
 			return (free_array(split_line), 1);
 		free_array(split_line);
 	}

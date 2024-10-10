@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/09 22:39:22 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/10 14:11:27 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ bool	hit_plane(t_ray *ray, t_prim *prim, float *t)
 	return (true);
 }
 
-bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t)
+bool	hit_disc(t_cyn_helper *cyh, t_prim *prim, float y_offset, float *t)
 {
 	t_prim	temp;
 	float	t_cap;
@@ -95,7 +95,7 @@ bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t)
 	return (false);
 }
 
-void	init_cy_helper(t_ray *ray, t_prim *prim, t_cy_helper *cyh)
+void	init_cyn_helper(t_ray *ray, t_prim *prim, t_cyn_helper *cyh)
 {
 	cyh->ray = ray;
 	// Vector from ray origin to cylinder center
@@ -112,26 +112,26 @@ void	init_cy_helper(t_ray *ray, t_prim *prim, t_cy_helper *cyh)
 	cyh->hit_cap = false;
 }
 
-void	hit_cylinder_body(t_cy_helper *cyh, t_prim *prim, float *t)
+void	hit_cylicone_body(t_cyn_helper *cyh, t_prim *prim, float *t)
 {
 	cyh->ray->hitpoint = get_hitpoint(cyh->ray->origin, cyh->ray, *t);
 	cyh->ray->normal = vector_Subtract(cyh->ray->hitpoint, prim->position);
 	cyh->ray->normal = vector_Normalize(cyh->ray->normal);
 }
 
-void	hit_cylinder_caps(t_cy_helper *cyh, t_prim *prim, float *t)
+void	hit_cylicone_caps(t_cyn_helper *cyh, t_prim *prim, float *t)
 {
 	cyh->ray->hitpoint = get_hitpoint(cyh->ray->origin, cyh->ray, *t);
 	cyh->ray->normal = prim->vector;
 	cyh->ray->normal = vector_Normalize(cyh->ray->normal);
 }
 
-bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t)
+bool	hit_cylicone(t_ray *ray, t_prim *prim, float *t)
 {
 	t_qdtc qd;
-	t_cy_helper cyh;
+	t_cyn_helper cyh;
 
-	init_cy_helper(ray, prim, &cyh);
+	init_cyn_helper(ray, prim, &cyh);
 	qd.a = vector_DotProduct(cyh.perp, cyh.perp);
 	qd.b = 2 * vector_DotProduct(cyh.perp, cyh.oc_perp);
 	qd.c = vector_DotProduct(cyh.oc_perp, cyh.oc_perp) - prim->p_data.cy.radius * prim->p_data.cy.radius;
@@ -142,12 +142,12 @@ bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t)
 		cyh.hit_body = cyh.y_hit >= cyh.y_min && cyh.y_hit <= cyh.y_max;
 	}
 	if (cyh.hit_body)
-		hit_cylinder_body(&cyh, prim, t);
+		hit_cylicone_body(&cyh, prim, t);
 	else
 	{
 		cyh.hit_cap = hit_disc(&cyh, prim, cyh.y_min, t) || hit_disc(&cyh, prim, cyh.y_max, t);
 		if (cyh.hit_cap)
-			hit_cylinder_caps(&cyh, prim, t);
+			hit_cylicone_caps(&cyh, prim, t);
 	}
 	return (cyh.hit_body || cyh.hit_cap);
 }
@@ -159,6 +159,6 @@ bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
 	if (prim.p_type == PL)
 		return (hit_plane(ray, &prim, &rp->t));
 	if (prim.p_type == CY)
-		return (hit_cylinder(ray, &prim, &rp->t));
+		return (hit_cylicone(ray, &prim, &rp->t));
 	return (0);
 }

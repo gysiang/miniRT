@@ -6,13 +6,13 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 23:48:12 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/07 23:48:37 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/10 14:07:00 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	check_Ambients(t_data *data, char **s)
+int	check_ambient(t_data *data, char **s)
 {
 	if (ft_strcmp(s[0], "A") == 0)
 	{
@@ -27,7 +27,7 @@ int	check_Ambients(t_data *data, char **s)
 	return (0);
 }
 
-int	check_Cams(t_data *data, char **s)
+int	check_cam(t_data *data, char **s)
 {
 	if (ft_strcmp(s[0], "C") == 0)
 	{
@@ -44,7 +44,7 @@ int	check_Cams(t_data *data, char **s)
 	return (0);
 }
 
-int	check_Lights(t_data *data, char **s)
+int	check_lights(t_data *data, char **s)
 {
 	if (ft_strcmp(s[0], "L") == 0)
 	{
