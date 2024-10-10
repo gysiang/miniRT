@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/10 14:22:38 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/10 14:52:31 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,6 @@ int		save_AmbientLight(t_data *data, char **s);
 int		save_Camera(t_data *data, char **s);
 int		save_Light(t_data *data, char **s);
 
-
 // save_prims
 int		save_sphere(t_data *data, char **s);
 int		save_plane(t_data *data, char **s);
@@ -267,8 +266,16 @@ t_image	*new_img(t_prog *mlx);
 t_ray	make_ray(t_data *data, int x, int y);
 int		trace_ray(t_ray *ray, t_data *data);
 
-// ray - hit
+// ray - hits
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
+bool	hit_sphere(t_ray *ray, t_prim *prim, float *t);
+bool	hit_plane(t_ray *ray, t_prim *prim, float *t);
+bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t);
+bool	hit_cone(t_ray *ray, t_prim *prim, float *t);
+
+// ray - hits_utils
+t_vec	get_hitpoint(t_vec origin, t_ray *ray, float t);
+bool	do_quadratic(t_qdtc *qd, float *t);
 
 // ray - lighting
 void	calc_color(t_data *data, t_rayparams *rp);

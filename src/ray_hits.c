@@ -6,37 +6,28 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/10 14:11:27 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/10 15:27:51 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vec	get_hitpoint(t_vec origin, t_ray *ray, float t)
+bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
 {
-	return (vector_Add(origin, vector_Multiply(ray->vector, t)));
-}
-
-bool	do_quadratic(t_qdtc *qd, float *t)
-{
-	qd->discrim = qd->b * qd->b - 4 * qd->a * qd->c;
-	if (qd->discrim < 0)
-		return (false);
-	qd->discrim_sqrt = sqrt(qd->discrim);
-	qd->t1 = (-qd->b - qd->discrim_sqrt) / (2.0 * qd->a);
-	qd->t2 = (-qd->b + qd->discrim_sqrt) / (2.0 * qd->a);
-	if (qd->t1 > EPSILON)
-		*t = qd->t1;
-	else if (qd->t2 > EPSILON)
-		*t = qd->t2;
-	else
-		return (false);
-	return (true);
+	if (prim.p_type == SP)
+		return (hit_sphere(ray, &prim, &rp->t));
+	if (prim.p_type == PL)
+		return (hit_plane(ray, &prim, &rp->t));
+	if (prim.p_type == CY)
+		return (hit_cylinder(ray, &prim, &rp->t));
+	if (prim.p_type == CN)
+		return (hit_cone(ray, &prim, &rp->t));
+	return (0);
 }
 
 bool	hit_sphere(t_ray *ray, t_prim *prim, float *t)
 {
-	t_vec		oc;
+	t_vec	oc;
 	t_qdtc	qd;
 
 	// vector from ray origin to sphere center
@@ -69,72 +60,15 @@ bool	hit_plane(t_ray *ray, t_prim *prim, float *t)
 	return (true);
 }
 
-bool	hit_disc(t_cyn_helper *cyh, t_prim *prim, float y_offset, float *t)
+bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t)
 {
-	t_prim	temp;
-	float	t_cap;
-	t_vec	v;
-	t_vec	p;
-
-	temp.position = vector_Add(prim->position, vector_Multiply(prim->vector, y_offset));
-	temp.vector = prim->vector;
-	if (y_offset < 0)
-		temp.vector = vector_Multiply(prim->vector, -1);
-	temp.vector = vector_Normalize(temp.vector);
-	if (hit_plane(cyh->ray, &temp, &t_cap))
-	{
-		p = vector_Add(cyh->ray->origin, vector_Multiply(cyh->ray->vector, t_cap));
-		v = vector_Subtract(p, temp.position);
-		if (vector_DotProduct(v, v) <= prim->p_data.cy.radius * prim->p_data.cy.radius && t_cap > EPSILON)
-		{
-			cyh->top_cap = y_offset > 0;
-			*t = t_cap;
-			return (true);
-		}
-	}
-	return (false);
-}
-
-void	init_cyn_helper(t_ray *ray, t_prim *prim, t_cyn_helper *cyh)
-{
-	cyh->ray = ray;
-	// Vector from ray origin to cylinder center
-	cyh->oc = vector_Subtract(ray->origin, prim->position);
-	// Project ray direction and oc onto cylinder axis
-	cyh->axis_proj = vector_Multiply(prim->vector, vector_DotProduct(ray->vector, prim->vector));
-	// Calculate perpendicular components
-	cyh->perp = vector_Subtract(ray->vector, cyh->axis_proj);
-	cyh->oc_perp = vector_Subtract(cyh->oc, vector_Multiply(prim->vector, vector_DotProduct(cyh->oc, prim->vector)));
-	// Set cylinder height limits
-	cyh->y_min = -prim->p_data.cy.height / 2;
-	cyh->y_max = prim->p_data.cy.height / 2;
-	cyh->hit_body = false;
-	cyh->hit_cap = false;
-}
-
-void	hit_cylicone_body(t_cyn_helper *cyh, t_prim *prim, float *t)
-{
-	cyh->ray->hitpoint = get_hitpoint(cyh->ray->origin, cyh->ray, *t);
-	cyh->ray->normal = vector_Subtract(cyh->ray->hitpoint, prim->position);
-	cyh->ray->normal = vector_Normalize(cyh->ray->normal);
-}
-
-void	hit_cylicone_caps(t_cyn_helper *cyh, t_prim *prim, float *t)
-{
-	cyh->ray->hitpoint = get_hitpoint(cyh->ray->origin, cyh->ray, *t);
-	cyh->ray->normal = prim->vector;
-	cyh->ray->normal = vector_Normalize(cyh->ray->normal);
-}
-
-bool	hit_cylicone(t_ray *ray, t_prim *prim, float *t)
-{
-	t_qdtc qd;
-	t_cyn_helper cyh;
+	t_qdtc			qd;
+	t_cyn_helper	cyh;
 
 	init_cyn_helper(ray, prim, &cyh);
 	qd.a = vector_DotProduct(cyh.perp, cyh.perp);
 	qd.b = 2 * vector_DotProduct(cyh.perp, cyh.oc_perp);
-	qd.c = vector_DotProduct(cyh.oc_perp, cyh.oc_perp) - prim->p_data.cy.radius * prim->p_data.cy.radius;
+	qd.c = vector_DotProduct(cyh.oc_perp, cyh.oc_perp) - prim->p_data.cyn.radius * prim->p_data.cyn.radius;
 	// Check if ray intersects with cylinder body OR caps
 	if (do_quadratic(&qd, t))
 	{
@@ -144,21 +78,21 @@ bool	hit_cylicone(t_ray *ray, t_prim *prim, float *t)
 	if (cyh.hit_body)
 		hit_cylicone_body(&cyh, prim, t);
 	else
-	{
 		cyh.hit_cap = hit_disc(&cyh, prim, cyh.y_min, t) || hit_disc(&cyh, prim, cyh.y_max, t);
-		if (cyh.hit_cap)
-			hit_cylicone_caps(&cyh, prim, t);
-	}
+	if (cyh.hit_cap)
+		hit_cylicone_caps(&cyh, prim, t);
 	return (cyh.hit_body || cyh.hit_cap);
 }
 
-bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
+bool	hit_cone(t_ray *ray, t_prim *prim, float *t)
 {
-	if (prim.p_type == SP)
-		return (hit_sphere(ray, &prim, &rp->t));
-	if (prim.p_type == PL)
-		return (hit_plane(ray, &prim, &rp->t));
-	if (prim.p_type == CY)
-		return (hit_cylicone(ray, &prim, &rp->t));
-	return (0);
+	t_qdtc			qd;
+	t_cyn_helper	cyh;
+
+	init_cyn_helper(ray, prim, &cyh);
+	qd.a = vector_DotProduct(cyh.perp, cyh.perp);
+	qd.b = 2 * vector_DotProduct(cyh.perp, cyh.oc_perp);
+	qd.c = vector_DotProduct(cyh.oc_perp, cyh.oc_perp) - prim->p_data.cyn.radius * prim->p_data.cyn.radius;
+	// Check if ray intersects with cylinder body OR caps
+	if (do_quadratic(&qd, t))
 }
