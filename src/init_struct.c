@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:19:44 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 17:18:20 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/09 22:45:05 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	init_program(t_data *data)
 	mlx_hook(prog->win_ptr, 17,  0, handle_exit, data);
 	mlx_hook(prog->win_ptr, 2, 1L<<0, handle_keypress, data);
 	mlx_mouse_hook(data->program.win_ptr, handle_mouse_click, prog);
-	render_image(prog, data);
+	render_image(data);
 	mlx_loop(prog->mlx_ptr);
 }
 

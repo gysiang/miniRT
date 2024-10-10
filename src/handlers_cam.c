@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement.c                                         :+:      :+:    :+:   */
+/*   handlers_cam.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 14:14:34 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/09 21:29:20 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/09 23:03:02 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+void	move_camera(t_vec *pos, float scalar, int type)
+{
+	if (type == LEFTRIGHT)
+		pos->x += scalar;
+	else if (type == UPDOWN)
+		pos->y += scalar;
+	else if (type == FORWARDBACK)
+		pos->z += scalar;
+}
 
 void	rotate_camera(t_camera *camera)
 {

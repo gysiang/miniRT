@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 13:07:42 by bhowe             #+#    #+#             */
-/*   Updated: 2024/07/16 10:41:43 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/09 13:17:00 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*trim_a_nl(char *s, size_t len)
 {
 	char	*res;
 
-	if (len > 0)
+	if (len > 1)
 		len -= 1;
 	res = ft_calloc(len + 1, sizeof(char));
 	res = ft_memcpy(res, s, len);
