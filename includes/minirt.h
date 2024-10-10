@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/10 14:52:31 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/10 16:33:31 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_ray
 	t_vec	vector;
 	t_vec	hitpoint;
 	t_vec	normal;
+	bool	norm_flip;
 }	t_ray;
 
 typedef struct s_rayparams
@@ -70,6 +71,7 @@ typedef struct s_rayparams
 	t_rgb	amb_def;
 	t_rgb	prim_col;
 	float	light_intensity;
+	bool	t_norm_flip;
 	t_ray	shadow;
 	float	dl;
 }	t_rayparams;
@@ -279,7 +281,7 @@ bool	do_quadratic(t_qdtc *qd, float *t);
 
 // ray - lighting
 void	calc_color(t_data *data, t_rayparams *rp);
-float	calculate_lighting(t_vec *hitpoint, t_vec *normal, t_light *light);
+float	calculate_lighting(t_rayparams *rp, t_light *light);
 t_ray	create_shadow(t_data *data, t_rayparams *rp);
 bool	in_shadow(t_data *data, t_rayparams *rp);
 
