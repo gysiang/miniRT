@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/10 22:45:12 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/11 00:20:12 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,6 @@ int	trace_ray(t_ray *ray, t_data *data)
 		{
 			if (rp.t < rp.min_dist)
 			{
-				/** *
-				rp.prim_col = data->prims[i].rgb;
-				rp.min_dist = rp.t;
-				rp.t_hitpoint = ray->hitpoint;
-				rp.t_normal = ray->normal;
-				rp.t_norm_flip = ray->norm_flip;
-				**/
 				update_hit_params(ray, &rp, &data->prims[i]);
 				hit = true;
 			}
