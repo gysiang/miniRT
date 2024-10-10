@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/10 23:16:54 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/11 01:14:48 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,7 @@ int		handle_cam_rotation(t_data *data, KeySym keysym);
 int		handle_light_movement(t_data *data, KeySym keysym);
 
 // handlers1
-int 	handle_keypress(KeySym keysym, t_data *data);
+int		handle_keypress(KeySym keysym, t_data *data);
 int		handle_mouse_click(int button, int x, int y);
 
 // handlers - camera movement;
@@ -270,7 +270,6 @@ t_ray	make_ray(t_data *data, int x, int y);
 int		trace_ray(t_ray *ray, t_data *data);
 void	update_hit_params(t_ray *ray, t_rayparams *rp, t_prim *prim);
 
-
 // ray - hit
 t_vec	get_hitpoint(t_vec origin, t_ray *ray, float t);
 bool	do_quadratic(t_qdtc *qd, float *t);
@@ -284,7 +283,6 @@ void	hit_cylinder_body(t_cy_helper *cyh, t_prim *prim, float *t);
 void	hit_cylinder_caps(t_cy_helper *cyh, t_prim *prim, float *t);
 bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t);
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
-
 
 // ray - lighting
 void	calc_color(t_data *data, t_rayparams *rp);
