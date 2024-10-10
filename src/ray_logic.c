@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ray_logic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/10 12:11:18 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/10 22:45:12 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-// function to generate ray
-// x and y are the coordinates on the image plane
 t_ray	make_ray(t_data *data, int x, int y)
 {
 	t_ray	ray;
@@ -23,17 +21,17 @@ t_ray	make_ray(t_data *data, int x, int y)
 	t_vec	up_vec;
 
 	ray.origin = data->camera.position;
-	// get pixel coordinates
-	u = (1 - 2 * (x + 0.5) / (float)IMG_WIDTH) * data->camera.scale * data->camera.aspect_ratio;
+	u = (1 - 2 * (x + 0.5) / (float)IMG_WIDTH) * data->camera.scale
+		* data->camera.aspect_ratio;
 	v = (1 - 2 * (y + 0.5) / (float)IMG_HEIGHT) * data->camera.scale;
-	// create rotation matrix
-	right_vec = vector_Normalize(vector_CrossProduct(data->camera.vector, data->camera.up_vector));
-	up_vec = vector_Normalize(vector_CrossProduct(right_vec, data->camera.vector));
-	// add rotations to ray vector
+	right_vec = vector_normalize(vector_crossproduct(data->camera.vector,
+				data->camera.up_vector));
+	up_vec = vector_normalize(vector_crossproduct(right_vec,
+				data->camera.vector));
 	ray.vector = data->camera.vector;
-	ray.vector = vector_Add(ray.vector, vector_Multiply(right_vec, u));
-	ray.vector = vector_Add(ray.vector, vector_Multiply(up_vec, v));
-	ray.vector = vector_Normalize(ray.vector);
+	ray.vector = vector_add(ray.vector, vector_multiply(right_vec, u));
+	ray.vector = vector_add(ray.vector, vector_multiply(up_vec, v));
+	ray.vector = vector_normalize(ray.vector);
 	return (ray);
 }
 
@@ -49,7 +47,19 @@ t_rayparams	init_rayparams(t_data *data)
 	return (rp);
 }
 
-int trace_ray(t_ray *ray, t_data *data)
+void	update_hit_params(t_ray *ray, t_rayparams *rp, t_prim *prim)
+{
+	if (rp->t < rp->min_dist)
+	{
+		rp->prim_col = prim->rgb;
+		rp->min_dist = rp->t;
+		rp->t_hitpoint = ray->hitpoint;
+		rp->t_normal = ray->normal;
+		rp->t_norm_flip = ray->norm_flip;
+	}
+}
+
+int	trace_ray(t_ray *ray, t_data *data)
 {
 	t_rayparams	rp;
 	int			i;
@@ -65,11 +75,14 @@ int trace_ray(t_ray *ray, t_data *data)
 		{
 			if (rp.t < rp.min_dist)
 			{
+				/** *
 				rp.prim_col = data->prims[i].rgb;
 				rp.min_dist = rp.t;
 				rp.t_hitpoint = ray->hitpoint;
 				rp.t_normal = ray->normal;
 				rp.t_norm_flip = ray->norm_flip;
+				**/
+				update_hit_params(ray, &rp, &data->prims[i]);
 				hit = true;
 			}
 		}
