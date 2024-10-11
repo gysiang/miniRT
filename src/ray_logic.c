@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_logic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 00:20:12 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/11 11:35:31 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,11 @@ t_rayparams	init_rayparams(t_data *data)
 
 void	update_hit_params(t_ray *ray, t_rayparams *rp, t_prim *prim)
 {
-	if (rp->t < rp->min_dist)
-	{
-		rp->prim_col = prim->rgb;
-		rp->min_dist = rp->t;
-		rp->t_hitpoint = ray->hitpoint;
-		rp->t_normal = ray->normal;
-		rp->t_norm_flip = ray->norm_flip;
-	}
+	rp->prim_col = prim->rgb;
+	rp->min_dist = rp->t;
+	rp->t_hitpoint = ray->hitpoint;
+	rp->t_normal = ray->normal;
+	rp->t_norm_flip = ray->norm_flip;
 }
 
 int	trace_ray(t_ray *ray, t_data *data)
@@ -76,6 +73,7 @@ int	trace_ray(t_ray *ray, t_data *data)
 			if (rp.t < rp.min_dist)
 			{
 				update_hit_params(ray, &rp, &data->prims[i]);
+				rp.prim_num = i;
 				hit = true;
 			}
 		}

@@ -3,38 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:07:02 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/10 20:55:56 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/11 11:22:22 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+static int	check_elements(t_data *data, char **s)
+{
+	return (check_ambients(data, s) || check_cams(data, s)
+		|| check_lights(data, s) || check_planes(data, s)
+		|| check_spheres(data, s)
+		|| check_cylinders(data, s));
+}
 
 int	check_filecontents(t_data *data, int fd)
 {
 	char	*line;
 	char	**split_line;
 
-	while ((line = get_next_line(fd)) != NULL)
+	while (true)
 	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
 		split_line = ft_split(line, " \t\n\v\f\r");
 		free(line);
 		if (!split_line)
 			continue ;
 		if (not_element(split_line))
 			return (free_array(split_line), 1);
-		if (check_ambients(data, split_line) || check_cams(data, split_line)
-			|| check_lights(data, split_line) || check_planes(data, split_line)
-			|| check_spheres(data, split_line)
-			|| check_cylinders(data, split_line))
+		if (check_elements(data, split_line))
 			return (free_array(split_line), 1);
 		free_array(split_line);
 	}
 	if (check_capital_elements(data))
 		return (1);
-	printf("Success: All elements have been checked successfully\n");
 	data->prims = malloc(data->prim_count * sizeof(t_prim));
 	if (!data->prims)
 		return (ft_error("Primitives data failed to initialise"));

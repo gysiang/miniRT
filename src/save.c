@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   save.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/10 23:07:44 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/11 10:10:22 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ int	save_filecontents(t_data *data, int fd)
 	char	*line;
 	char	**split_line;
 
-	while ((line = get_next_line(fd)) != NULL)
+	while (true)
 	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
 		split_line = ft_split(line, " \t\n\v\f\r");
 		free(line);
 		if (!split_line)
@@ -29,7 +32,6 @@ int	save_filecontents(t_data *data, int fd)
 			return (free_array(split_line), 1);
 		free_array(split_line);
 	}
-	printf("Success: All elements have been saved successfully.\n");
 	return (0);
 }
 

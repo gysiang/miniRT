@@ -90,3 +90,5 @@ run_test "Cylinder: Wrong vector" cy_wVector.rt
 run_test "Cylinder: Wrong diameter" cy_wDiameter.rt
 run_test "Cylinder: Wrong height" cy_wHeight.rt
 run_test "Cylinder: Wrong RGB" cy_wRGB.rt
+
+printf "\n${COLOR_YIB}Tests Done!${COLOR_END}\n"
