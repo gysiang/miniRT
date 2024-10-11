@@ -22,14 +22,14 @@ NORM  := norminette
 NAME := miniRT
 
 # Includes files
-INCLUDES_FILES :=	minirt.h
+INCLUDES_FILES :=	minirt.h \
+					vector.h
 INCLUDES       := $(addprefix $(INCLUDES_DIR)/, $(INCLUDES_FILES))
 
 # Srcs
 SRC_ALL	:=	main.c \
 			checks.c \
 			check_elems.c \
-			check_elems_light.c \
 			check_util1.c \
 			check_util2.c \
 			save.c \
@@ -45,12 +45,14 @@ SRC_ALL	:=	main.c \
 			ray_logic.c \
 			ray_hits.c \
 			ray_hits_cy.c \
-			ray_lighting.c \
 			vector_op.c \
 			vector_op1.c
 
-SRC_MAND	:=
-SRC_BONUS	:=
+SRC_MAND	:=	manage_elems_light.c \
+				ray_lighting.c
+
+SRC_BONUS	:=	manage_elems_light_b.c \
+				ray_lighting_b.c
 
 ifdef O_BONUS
 SRC_FILES:= $(SRC_ALL) $(SRC_BONUS)

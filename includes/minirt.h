@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 16:08:45 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 17:00:51 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,10 +223,11 @@ int		check_spheres(t_data *data, char **s);
 int		check_planes(t_data *data, char **s);
 int		check_cylinders(t_data *data, char **s);
 
-// check_elems_light
+// manage_elems_light
 int		check_capital_elements(t_data *data);
 int		check_lights(t_data *data, char **s);
 int		setup_elem_data(t_data *data);
+int		save_light(t_data *data, char **s);
 
 // check_util1
 int		check_xyz(char *s);
@@ -246,7 +247,6 @@ int		comma_check(char *s);
 int		save_filecontents(t_data *data, int fd);
 int		save_ambientlight(t_data *data, char **s);
 int		save_camera(t_data *data, char **s);
-int		save_light(t_data *data, char **s);
 int		save_sphere(t_data *data, char **s);
 
 // save1

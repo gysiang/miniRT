@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_lighting.c                                     :+:      :+:    :+:   */
+/*   ray_lighting_b.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 13:58:49 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/11 16:55:38 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 16:59:55 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	calc_color(t_data *data, t_rayparams *rp)
 {
 	t_rgb	black;
+	int		i;
 
 	black.r = 0;
 	black.g = 0;
@@ -26,6 +27,8 @@ void	calc_color(t_data *data, t_rayparams *rp)
 	}
 	else
 	{
+		i = -1;
+		while (++i < data->light_count);
 		rp->light_intensity = calculate_lighting(rp, &data->light);
 		rp->diffuse_fin = rgb_mix(rp->prim_col,
 				rgb_mul(data->light.rgb, rp->light_intensity));
