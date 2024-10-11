@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 11:08:16 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 11:35:06 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@ typedef struct s_ray
 	bool	norm_flip;
 }	t_ray;
 
-// amb_fin & diffuse_fin create final color. below are derivatives
+// helper struct to calculate final color.
+// amb_fin & diffuse_fin contribute.
+// below those two are the derivatives
 typedef struct s_rayparams
 {
 	float	t;
@@ -79,6 +81,7 @@ typedef struct s_rayparams
 	bool	t_norm_flip;
 	t_ray	shadow;
 	float	dl;
+	int		prim_num;
 }	t_rayparams;
 
 // Struct for camera data

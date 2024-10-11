@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_lighting.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 13:58:49 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/10 23:12:54 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/11 11:36:05 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ bool	in_shadow(t_data *data, t_rayparams *rp)
 	dl = vector_length(vector_subtract(sr.origin, data->light.position));
 	while (++i < data->prim_count)
 	{
+		if (i == rp->prim_num)
+			continue ;
 		if (hit_prim(&sr, data->prims[i], &sp))
 		{
 			if (sp.t > EPSILON && sp.t < dl)
