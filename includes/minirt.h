@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 17:00:51 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 17:26:39 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef struct s_rayparams
 	int		color_fin;
 	t_rgb	amb_fin;
 	t_rgb	diffuse_fin;
+	t_rgb	color_temp;
+	bool	first_light_calc;
 	t_rgb	amb_def;
 	t_rgb	prim_col;
 	float	light_intensity;
