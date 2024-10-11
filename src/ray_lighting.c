@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 13:58:49 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/11 16:55:38 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 17:59:01 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ void	calc_color(t_data *data, t_rayparams *rp)
 	else
 	{
 		rp->light_intensity = calculate_lighting(rp, &data->light);
-		rp->diffuse_fin = rgb_mix(rp->prim_col,
-				rgb_mul(data->light.rgb, rp->light_intensity));
+		if (data->light_count)
+			rp->diffuse_fin = rgb_mix(rp->prim_col,
+					rgb_mul(data->light.rgb, rp->light_intensity));
+		else
+			rp->diffuse_fin = black;
 		rp->amb_fin = rgb_mix(rp->prim_col, rp->amb_def);
 		rp->color_fin = rgb_get(rgb_add(rp->amb_fin, rp->diffuse_fin));
 	}

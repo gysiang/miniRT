@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 16:01:21 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/11 17:03:16 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 17:45:44 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ int	save_light(t_data *data, char **s)
 {
 	if (ft_strcmp(s[0], "L") == 0)
 	{
-		save_vector(&(data->light.position), s[1]);
-		data->light.brightness = ft_atof(s[2]);
-		save_rgb(&(data->light.rgb), s[3]);
+		save_vector(&(data->light_arr[data->light_count].position), s[1]);
+		data->light_arr[data->light_count].brightness = ft_atof(s[2]);
+		save_rgb(&(data->light_arr[data->light_count].rgb), s[3]);
 		data->light_count++;
 	}
 	return (0);
