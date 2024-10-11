@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 18:51:58 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/11 18:52:22 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 22:44:26 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,23 @@ void	hit_cylinder_part(t_cy_helper *cyh, t_prim *prim, float *t, int part)
 
 bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t)
 {
-	t_prim	temp;
+	t_prim	disc;
 	float	t_cap;
 	t_vec	v;
 	t_vec	p;
 
-	temp.position = vector_add(prim->position,
+	disc.position = vector_add(prim->position,
 			vector_multiply(prim->vector, y_offset));
-	temp.vector = prim->vector;
-	if (y_offset < 0)
-		temp.vector = vector_multiply(prim->vector, -1);
-	temp.vector = vector_normalize(temp.vector);
-	if (hit_plane(cyh->ray, &temp, &t_cap))
+	disc.vector = prim->vector;
+	disc.vector = vector_normalize(disc.vector);
+	if (hit_plane(cyh->ray, &disc, &t_cap))
 	{
 		p = vector_add(cyh->ray->origin,
 				vector_multiply(cyh->ray->vector, t_cap));
-		v = vector_subtract(p, temp.position);
+		v = vector_subtract(p, disc.position);
 		if (vector_dotproduct(v, v) <= prim->p_data.cy.radius
 			* prim->p_data.cy.radius && t_cap > EPSILON)
-			return (*t = t_cap, cyh->cap_vec = temp.vector, true);
+			return (*t = t_cap, true);
 	}
 	return (false);
 }

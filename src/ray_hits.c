@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/11 10:01:50 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 22:45:22 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ bool	hit_plane(t_ray *ray, t_prim *prim, float *t)
 		return (false);
 	ray->hitpoint = get_hitpoint(ray->origin, ray, *t);
 	ray->normal = prim->vector;
-	if (vector_dotproduct(ray->vector, ray->normal) > 0)
+	if (vector_dotproduct(ray->vector, ray->normal) > 0
+		&& prim->p_type == PL)
 		ray->norm_flip = true;
 	return (true);
 }

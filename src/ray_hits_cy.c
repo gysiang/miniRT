@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:22:24 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 18:58:52 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 22:43:58 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,20 @@ bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t)
 
 void	check_cylinder_caps(t_cy_helper *cyh, t_prim *prim, float *t)
 {
-	float	temp_t;
-	t_vec	temp_vec;
+	float	t_top;
+	float	t_bot;
 
-	cyh->top_cap = hit_disc(cyh, prim, cyh->y_max, t);
-	temp_t = *t;
-	temp_vec = cyh->cap_vec;
-	cyh->bot_cap = hit_disc(cyh, prim, cyh->y_min, t);
-	if (*t > temp_t)
+	cyh->top_cap = hit_disc(cyh, prim, cyh->y_max, &t_top);
+	cyh->bot_cap = hit_disc(cyh, prim, cyh->y_min, &t_bot);
+	if (cyh->top_cap && (!cyh->bot_cap || t_top < t_bot))
 	{
-		*t = temp_t;
-		cyh->cap_vec = temp_vec;
+		*t = t_top;
+		cyh->cap_vec = prim->vector;
+	}
+	else if (cyh->bot_cap)
+	{
+		*t = t_bot;
+		cyh->cap_vec = vector_multiply(prim->vector, -1);
 	}
 	if (cyh->top_cap || cyh->bot_cap)
 		hit_cylinder_part(cyh, prim, t, CAP);
