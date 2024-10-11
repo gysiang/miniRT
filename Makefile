@@ -26,33 +26,51 @@ INCLUDES_FILES :=	minirt.h
 INCLUDES       := $(addprefix $(INCLUDES_DIR)/, $(INCLUDES_FILES))
 
 # Srcs
-SRC_FILES :=	main.c \
-				checks.c \
-				check_c_elems.c \
-				check_prims.c \
-				check_util1.c \
-				check_util2.c \
-				save.c \
-				save1.c \
-				init_struct.c \
-				handlers.c \
-				handlers1.c \
-				handlers_cam.c \
-				free.c	\
-				render.c \
-				rgb.c \
-				mlx_image.c \
-				ray_logic.c \
-				ray_hits.c \
-				ray_hits_cy.c \
-				ray_lighting.c \
-				vector_op.c \
-				vector_op1.c
+SRC_ALL	:=	main.c \
+			checks.c \
+			check_c_elems.c \
+			check_prims.c \
+			check_util1.c \
+			check_util2.c \
+			save.c \
+			save1.c \
+			init_struct.c \
+			handlers.c \
+			handlers1.c \
+			handlers_cam.c \
+			free.c	\
+			render.c \
+			rgb.c \
+			mlx_image.c \
+			ray_logic.c \
+			ray_hits.c \
+			ray_hits_cy.c \
+			ray_lighting.c \
+			vector_op.c \
+			vector_op1.c
 
-SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+SRC_MAND	:=
+SRC_BONUS	:=
 
-OBJ_FILES := $(SRC_FILES:.c=.o)
-OBJ       := $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
+ifdef O_BONUS
+SRC_FILES:= $(SRC_ALL) $(SRC_BONUS)
+else
+SRC_FILES:= $(SRC_ALL) $(SRC_MAND)
+endif
+
+SRC		:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+
+OBJ_ALL		:= $(SRC_FILES:.c=.o)
+OBJ_MAND	:= $(SRC_FILES_MAND:.c=.o)
+OBJ_BONUS	:= $(SRC_FILES_BONUS:.c=.o)
+
+ifdef O_BONUS
+OBJ_FILES:= $(OBJ_ALL) $(OBJ_BONUS)
+else
+OBJ_FILES:= $(OBJ_ALL) $(OBJ_MAND)
+endif
+
+OBJ		:= $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
 
 # Compilation rules
 $(NAME): $(LIBFT) $(MLX) $(OBJ) $(INCLUDES)
@@ -93,7 +111,10 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean fclean re
+bonus:
+	@make O_BONUS=1 all
+
+.PHONY: clean fclean re bonus
 
 # Norminette
 norm:
