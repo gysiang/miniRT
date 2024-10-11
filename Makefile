@@ -38,7 +38,6 @@ SRC_ALL	:=	main.c \
 			handlers.c \
 			handlers1.c \
 			handlers_cam.c \
-			free.c	\
 			render.c \
 			rgb.c \
 			mlx_image.c \
@@ -50,10 +49,10 @@ SRC_ALL	:=	main.c \
 			vector_op1.c
 
 SRC_MAND	:=	manage_elems_light.c \
-				ray_lighting.c
+				ray_lighting.c \
+				free.c
 
-SRC_BONUS	:=	manage_elems_light_b.c \
-				ray_lighting_b.c
+SRC_BONUS	:=	$(addsuffix _b.c, $(basename $(SRC_MAND)))
 
 ifdef O_BONUS
 SRC_FILES:= $(SRC_ALL) $(SRC_BONUS)

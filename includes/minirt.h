@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 18:58:15 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 23:39:18 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,8 +299,7 @@ bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t);
 // ray - lighting
 void	calc_color(t_data *data, t_rayparams *rp);
 float	calculate_lighting(t_rayparams *rp, t_light *light);
-t_ray	create_shadow(t_data *data, t_rayparams *rp);
-bool	in_shadow(t_data *data, t_rayparams *rp);
+bool	in_shadow(t_data *data, t_rayparams *rp, t_light *light);
 
 // render
 void	render_image(t_data *data);

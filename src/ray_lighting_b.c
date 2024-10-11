@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 13:58:49 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/11 18:03:04 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 23:54:31 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,33 @@ t_rgb	add_lighting(t_rayparams *rp, t_light *l)
 	return (rgb_add(rp->diffuse_fin, rp->color_temp));
 }
 
+t_rgb	add_shadow(t_rayparams *rp)
+{
+	if (rp->first_light_calc)
+	{
+		rp->first_light_calc = false;
+		return (rp->amb_fin);
+	}
+	return (rgb_mix(rp->diffuse_fin, rp->amb_fin));
+}
+
 void	calc_color(t_data *data, t_rayparams *rp)
 {
-	t_rgb	black;
 	int		i;
 
-	black.r = 0;
-	black.g = 0;
-	black.b = 0;
-	if (in_shadow(data, rp))
+	rp->amb_fin = rgb_mix(rp->prim_col, rp->amb_def);
+	rp->color_fin = rgb_get(rp->amb_fin);
+	if (!data->light_count)
+		return ;
+	i = -1;
+	while (++i < data->light_count)
 	{
-		rp->amb_fin = rgb_mix(rp->prim_col, rp->amb_def);
-		rp->color_fin = rgb_get(rgb_add(rp->amb_fin, black));
-	}
-	else
-	{
-		i = -1;
-		while (++i < data->light_count)
+		if (!in_shadow(data, rp, &data->light_arr[i]))
 			rp->diffuse_fin = add_lighting(rp, &data->light_arr[i]);
-		if (!data->light_count)
-			rp->diffuse_fin = black;
-		rp->amb_fin = rgb_mix(rp->prim_col, rp->amb_def);
-		rp->color_fin = rgb_get(rgb_add(rp->amb_fin, rp->diffuse_fin));
+		else
+			rp->diffuse_fin = add_shadow(rp);
 	}
+	rp->color_fin = rgb_get(rgb_add(rp->amb_fin, rp->diffuse_fin));
 }
 
 float	calculate_lighting(t_rayparams *rp, t_light *light)
@@ -64,33 +68,24 @@ float	calculate_lighting(t_rayparams *rp, t_light *light)
 	return (intensity * light->brightness);
 }
 
-t_ray	create_shadow(t_data *data, t_rayparams *rp)
-{
-	t_ray	s;
-
-	s.origin = vector_add(rp->t_hitpoint, rp->t_normal);
-	s.vector = vector_normalize(vector_subtract(data->light.position,
-				rp->t_hitpoint));
-	return (s);
-}
-
-bool	in_shadow(t_data *data, t_rayparams *rp)
+bool	in_shadow(t_data *data, t_rayparams *rp, t_light *light)
 {
 	int			i;
 	t_rayparams	sp;
 	t_ray		sr;
-	float		dl;
 
+	sr.origin = vector_add(rp->t_hitpoint, rp->t_normal);
+	sr.vector = vector_normalize(vector_subtract(light->position,
+				rp->t_hitpoint));
+	rp->dl = vector_length(vector_subtract(sr.origin, light->position));
 	i = -1;
-	sr = create_shadow(data, rp);
-	dl = vector_length(vector_subtract(sr.origin, data->light.position));
 	while (++i < data->prim_count)
 	{
 		if (i == rp->prim_num)
 			continue ;
 		if (hit_prim(&sr, data->prims[i], &sp))
 		{
-			if (sp.t > EPSILON && sp.t < dl)
+			if (sp.t > EPSILON && sp.t < rp->dl)
 				return (true);
 		}
 	}

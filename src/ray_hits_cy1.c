@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 18:51:58 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/11 22:44:26 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 23:45:41 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t)
 			vector_multiply(prim->vector, y_offset));
 	disc.vector = prim->vector;
 	disc.vector = vector_normalize(disc.vector);
+	disc.p_type = CY;
 	if (hit_plane(cyh->ray, &disc, &t_cap))
 	{
 		p = vector_add(cyh->ray->origin,
