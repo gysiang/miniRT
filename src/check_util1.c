@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_util1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:31:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/08 23:34:11 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/10 20:49:45 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	check_FileType(const char *filename)
+int	check_filetype(const char *filename)
 {
 	size_t	len;
 
@@ -30,7 +30,7 @@ int	open_file(int *fd, const char *filename)
 	return (0);
 }
 
-int ft_error(char *msg)
+int	ft_error(char *msg)
 {
 	ft_putstr_fd("Error.\n", STDERR_FILENO);
 	ft_putstr_fd(msg, 2);
@@ -38,7 +38,7 @@ int ft_error(char *msg)
 	return (1);
 }
 
-int	check_NumOfInputs(char **s, int n)
+int	check_numofinputs(char **s, int n)
 {
 	int	i;
 
@@ -50,7 +50,7 @@ int	check_NumOfInputs(char **s, int n)
 	return (0);
 }
 
-int	check_RGB(char *s)
+int	check_rgb(char *s)
 {
 	char	**rgb_values;
 	int		rgb;
@@ -70,27 +70,6 @@ int	check_RGB(char *s)
 		i++;
 	}
 	free_array(rgb_values);
-	if (i != 3)
-		return (1);
-	return (0);
-}
-
-int	check_XYZ(char *s)
-{
-	char	**xyz_values;
-	int		i;
-
-	i = 0;
-	xyz_values = ft_split(s, ",");
-	if (!xyz_values)
-		return (1);
-	while (xyz_values[i] != NULL)
-	{
-		if (!ft_isnumeric(xyz_values[i]))
-			return (free_array(xyz_values), 1);
-		i++;
-	}
-	free_array(xyz_values);
 	if (i != 3)
 		return (1);
 	return (0);
