@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_hits.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:40:44 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/10 23:15:20 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/11 10:01:50 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,31 +71,13 @@ bool	hit_plane(t_ray *ray, t_prim *prim, float *t)
 	return (true);
 }
 
-bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t)
+bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp)
 {
-	t_prim	temp;
-	float	t_cap;
-	t_vec	v;
-	t_vec	p;
-
-	temp.position = vector_add(prim->position,
-			vector_multiply(prim->vector, y_offset));
-	temp.vector = prim->vector;
-	if (y_offset < 0)
-		temp.vector = vector_multiply(prim->vector, -1);
-	temp.vector = vector_normalize(temp.vector);
-	if (hit_plane(cyh->ray, &temp, &t_cap))
-	{
-		p = vector_add(cyh->ray->origin,
-				vector_multiply(cyh->ray->vector, t_cap));
-		v = vector_subtract(p, temp.position);
-		if (vector_dotproduct(v, v) <= prim->p_data.cy.radius
-			* prim->p_data.cy.radius && t_cap > EPSILON)
-		{
-			cyh->top_cap = y_offset > 0;
-			*t = t_cap;
-			return (true);
-		}
-	}
-	return (false);
+	if (prim.p_type == SP)
+		return (hit_sphere(ray, &prim, &rp->t));
+	if (prim.p_type == PL)
+		return (hit_plane(ray, &prim, &rp->t));
+	if (prim.p_type == CY)
+		return (hit_cylinder(ray, &prim, &rp->t));
+	return (0);
 }

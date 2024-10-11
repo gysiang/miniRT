@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:16:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/10 21:45:10 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/11 10:10:34 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ int	main(int ac, char **av)
 		data = init_data();
 		if (check_filecontents(&data, fd))
 			return (1);
+		printf("Success: All elements have been checked successfully\n");
 		close(fd);
 		if (open_file(&fd, av[1]))
 			return (ft_error(".rt file cannot be opened"));
 		if (save_filecontents(&data, fd))
 			return (ft_error("Failure saving file contents"));
+		printf("Success: All elements have been saved successfully.\n");
 		init_program(&data);
 	}
 	else

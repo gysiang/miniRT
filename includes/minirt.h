@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 01:14:48 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/11 10:39:20 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,12 @@ enum e_move
 	FORWARDBACK
 };
 
+enum e_cy_part
+{
+	BODY,
+	CAP
+};
+
 // Struct for RGB values
 typedef struct s_rgb
 {
@@ -57,6 +63,7 @@ typedef struct s_ray
 	bool	norm_flip;
 }	t_ray;
 
+// amb_fin & diffuse_fin create final color. below are derivatives
 typedef struct s_rayparams
 {
 	float	t;
@@ -64,10 +71,8 @@ typedef struct s_rayparams
 	t_vec	t_hitpoint;
 	t_vec	t_normal;
 	int		color_fin;
-	// Components to calculate final color
 	t_rgb	amb_fin;
 	t_rgb	diffuse_fin;
-	// Derivatives to find above components
 	t_rgb	amb_def;
 	t_rgb	prim_col;
 	float	light_intensity;
@@ -77,7 +82,6 @@ typedef struct s_rayparams
 }	t_rayparams;
 
 // Struct for camera data
-// vector is the orientation vector (given)
 typedef struct s_camera
 {
 	t_vec	position;
@@ -87,8 +91,6 @@ typedef struct s_camera
 	int		vertical_fov;
 	float	scale;
 	t_vec	up_vector;
-	float	half_width;
-	float	half_height;
 	float	yaw;
 	float	pitch;
 }	t_camera;
@@ -135,11 +137,11 @@ typedef struct s_cy_helper
 	t_vec	perp;
 	t_vec	oc_perp;
 	bool	hit_body;
-	bool	hit_cap;
+	bool	top_cap;
+	bool	bot_cap;
 	float	y_hit;
 	float	y_min;
 	float	y_max;
-	bool	top_cap;
 }	t_cy_helper;
 
 typedef enum type
@@ -186,14 +188,13 @@ typedef struct s_prog
 typedef struct s_data
 {
 	t_prog		program;
-	float		amb_light;	// Ambient light ratio
-	t_rgb		amb_rgb;	// Ambient light color
+	float		amb_light;
+	t_rgb		amb_rgb;
 	int			amb_count;
-	t_camera	camera;		// Camera data
+	t_camera	camera;
 	int			cam_count;
-	t_light		light;		// Light data
+	t_light		light;
 	int			light_count;
-	//An array that contains all ray hittable primitives
 	t_prim		*prims;
 	int			prim_count;
 	int			error_flag;
@@ -270,19 +271,18 @@ t_ray	make_ray(t_data *data, int x, int y);
 int		trace_ray(t_ray *ray, t_data *data);
 void	update_hit_params(t_ray *ray, t_rayparams *rp, t_prim *prim);
 
-// ray - hit
+// ray - hits
 t_vec	get_hitpoint(t_vec origin, t_ray *ray, float t);
 bool	do_quadratic(t_qdtc *qd, float *t);
 bool	hit_sphere(t_ray *ray, t_prim *prim, float *t);
 bool	hit_plane(t_ray *ray, t_prim *prim, float *t);
-bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t);
-
-// ray_hits1
-void	init_cy_helper(t_ray *ray, t_prim *prim, t_cy_helper *cyh);
-void	hit_cylinder_body(t_cy_helper *cyh, t_prim *prim, float *t);
-void	hit_cylinder_caps(t_cy_helper *cyh, t_prim *prim, float *t);
-bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t);
 bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
+
+// ray - hits_cy
+void	init_cy_helper(t_ray *ray, t_prim *prim, t_cy_helper *cyh);
+bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t);
+void	hit_cylinder_part(t_cy_helper *cyh, t_prim *prim, float *t, int part);
+bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t);
 
 // ray - lighting
 void	calc_color(t_data *data, t_rayparams *rp);

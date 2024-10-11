@@ -44,7 +44,7 @@ SRC_FILES :=	main.c \
 				mlx_image.c \
 				ray_logic.c \
 				ray_hits.c \
-				ray_hits1.c \
+				ray_hits_cy.c \
 				ray_lighting.c \
 				vector_op.c \
 				vector_op1.c
