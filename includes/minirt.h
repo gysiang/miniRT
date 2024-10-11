@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 11:35:06 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 16:08:45 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,10 +197,10 @@ typedef struct s_data
 	t_camera	camera;
 	int			cam_count;
 	t_light		light;
+	t_light		*light_arr;
 	int			light_count;
 	t_prim		*prims;
 	int			prim_count;
-	int			error_flag;
 }	t_data;
 
 // free
@@ -215,14 +215,18 @@ t_data	init_data(void);
 int		check_filecontents(t_data *data, int fd);
 int		not_element(char **s);
 int		check_capital_elements(t_data *data);
+
+// check_elems
 int		check_ambients(t_data *data, char **s);
 int		check_cams(t_data *data, char **s);
-int		check_lights(t_data *data, char **s);
 int		check_spheres(t_data *data, char **s);
-
-// checks1
 int		check_planes(t_data *data, char **s);
 int		check_cylinders(t_data *data, char **s);
+
+// check_elems_light
+int		check_capital_elements(t_data *data);
+int		check_lights(t_data *data, char **s);
+int		setup_elem_data(t_data *data);
 
 // check_util1
 int		check_xyz(char *s);

@@ -1,16 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_prims.c                                      :+:      :+:    :+:   */
+/*   check_elems.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:17:51 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/10 23:07:05 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:02:01 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+int	check_ambients(t_data *data, char **s)
+{
+	if (ft_strcmp(s[0], "A") == 0)
+	{
+		if (!check_numofinputs(s, 3))
+			return (ft_error("Proper Ambient Usage: <A ratio r,g,b>"));
+		if (check_ratio(s[1]) || !ft_isnumeric(s[1]))
+			return (ft_error("Ambient ratio must be between 0.0 and 1.0"));
+		if (check_rgb(s[2]))
+			return (ft_error("Ambient RGB values are invalid"));
+		data->amb_count++;
+	}
+	return (0);
+}
+
+int	check_cams(t_data *data, char **s)
+{
+	if (ft_strcmp(s[0], "C") == 0)
+	{
+		if (!check_numofinputs(s, 4))
+			return (ft_error("Proper Camera Usage: <C x,y,z u,v,w fov>"));
+		if (check_xyz(s[1]))
+			return (ft_error("Camera XYZ coordinates are invalid"));
+		if (check_vector(s[2]))
+			return (ft_error("Camera vector values are invalid"));
+		if (check_fov(s[3]))
+			return (ft_error("Camera FOV must be between 0 and 180"));
+		data->cam_count++;
+	}
+	return (0);
+}
 
 int	check_spheres(t_data *data, char **s)
 {
