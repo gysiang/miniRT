@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:22:24 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 10:35:54 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 18:58:52 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,50 +52,24 @@ bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t)
 	if (cyh.hit_body)
 		hit_cylinder_part(&cyh, prim, t, BODY);
 	else
-	{
-		cyh.top_cap = hit_disc(&cyh, prim, cyh.y_max, t);
-		cyh.bot_cap = hit_disc(&cyh, prim, cyh.y_min, t);
-		if (cyh.top_cap || cyh.bot_cap)
-			hit_cylinder_part(&cyh, prim, t, CAP);
-	}
+		check_cylinder_caps(&cyh, prim, t);
 	return (cyh.hit_body || cyh.top_cap || cyh.bot_cap);
 }
 
-void	hit_cylinder_part(t_cy_helper *cyh, t_prim *prim, float *t, int part)
+void	check_cylinder_caps(t_cy_helper *cyh, t_prim *prim, float *t)
 {
-	cyh->ray->hitpoint = get_hitpoint(cyh->ray->origin, cyh->ray, *t);
-	if (part == BODY)
-		cyh->ray->normal = vector_subtract(cyh->ray->hitpoint, prim->position);
-	else
-		cyh->ray->normal = prim->vector;
-	cyh->ray->normal = vector_normalize(cyh->ray->normal);
-}
+	float	temp_t;
+	t_vec	temp_vec;
 
-bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t)
-{
-	t_prim	temp;
-	float	t_cap;
-	t_vec	v;
-	t_vec	p;
-
-	temp.position = vector_add(prim->position,
-			vector_multiply(prim->vector, y_offset));
-	temp.vector = prim->vector;
-	if (y_offset < 0)
-		temp.vector = vector_multiply(prim->vector, -1);
-	temp.vector = vector_normalize(temp.vector);
-	if (hit_plane(cyh->ray, &temp, &t_cap))
+	cyh->top_cap = hit_disc(cyh, prim, cyh->y_max, t);
+	temp_t = *t;
+	temp_vec = cyh->cap_vec;
+	cyh->bot_cap = hit_disc(cyh, prim, cyh->y_min, t);
+	if (*t > temp_t)
 	{
-		p = vector_add(cyh->ray->origin,
-				vector_multiply(cyh->ray->vector, t_cap));
-		v = vector_subtract(p, temp.position);
-		if (vector_dotproduct(v, v) <= prim->p_data.cy.radius
-			* prim->p_data.cy.radius && t_cap > EPSILON)
-		{
-			cyh->top_cap = y_offset > 0;
-			*t = t_cap;
-			return (true);
-		}
+		*t = temp_t;
+		cyh->cap_vec = temp_vec;
 	}
-	return (false);
+	if (cyh->top_cap || cyh->bot_cap)
+		hit_cylinder_part(cyh, prim, t, CAP);
 }

@@ -45,6 +45,7 @@ SRC_ALL	:=	main.c \
 			ray_logic.c \
 			ray_hits.c \
 			ray_hits_cy.c \
+			ray_hits_cy1.c \
 			vector_op.c \
 			vector_op1.c
 

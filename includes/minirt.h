@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 17:26:39 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 18:58:15 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ typedef struct s_cy_helper
 	bool	hit_body;
 	bool	top_cap;
 	bool	bot_cap;
+	t_vec	cap_vec;
 	float	y_hit;
 	float	y_min;
 	float	y_max;
@@ -291,6 +292,7 @@ bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
 // ray - hits_cy
 void	init_cy_helper(t_ray *ray, t_prim *prim, t_cy_helper *cyh);
 bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t);
+void	check_cylinder_caps(t_cy_helper *cyh, t_prim *prim, float *t);
 void	hit_cylinder_part(t_cy_helper *cyh, t_prim *prim, float *t, int part);
 bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t);
 
