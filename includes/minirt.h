@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 10:39:20 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 11:08:16 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,17 +222,18 @@ int		check_planes(t_data *data, char **s);
 int		check_cylinders(t_data *data, char **s);
 
 // check_util1
+int		check_xyz(char *s);
+int		check_vector(char *s);
+int		check_rgb(char *s);
+int		check_fov(char *s);
+int		check_ratio(char *s);
+
+// check_util2
 int		check_filetype(const char *filename);
 int		open_file(int *fd, const char *filename);
 int		ft_error(char *msg);
 int		check_numofinputs(char **s, int n);
-int		check_rgb(char *s);
-int		check_xyz(char *s);
-
-// check_util2
-int		check_vector(char *s);
-int		check_fov(char *s);
-int		check_ratio(char *s);
+int		comma_check(char *s);
 
 // save
 int		save_filecontents(t_data *data, int fd);

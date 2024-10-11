@@ -3,49 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   check_util1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:31:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/10 20:49:45 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/11 11:08:23 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	check_filetype(const char *filename)
+int	check_xyz(char *s)
 {
-	size_t	len;
+	char	**xyz_values;
+	int		i;
 
-	len = ft_strlen(filename);
-	if (ft_strcmp(filename + len - 3, ".rt") == 0)
+	if (comma_check(s))
 		return (1);
-	return (0);
-}
-
-int	open_file(int *fd, const char *filename)
-{
-	*fd = open(filename, O_RDONLY);
-	if (*fd == -1)
+	xyz_values = ft_split(s, ",");
+	if (!xyz_values)
 		return (1);
-	return (0);
-}
-
-int	ft_error(char *msg)
-{
-	ft_putstr_fd("Error.\n", STDERR_FILENO);
-	ft_putstr_fd(msg, 2);
-	ft_putstr_fd(".\n", STDERR_FILENO);
-	return (1);
-}
-
-int	check_numofinputs(char **s, int n)
-{
-	int	i;
-
 	i = 0;
-	while (s[i] != NULL)
+	while (xyz_values[i] != NULL)
+	{
+		if (!ft_isnumeric(xyz_values[i]))
+			return (free_array(xyz_values), 1);
 		i++;
-	if (i == n)
+	}
+	free_array(xyz_values);
+	if (i != 3)
+		return (1);
+	return (0);
+}
+
+int	check_vector(char *s)
+{
+	int		i;
+	char	**vector_values;
+	float	vector;
+
+	if (comma_check(s))
+		return (1);
+	vector_values = ft_split(s, ",");
+	if (!vector_values)
+		return (1);
+	i = 0;
+	while (vector_values[i] != NULL)
+	{
+		if (!ft_isnumeric(vector_values[i]))
+			return (free_array(vector_values), 1);
+		vector = ft_atof(vector_values[i]);
+		if (vector < -1.0 || vector > 1.0)
+			return (free_array(vector_values), 1);
+		i++;
+	}
+	free_array(vector_values);
+	if (i != 3)
 		return (1);
 	return (0);
 }
@@ -56,6 +68,8 @@ int	check_rgb(char *s)
 	int		rgb;
 	int		i;
 
+	if (comma_check(s))
+		return (1);
 	rgb_values = ft_split(s, ",");
 	if (!rgb_values)
 		return (1);
@@ -71,6 +85,28 @@ int	check_rgb(char *s)
 	}
 	free_array(rgb_values);
 	if (i != 3)
+		return (1);
+	return (0);
+}
+
+int	check_fov(char *s)
+{
+	int	fov;
+
+	if (!ft_isnumeric(s))
+		return (1);
+	fov = ft_atoi(s);
+	if (fov < 0 || fov > 180)
+		return (1);
+	return (0);
+}
+
+int	check_ratio(char *s)
+{
+	float	ratio;
+
+	ratio = ft_atof(s);
+	if (ratio < 0.0 || ratio > 1.0)
 		return (1);
 	return (0);
 }
