@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 11:35:06 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 23:39:18 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef struct s_rayparams
 	int		color_fin;
 	t_rgb	amb_fin;
 	t_rgb	diffuse_fin;
+	t_rgb	color_temp;
+	bool	first_light_calc;
 	t_rgb	amb_def;
 	t_rgb	prim_col;
 	float	light_intensity;
@@ -142,6 +144,7 @@ typedef struct s_cy_helper
 	bool	hit_body;
 	bool	top_cap;
 	bool	bot_cap;
+	t_vec	cap_vec;
 	float	y_hit;
 	float	y_min;
 	float	y_max;
@@ -197,10 +200,10 @@ typedef struct s_data
 	t_camera	camera;
 	int			cam_count;
 	t_light		light;
+	t_light		*light_arr;
 	int			light_count;
 	t_prim		*prims;
 	int			prim_count;
-	int			error_flag;
 }	t_data;
 
 // free
@@ -215,14 +218,19 @@ t_data	init_data(void);
 int		check_filecontents(t_data *data, int fd);
 int		not_element(char **s);
 int		check_capital_elements(t_data *data);
+
+// check_elems
 int		check_ambients(t_data *data, char **s);
 int		check_cams(t_data *data, char **s);
-int		check_lights(t_data *data, char **s);
 int		check_spheres(t_data *data, char **s);
-
-// checks1
 int		check_planes(t_data *data, char **s);
 int		check_cylinders(t_data *data, char **s);
+
+// manage_elems_light
+int		check_capital_elements(t_data *data);
+int		check_lights(t_data *data, char **s);
+int		setup_elem_data(t_data *data);
+int		save_light(t_data *data, char **s);
 
 // check_util1
 int		check_xyz(char *s);
@@ -242,7 +250,6 @@ int		comma_check(char *s);
 int		save_filecontents(t_data *data, int fd);
 int		save_ambientlight(t_data *data, char **s);
 int		save_camera(t_data *data, char **s);
-int		save_light(t_data *data, char **s);
 int		save_sphere(t_data *data, char **s);
 
 // save1
@@ -285,14 +292,14 @@ bool	hit_prim(t_ray *ray, t_prim prim, t_rayparams *rp);
 // ray - hits_cy
 void	init_cy_helper(t_ray *ray, t_prim *prim, t_cy_helper *cyh);
 bool	hit_cylinder(t_ray *ray, t_prim *prim, float *t);
+void	check_cylinder_caps(t_cy_helper *cyh, t_prim *prim, float *t);
 void	hit_cylinder_part(t_cy_helper *cyh, t_prim *prim, float *t, int part);
 bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t);
 
 // ray - lighting
 void	calc_color(t_data *data, t_rayparams *rp);
 float	calculate_lighting(t_rayparams *rp, t_light *light);
-t_ray	create_shadow(t_data *data, t_rayparams *rp);
-bool	in_shadow(t_data *data, t_rayparams *rp);
+bool	in_shadow(t_data *data, t_rayparams *rp, t_light *light);
 
 // render
 void	render_image(t_data *data);

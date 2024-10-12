@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 09:17:46 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 10:10:22 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 17:04:59 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,6 @@ int	save_camera(t_data *data, char **s)
 		data->camera.aspect_ratio = (float)IMG_WIDTH / IMG_HEIGHT;
 		data->camera.scale = tan(data->camera.fov * 0.5 * (PI / 180.0));
 		data->camera.up_vector = vector_create(0, 1, 0);
-	}
-	return (0);
-}
-
-int	save_light(t_data *data, char **s)
-{
-	if (ft_strcmp(s[0], "L") == 0)
-	{
-		save_vector(&(data->light.position), s[1]);
-		data->light.brightness = ft_atof(s[2]);
-		save_rgb(&(data->light.rgb), "255,255,255");
 	}
 	return (0);
 }

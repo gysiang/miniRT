@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:07:02 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 11:22:22 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/11 16:06:36 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,8 @@ int	check_filecontents(t_data *data, int fd)
 	}
 	if (check_capital_elements(data))
 		return (1);
-	data->prims = malloc(data->prim_count * sizeof(t_prim));
-	if (!data->prims)
+	if (setup_elem_data(data))
 		return (ft_error("Primitives data failed to initialise"));
-	data->prim_count = 0;
 	return (0);
 }
 
@@ -55,13 +53,5 @@ int	not_element(char **s)
 		&& ft_strcmp(s[0], "sp") && ft_strcmp(s[0], "pl")
 		&& ft_strcmp(s[0], "cy"))
 		return (ft_error("Invalid element"));
-	return (0);
-}
-
-int	check_capital_elements(t_data *data)
-{
-	if (data->amb_count != 1 || data->cam_count != 1 || data->light_count > 1)
-		return (ft_error("There must be one Ambient and Camera,"
-				"and at most one Light"));
 	return (0);
 }
