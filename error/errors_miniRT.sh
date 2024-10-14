@@ -41,7 +41,7 @@ run_test () {
 		return
 	fi
 	valgrind --leak-check=full --show-leak-kinds=all --log-file="$VAL_LOG" $MINIRT $2;
-	val_check
+	val_check;
 }
 
 ### TESTS BELOW ###
@@ -60,6 +60,12 @@ run_test "Empty file" empty.rt
 run_test "Wrong Element" wElement.rt
 run_test "No Ambient" noAmbient.rt
 run_test "No Camera" noCamera.rt
+
+run_test "XYZ: 1,,1,1" xyz_comma_a.rt
+run_test "XYZ: 1,1,1," xyz_comma_b.rt
+run_test "XYZ: 1,11" xyz_comma_min.rt
+run_test "XYZ: 1,--0,1" xyz_minusminus.rt
+run_test "XYZ: 1a,1,1" xyz_alpha.rt
 
 run_test "Ambient: Wrong args" A_wArgs.rt
 run_test "Ambient: Wrong ratio" A_wRatio.rt
