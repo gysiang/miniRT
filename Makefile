@@ -45,11 +45,12 @@ SRC_ALL	:=	main.c \
 			ray_hits.c \
 			ray_hits_cy.c \
 			ray_hits_cy1.c \
+			ray_light.c \
 			vector_op.c \
 			vector_op1.c
 
 SRC_MAND	:=	manage_elems_light.c \
-				ray_lighting.c \
+				ray_light_calc.c \
 				free.c
 
 SRC_BONUS	:=	$(addsuffix _b.c, $(basename $(SRC_MAND)))
