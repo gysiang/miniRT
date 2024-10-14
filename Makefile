@@ -75,6 +75,10 @@ endif
 
 OBJ		:= $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
 
+ifdef FALLOFF_I
+FALLFLAGS := -D FALLOFF_I=$(FALLOFF_I)
+endif
+
 # Compilation rules
 $(NAME): $(LIBFT) $(MLX) $(OBJ) $(INCLUDES)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LFLAGS) $(IFLAGS) $(MLXFLAGS)
@@ -98,7 +102,7 @@ $(MLX):
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
+	$(CC) $(CFLAGS) $(FALLFLAGS) -c $< -o $@ $(IFLAGS)
 
 .PHONY: all bonus libft
 
