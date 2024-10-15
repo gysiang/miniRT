@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_elems_light.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 16:01:21 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/11 17:01:05 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/15 15:22:39 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_capital_elements(t_data *data)
 {
-	if (data->amb_count != 1 || data->cam_count != 1 || data->light_count > 1)
+	if (data->amb_count != 1 || data->cam_count != 1 || data->light_count != 1)
 		return (ft_error("There must be one Ambient and Camera,"
 				"and at most one Light"));
 	return (0);
