@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/15 15:22:54 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/15 16:35:20 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,12 @@ t_rayparams	init_rayparams(t_data *data, t_ray *ray)
 	rp.dl = 0;
 	rp.min_dist = INFINITY;
 	rp.amb_def = rgb_mul(data->amb_rgb, data->amb_light);
+	rp.diffuse_fin.r = 0;
+	rp.diffuse_fin.g = 0;
+	rp.diffuse_fin.b = 0;
 	rp.color_fin = rgb_get(rp.amb_def);
 	rp.first_light_calc = true;
 	rp.view_vec = ray->vector;
-	rp.in_shadow = false;
 	return (rp);
 }
 

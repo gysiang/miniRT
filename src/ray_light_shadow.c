@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:00:18 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/15 15:23:45 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/15 16:31:13 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ bool	in_shadow(t_data *data, t_rayparams *rp, t_light *light)
 		if (hit_prim(&sr, data->prims[i], &sp))
 		{
 			if (sp.t > EPSILON && sp.t < rp->dl)
-				return (rp->in_shadow = true, true);
+				return (true);
 		}
 	}
 	return (false);
