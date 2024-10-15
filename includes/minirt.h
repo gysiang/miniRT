@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/14 16:56:26 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/15 15:22:38 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,11 @@ typedef struct s_rayparams
 	float	min_dist;
 	t_vec	t_hitpoint;
 	t_vec	t_normal;
+
 	int		color_fin;
 	t_rgb	amb_fin;
 	t_rgb	diffuse_fin;
+
 	t_rgb	color_temp;
 	bool	first_light_calc;
 	t_rgb	amb_def;
@@ -88,6 +90,8 @@ typedef struct s_rayparams
 	t_ray	shadow;
 	float	dl;
 	int		prim_num;
+	t_vec	view_vec;
+	bool	in_shadow;
 }	t_rayparams;
 
 // Struct for camera data
@@ -304,6 +308,7 @@ bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t);
 void	calc_color(t_data *data, t_rayparams *rp);
 float	calculate_lighting(t_rayparams *rp, t_light *light);
 bool	in_shadow(t_data *data, t_rayparams *rp, t_light *light);
+float	get_specular(t_rayparams *rp, t_light *l);
 
 // render
 void	render_image(t_data *data);

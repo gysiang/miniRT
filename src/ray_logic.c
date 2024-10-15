@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 17:26:57 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/15 15:22:54 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_ray	make_ray(t_data *data, int x, int y)
 	return (ray);
 }
 
-t_rayparams	init_rayparams(t_data *data)
+t_rayparams	init_rayparams(t_data *data, t_ray *ray)
 {
 	t_rayparams	rp;
 
@@ -45,6 +45,8 @@ t_rayparams	init_rayparams(t_data *data)
 	rp.amb_def = rgb_mul(data->amb_rgb, data->amb_light);
 	rp.color_fin = rgb_get(rp.amb_def);
 	rp.first_light_calc = true;
+	rp.view_vec = ray->vector;
+	rp.in_shadow = false;
 	return (rp);
 }
 
@@ -63,7 +65,7 @@ int	trace_ray(t_ray *ray, t_data *data)
 	int			i;
 	bool		hit;
 
-	rp = init_rayparams(data);
+	rp = init_rayparams(data, ray);
 	i = -1;
 	hit = false;
 	while (++i < data->prim_count)

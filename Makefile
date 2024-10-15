@@ -45,7 +45,7 @@ SRC_ALL	:=	main.c \
 			ray_hits.c \
 			ray_hits_cy.c \
 			ray_hits_cy1.c \
-			ray_light.c \
+			ray_light_shadow.c \
 			vector_op.c \
 			vector_op1.c
 
@@ -130,7 +130,6 @@ norm:
 leaks: $(NAME)
 	valgrind -s --leak-check=full --show-reachable=yes \
 	--show-leak-kinds=all --trace-children=yes --track-fds=yes \
-	--suppressions=./readline.supp \
 	--track-origins=yes \
 	./miniRT
 

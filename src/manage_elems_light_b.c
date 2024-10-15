@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 16:01:21 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/11 17:45:44 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/15 15:05:30 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	setup_elem_data(t_data *data)
 			return (1);
 		data->light_count = 0;
 	}
+	else
+		data->light_arr = NULL;
 	return (0);
 }
 

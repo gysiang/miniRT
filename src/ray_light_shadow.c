@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_light.c                                        :+:      :+:    :+:   */
+/*   ray_light_shadow.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:00:18 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/14 16:56:53 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/15 15:23:45 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ float	calculate_lighting(t_rayparams *rp, t_light *light)
 	intensity = vector_dotproduct(lv, rp->t_normal);
 	if (FALLOFF_I)
 	{
-		falloff = vector_length(vector_subtract(light->position, rp->t_hitpoint));
+		falloff = vector_length(vector_subtract(light->position,
+					rp->t_hitpoint));
 		falloff *= falloff;
 		intensity *= FALLOFF_I / falloff;
 	}
@@ -51,7 +52,7 @@ bool	in_shadow(t_data *data, t_rayparams *rp, t_light *light)
 		if (hit_prim(&sr, data->prims[i], &sp))
 		{
 			if (sp.t > EPSILON && sp.t < rp->dl)
-				return (true);
+				return (rp->in_shadow = true, true);
 		}
 	}
 	return (false);

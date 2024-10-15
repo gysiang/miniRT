@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 15:27:31 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 23:59:58 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/15 15:04:43 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	cleanup(t_data *data)
 	del_img(&data->program, data->program.image);
 	mlx_destroy_display(data->program.mlx_ptr);
 	free(data->prims);
-	free(data->light_arr);
+	if (data->light_arr)
+		free(data->light_arr);
 	free(data->program.mlx_ptr);
 }
