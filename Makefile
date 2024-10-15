@@ -76,6 +76,7 @@ endif
 OBJ		:= $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
 
 ifdef FALLOFF_I
+FALLFLAGS := $(shell touch $(SRC_DIR)/ray_light.c)
 FALLFLAGS := -D FALLOFF_I=$(FALLOFF_I)
 endif
 
@@ -92,7 +93,6 @@ $(LIBFT) libft:
 $(MLX):
 	@if [ ! -d $(MLXDIR) ] || [ ! -f $(MLX) ]; then \
 		echo "MLX not found. Cloning and building ..."; \
-		$(RM) $(MLX_DIR); \
 		git submodule deinit -f $(MLX_DIR); \
 		git submodule update --init $(MLX_DIR); \
 		make -C $(MLX_DIR) all; \
@@ -121,15 +121,12 @@ re: fclean all
 bonus:
 	@make O_BONUS=1 all
 
-.PHONY: clean fclean re bonus
+.PHONY: clean fclean re bonus falloff
 
-# Norminette
+# Custom commands
 norm:
 	@$(NORM) $(SRC_DIR)/*.c $(INCLUDES_DIR)/*.h
 
-.PHONY: norm
-
-# Custom commands
 leaks: $(NAME)
 	valgrind -s --leak-check=full --show-reachable=yes \
 	--show-leak-kinds=all --trace-children=yes --track-fds=yes \
@@ -137,4 +134,4 @@ leaks: $(NAME)
 	--track-origins=yes \
 	./miniRT
 
-.PHONY: leaks
+.PHONY: norm leaks
