@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/15 16:44:48 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/15 23:31:09 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define MV_SPEED 5
 # define ROT_SPEED 0.05
 
+# define SPEC_I 50
 # ifndef FALLOFF_I
 #  define FALLOFF_I 0
 # endif

@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/15 16:35:20 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/15 23:32:48 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_ray	make_ray(t_data *data, int x, int y)
 	return (ray);
 }
 
-t_rayparams	init_rayparams(t_data *data, t_ray *ray)
+t_rayparams	init_rayparams(t_data *data)
 {
 	t_rayparams	rp;
 
@@ -48,7 +48,6 @@ t_rayparams	init_rayparams(t_data *data, t_ray *ray)
 	rp.diffuse_fin.b = 0;
 	rp.color_fin = rgb_get(rp.amb_def);
 	rp.first_light_calc = true;
-	rp.view_vec = ray->vector;
 	return (rp);
 }
 
@@ -59,6 +58,8 @@ void	update_hit_params(t_ray *ray, t_rayparams *rp, t_prim *prim)
 	rp->t_hitpoint = ray->hitpoint;
 	rp->t_normal = ray->normal;
 	rp->t_norm_flip = ray->norm_flip;
+	rp->view_vec = vector_normalize(vector_subtract(ray->origin,
+				rp->t_hitpoint));
 }
 
 int	trace_ray(t_ray *ray, t_data *data)
@@ -67,7 +68,7 @@ int	trace_ray(t_ray *ray, t_data *data)
 	int			i;
 	bool		hit;
 
-	rp = init_rayparams(data, ray);
+	rp = init_rayparams(data);
 	i = -1;
 	hit = false;
 	while (++i < data->prim_count)
