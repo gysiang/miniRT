@@ -14,8 +14,9 @@
 
 int	check_capital_elements(t_data *data)
 {
-	if (data->amb_count != 1 || data->cam_count != 1)
-		return (ft_error("There must be at least, one Ambient and Camera."));
+	if (data->amb_count != 1 || data->cam_count != 1 || data->light_count < 1)
+		return (ft_error("There must be at least one \
+			Ambient, Camera and Light."));
 	return (0);
 }
 

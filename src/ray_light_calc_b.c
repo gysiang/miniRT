@@ -54,9 +54,13 @@ t_rgb	get_specular(t_rayparams *rp, t_light *l)
 
 	light_vec = vector_normalize(vector_subtract(l->position, rp->t_hitpoint));
 	dot_light_normal = vector_dotproduct(rp->t_normal, light_vec);
-	reflect_vec = vector_subtract(vector_multiply(rp->t_normal,
-				2 * dot_light_normal), light_vec);
-	spec_intensity = pow(fmax(vector_dotproduct(reflect_vec, rp->view_vec),
-				EPSILON), SPEC_I);
-	return (rgb_mul(l->rgb, spec_intensity));
+	if (dot_light_normal > EPSILON)
+	{
+		reflect_vec = vector_subtract(vector_multiply(rp->t_normal,
+					2 * dot_light_normal), light_vec);
+		spec_intensity = pow(fmax(vector_dotproduct(reflect_vec, rp->view_vec),
+					EPSILON), SPEC_I);
+		return (rgb_mul(l->rgb, spec_intensity));
+	}
+	return ((t_rgb){0, 0, 0});
 }
