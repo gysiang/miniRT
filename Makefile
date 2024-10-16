@@ -76,7 +76,7 @@ endif
 OBJ		:= $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
 
 ifdef FALLOFF_I
-FALLFLAGS := $(shell touch $(SRC_DIR)/ray_light.c)
+FALLFLAGS := $(shell touch $(SRC_DIR)/ray_light_shadow.c)
 FALLFLAGS := -D FALLOFF_I=$(FALLOFF_I)
 endif
 
@@ -121,7 +121,7 @@ re: fclean all
 bonus:
 	@make O_BONUS=1 all
 
-.PHONY: clean fclean re bonus falloff
+.PHONY: clean fclean re bonus
 
 # Custom commands
 norm:

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_elems_light.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 16:01:21 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/15 15:22:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:24:50 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	check_lights(t_data *data, char **s)
 			return (ft_error("Proper Light Usage: <L x,y,z ratio>"));
 		if (check_xyz(s[1]))
 			return (ft_error("Light XYZ coordinates are invalid"));
-		if (check_ratio(s[2]))
+		if (check_ratio(s[2]) || !ft_isnumeric(s[2]))
 			return (ft_error("Light ratio must be between 0.0 and 1.0"));
 		data->light_count++;
 	}

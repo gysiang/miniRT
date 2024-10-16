@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isnumeric.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 16:06:09 by axlee             #+#    #+#             */
-/*   Updated: 2024/09/19 18:51:51 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:07:52 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	ft_isnumeric(const char *str)
 			has_decimal = 1;
 		}
 		else if (str[i] < '0' || str[i] > '9')
-		{
 			return (0);
-		}
 		i++;
 	}
+	if (str[i - 1] == '.')
+		return (0);
 	return (1);
 }
 
