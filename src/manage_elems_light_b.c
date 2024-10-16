@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 16:01:21 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/16 11:25:01 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/16 12:06:25 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	check_capital_elements(t_data *data)
 {
 	if (data->amb_count != 1 || data->cam_count != 1 || data->light_count < 1)
-		return (ft_error("There must be at least one \
-			Ambient, Camera and Light."));
+		return (ft_error("There must be one Ambient \
+and Camera, and at least one Light"));
 	return (0);
 }
 
