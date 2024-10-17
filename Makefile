@@ -45,11 +45,12 @@ SRC_ALL	:=	main.c \
 			ray_hits.c \
 			ray_hits_cy.c \
 			ray_hits_cy1.c \
+			ray_light_shadow.c \
 			vector_op.c \
 			vector_op1.c
 
 SRC_MAND	:=	manage_elems_light.c \
-				ray_lighting.c \
+				ray_light_calc.c \
 				free.c
 
 SRC_BONUS	:=	$(addsuffix _b.c, $(basename $(SRC_MAND)))
@@ -74,6 +75,11 @@ endif
 
 OBJ		:= $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
 
+ifdef FALLOFF_I
+FALLFLAGS := $(shell touch $(SRC_DIR)/ray_light_shadow.c)
+FALLFLAGS := -D FALLOFF_I=$(FALLOFF_I)
+endif
+
 # Compilation rules
 $(NAME): $(LIBFT) $(MLX) $(OBJ) $(INCLUDES)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LFLAGS) $(IFLAGS) $(MLXFLAGS)
@@ -87,7 +93,6 @@ $(LIBFT) libft:
 $(MLX):
 	@if [ ! -d $(MLXDIR) ] || [ ! -f $(MLX) ]; then \
 		echo "MLX not found. Cloning and building ..."; \
-		$(RM) $(MLX_DIR); \
 		git submodule deinit -f $(MLX_DIR); \
 		git submodule update --init $(MLX_DIR); \
 		make -C $(MLX_DIR) all; \
@@ -97,7 +102,7 @@ $(MLX):
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
+	$(CC) $(CFLAGS) $(FALLFLAGS) -c $< -o $@ $(IFLAGS)
 
 .PHONY: all bonus libft
 
@@ -118,18 +123,14 @@ bonus:
 
 .PHONY: clean fclean re bonus
 
-# Norminette
+# Custom commands
 norm:
 	@$(NORM) $(SRC_DIR)/*.c $(INCLUDES_DIR)/*.h
 
-.PHONY: norm
-
-# Custom commands
 leaks: $(NAME)
 	valgrind -s --leak-check=full --show-reachable=yes \
 	--show-leak-kinds=all --trace-children=yes --track-fds=yes \
-	--suppressions=./readline.supp \
 	--track-origins=yes \
 	./miniRT
 
-.PHONY: leaks
+.PHONY: norm leaks

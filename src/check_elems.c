@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:17:51 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 16:02:01 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/16 11:23:51 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_cams(t_data *data, char **s)
 			return (ft_error("Camera XYZ coordinates are invalid"));
 		if (check_vector(s[2]))
 			return (ft_error("Camera vector values are invalid"));
-		if (check_fov(s[3]))
+		if (check_fov(s[3]) || !ft_isnumeric(s[3]))
 			return (ft_error("Camera FOV must be between 0 and 180"));
 		data->cam_count++;
 	}
@@ -98,7 +98,7 @@ int	check_cylinders(t_data *data, char **s)
 		diameter = ft_atof(s[3]);
 		if (diameter < EPSILON || !ft_isnumeric(s[3]))
 			return (ft_error("Cylinder diameter is invalid"));
-		height = ft_atof(s[3]);
+		height = ft_atof(s[4]);
 		if (height < EPSILON || !ft_isnumeric(s[4]))
 			return (ft_error("Cylinder height is invalid"));
 		if (check_rgb(s[5]))

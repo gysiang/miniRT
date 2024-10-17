@@ -1,41 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_lighting.c                                     :+:      :+:    :+:   */
+/*   ray_light_shadow.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/09 13:58:49 by bhowe             #+#    #+#             */
-/*   Updated: 2024/10/11 23:38:57 by bhowe            ###   ########.fr       */
+/*   Created: 2024/10/14 12:00:18 by bhowe             #+#    #+#             */
+/*   Updated: 2024/10/15 16:31:13 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	calc_color(t_data *data, t_rayparams *rp)
-{
-	rp->amb_fin = rgb_mix(rp->prim_col, rp->amb_def);
-	rp->color_fin = rgb_get(rp->amb_fin);
-	if (!data->light_count)
-		return ;
-	if (!in_shadow(data, rp, &data->light))
-	{
-		rp->light_intensity = calculate_lighting(rp, &data->light);
-		rp->diffuse_fin = rgb_mix(rp->prim_col,
-				rgb_mul(data->light.rgb, rp->light_intensity));
-		rp->color_fin = rgb_get(rgb_add(rp->amb_fin, rp->diffuse_fin));
-	}
-}
-
 float	calculate_lighting(t_rayparams *rp, t_light *light)
 {
 	t_vec	lv;
 	float	intensity;
+	float	falloff;
 
 	lv = vector_normalize(vector_subtract(light->position, rp->t_hitpoint));
 	if (vector_dotproduct(lv, rp->t_normal) > 0 && rp->t_norm_flip)
 		rp->t_normal = vector_multiply(rp->t_normal, -1);
 	intensity = vector_dotproduct(lv, rp->t_normal);
+	if (FALLOFF_I)
+	{
+		falloff = vector_length(vector_subtract(light->position,
+					rp->t_hitpoint));
+		falloff *= falloff;
+		intensity *= FALLOFF_I / falloff;
+	}
 	if (intensity <= EPSILON)
 		intensity = 0;
 	return (intensity * light->brightness);

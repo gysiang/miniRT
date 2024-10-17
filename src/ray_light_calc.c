@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_b.c                                           :+:      :+:    :+:   */
+/*   ray_light_calc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/17 15:27:31 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/15 15:04:43 by bhowe            ###   ########.fr       */
+/*   Created: 2024/10/09 13:58:49 by bhowe             #+#    #+#             */
+/*   Updated: 2024/10/14 12:02:02 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	free_array(char **array)
+void	calc_color(t_data *data, t_rayparams *rp)
 {
-	int	i;
-
-	i = 0;
-	while (array[i])
+	rp->amb_fin = rgb_mix(rp->prim_col, rp->amb_def);
+	rp->color_fin = rgb_get(rp->amb_fin);
+	if (!data->light_count)
+		return ;
+	if (!in_shadow(data, rp, &data->light))
 	{
-		free(array[i]);
-		i++;
+		rp->light_intensity = calculate_lighting(rp, &data->light);
+		rp->diffuse_fin = rgb_mix(rp->prim_col,
+				rgb_mul(data->light.rgb, rp->light_intensity));
+		rp->color_fin = rgb_get(rgb_add(rp->amb_fin, rp->diffuse_fin));
 	}
-	free(array);
-}
-
-void	cleanup(t_data *data)
-{
-	del_img(&data->program, data->program.image);
-	mlx_destroy_display(data->program.mlx_ptr);
-	free(data->prims);
-	if (data->light_arr)
-		free(data->light_arr);
-	free(data->program.mlx_ptr);
 }

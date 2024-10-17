@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:35:12 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 17:26:57 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/15 23:32:48 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ t_rayparams	init_rayparams(t_data *data)
 	rp.dl = 0;
 	rp.min_dist = INFINITY;
 	rp.amb_def = rgb_mul(data->amb_rgb, data->amb_light);
+	rp.diffuse_fin.r = 0;
+	rp.diffuse_fin.g = 0;
+	rp.diffuse_fin.b = 0;
 	rp.color_fin = rgb_get(rp.amb_def);
 	rp.first_light_calc = true;
 	return (rp);
@@ -55,6 +58,8 @@ void	update_hit_params(t_ray *ray, t_rayparams *rp, t_prim *prim)
 	rp->t_hitpoint = ray->hitpoint;
 	rp->t_normal = ray->normal;
 	rp->t_norm_flip = ray->norm_flip;
+	rp->view_vec = vector_normalize(vector_subtract(ray->origin,
+				rp->t_hitpoint));
 }
 
 int	trace_ray(t_ray *ray, t_data *data)

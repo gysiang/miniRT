@@ -6,7 +6,7 @@
 /*   By: bhowe <bhowe@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:21:55 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/10/11 23:39:18 by bhowe            ###   ########.fr       */
+/*   Updated: 2024/10/15 23:31:09 by bhowe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@
 
 # define MV_SPEED 5
 # define ROT_SPEED 0.05
+
+# define SPEC_I 50
+# ifndef FALLOFF_I
+#  define FALLOFF_I 0
+# endif
 
 enum e_move
 {
@@ -72,9 +77,11 @@ typedef struct s_rayparams
 	float	min_dist;
 	t_vec	t_hitpoint;
 	t_vec	t_normal;
+
 	int		color_fin;
 	t_rgb	amb_fin;
 	t_rgb	diffuse_fin;
+
 	t_rgb	color_temp;
 	bool	first_light_calc;
 	t_rgb	amb_def;
@@ -84,6 +91,7 @@ typedef struct s_rayparams
 	t_ray	shadow;
 	float	dl;
 	int		prim_num;
+	t_vec	view_vec;
 }	t_rayparams;
 
 // Struct for camera data
@@ -300,6 +308,8 @@ bool	hit_disc(t_cy_helper *cyh, t_prim *prim, float y_offset, float *t);
 void	calc_color(t_data *data, t_rayparams *rp);
 float	calculate_lighting(t_rayparams *rp, t_light *light);
 bool	in_shadow(t_data *data, t_rayparams *rp, t_light *light);
+t_rgb	add_lighting(t_rayparams *rp, t_light *l);
+t_rgb	get_specular(t_rayparams *rp, t_light *l);
 
 // render
 void	render_image(t_data *data);
