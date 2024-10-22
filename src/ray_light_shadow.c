@@ -40,7 +40,7 @@ bool	in_shadow(t_data *data, t_rayparams *rp, t_light *light)
 	t_rayparams	sp;
 	t_ray		sr;
 
-	sr.origin = vector_add(rp->t_hitpoint, rp->t_normal);
+	sr.origin = rp->t_hitpoint;
 	sr.vector = vector_normalize(vector_subtract(light->position,
 				rp->t_hitpoint));
 	rp->dl = vector_length(vector_subtract(sr.origin, light->position));
